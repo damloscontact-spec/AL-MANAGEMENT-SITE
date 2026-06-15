@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Talents — AL Management</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .page-hero {
+      padding: 90px 60px 70px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .page-hero-inner { max-width: 720px; }
+
+    .talents-section {
+      padding: 70px 60px 100px;
+      background: var(--bg);
+    }
+    .talents-inner { max-width: 1100px; margin: 0 auto; }
+
+    .filters-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 44px;
+    }
+    .filter-bar {
+      display: flex;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 5px;
+      width: fit-content;
+    }
+    .filter-btn {
+      padding: 10px 24px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .filter-btn.active { background: var(--purple); color: #fff; }
+    .filter-btn:hover:not(.active) { color: var(--text); }
+
+    .pgrid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .pcard {
+      position: relative;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      height: 280px;
+      border: 1px solid var(--border);
+      transition: border-color 0.25s, transform 0.25s;
+      background: var(--card);
+      cursor: pointer;
+    }
+    .pcard:hover { border-color: var(--purple-mid); transform: translateY(-4px); }
+
+    .pcard-bg {
+      position: absolute;
+      inset: 0;
+      background: var(--purple-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pcard-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+    }
+    .pcard-anon {
+      position: absolute;
+      inset: 0;
+      background: var(--purple-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 52px;
+      color: var(--muted);
+    }
+    .pcard-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(8,6,18,0.97) 0%, rgba(8,6,18,0.45) 55%, transparent 100%);
+    }
+    .pcard-content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 16px 14px;
+    }
+    .pcard-top-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+    .pcard-badge {
+      display: inline-block;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--purple-light);
+      background: var(--purple-dim);
+      padding: 2px 8px;
+      border-radius: 20px;
+      border: 1px solid rgba(180,139,250,0.2);
+      white-space: nowrap;
+    }
+    .pcard-flag { width: 18px; height: 13px; border-radius: 2px; object-fit: cover; }
+    .pcard-pseudo {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(12px, 1.3vw, 16px);
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .pcard-realname { font-size: 10px; color: var(--muted); margin-bottom: 10px; }
+    .pcard-socials { display: flex; gap: 6px; }
+    .pcard-socials a {
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      background: rgba(42,26,94,0.85);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+      color: var(--purple-light);
+      transition: background 0.2s;
+      backdrop-filter: blur(4px);
+    }
+    .pcard-socials a:hover { background: var(--purple); color: #fff; }
+
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 60px 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    @media (max-width: 900px) {
+      .page-hero, .talents-section { padding: 60px 24px; }
+      .pgrid { grid-template-columns: repeat(2, 1fr); }
+      .filter-bar { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <div class="s-eyebrow">Our Talents</div>
+    <h1 class="s-title">Our clients</h1>
+    <p class="s-sub">They chose AL Management to help them achieve excellence.</p>
+  </div>
+</section>
+
+<section class="talents-section">
+  <div class="talents-inner">
+    <div class="filters-wrap">
+      <!-- Game filter -->
+      <div class="filter-bar" id="game-filter">
+        <div class="filter-btn active" data-game="all">All games</div>
+        <div class="filter-btn" data-game="fortnite">Fortnite</div>
+        <div class="filter-btn" data-game="eafc">EA FC</div>
+      </div>
+      <!-- Region filter -->
+      <div class="filter-bar" id="region-filter">
+        <div class="filter-btn active" data-region="all">All regions</div>
+        <div class="filter-btn" data-region="emea">EMEA</div>
+        <div class="filter-btn" data-region="mena">MENA</div>
+        <div class="filter-btn" data-region="cis">CIS</div>
+        <div class="filter-btn" data-region="apac">APAC</div>
+      </div>
+    </div>
+
+    <div class="pgrid" id="talents-grid">
+
+      <!-- EA FC — EMEA -->
+      <div class="pcard" data-game="eafc" data-region="emea">
+        <div class="pcard-bg"><img src="https://i.imgur.com/TP7gQIN.jpeg" alt="XaviK"></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-content">
+          <div class="pcard-top-row"><div class="pcard-badge">EA FC</div><img class="pcard-flag" src="https://flagcdn.com/w20/es.png" alt="Spain"></div>
+          <div class="pcard-pseudo">XaviK</div>
+          <div class="pcard-realname">Xavier Riera</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/xavik_05" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://t.co/iqfumTDIz2" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard" data-game="eafc" data-region="emea">
+        <div class="pcard-bg"><img src="https://i.imgur.com/a7YSqVw.jpeg" alt="Magicien"></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-content">
+          <div class="pcard-top-row"><div class="pcard-badge">EA FC</div><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-pseudo">Magicien</div>
+          <div class="pcard-realname">Tony Desree</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/DesreeTony" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://www.twitch.tv/eg_magiciennn" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard" data-game="eafc" data-region="emea">
+        <div class="pcard-bg"><img src="https://i.imgur.com/6FIUwG3.jpeg" alt="Dexxjunior"></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-content">
+          <div class="pcard-top-row"><div class="pcard-badge">EA FC</div><img class="pcard-flag" src="https://flagcdn.com/w20/sn.png" alt="Senegal"></div>
+          <div class="pcard-pseudo" style="font-size:12px">Dexxjunior</div>
+          <div class="pcard-realname">Moustapha Thiam</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/dexxjunior03" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://t.co/kxuwTxpf9K" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard" data-game="eafc" data-region="emea">
+        <div class="pcard-bg"><img src="https://i.imgur.com/5SJVTrH.jpeg" alt="XeRBoy" style="object-position:top center"></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-content">
+          <div class="pcard-top-row"><div class="pcard-badge">EA FC</div><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-pseudo">XeRBoy</div>
+          <div class="pcard-realname">Yoni Boisgontier</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/XeRBoy_" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://t.co/18PGGMPInV" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fortnite — EMEA -->
+      <div class="pcard" data-game="fortnite" data-region="emea">
+        <div class="pcard-bg"><img src="https://i.imgur.com/TTDchys.jpeg" alt="Noia" style="object-position:top center"></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-content">
+          <div class="pcard-top-row"><div class="pcard-badge">Fortnite</div><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-pseudo">Noia</div>
+          <div class="pcard-realname">First Last</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/noia_gg" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://t.co/RtLJw0TMux" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard" data-game="fortnite" data-region="emea">
+        <div class="pcard-anon"><i class="ti ti-user"></i></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-content">
+          <div class="pcard-top-row"><div class="pcard-badge">Fortnite</div><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-pseudo">Seekk</div>
+          <div class="pcard-realname">First Last</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/Seekkfn" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://t.co/5r3dfcxdaB" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard" data-game="fortnite" data-region="emea">
+        <div class="pcard-bg"><img src="https://i.imgur.com/pUnhdMu.jpeg" alt="Baxo"></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-content">
+          <div class="pcard-top-row"><div class="pcard-badge">Fortnite</div><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-pseudo">Baxo</div>
+          <div class="pcard-realname">First Last</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/baxofnbr" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://www.twitch.tv/baxoftn" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard" data-game="fortnite" data-region="emea">
+        <div class="pcard-bg"><img src="https://i.imgur.com/Z12iryO.jpeg" alt="Milou" style="object-position:top center"></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-content">
+          <div class="pcard-top-row"><div class="pcard-badge">Fortnite</div><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-pseudo">Milou</div>
+          <div class="pcard-realname">First Last</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/Miloufnr" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://www.twitch.tv/miloufnr" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard" data-game="fortnite" data-region="emea">
+        <div class="pcard-anon"><i class="ti ti-user"></i></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-content">
+          <div class="pcard-top-row"><div class="pcard-badge">Fortnite</div><img class="pcard-flag" src="https://flagcdn.com/w20/es.png" alt="Spain"></div>
+          <div class="pcard-pseudo">Xaizzing</div>
+          <div class="pcard-realname">First Last</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/Xaizzing" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://www.twitch.tv/xaizzing" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard" data-game="fortnite" data-region="emea">
+        <div class="pcard-anon"><i class="ti ti-user"></i></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-content">
+          <div class="pcard-top-row"><div class="pcard-badge">Fortnite</div><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-pseudo">Snaylyx</div>
+          <div class="pcard-realname">First Last</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/snaylyx_" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://www.twitch.tv/snaylyxftnn" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="pcard" data-game="fortnite" data-region="emea">
+        <div class="pcard-anon"><i class="ti ti-user"></i></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-content">
+          <div class="pcard-top-row"><div class="pcard-badge">Fortnite</div><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-pseudo">Skyze</div>
+          <div class="pcard-realname">First Last</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/Skyzefn7" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://t.co/tEVf3S3RrP" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Fortnite — CIS -->
+      <div class="pcard" data-game="fortnite" data-region="cis">
+        <div class="pcard-anon"><i class="ti ti-user"></i></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-content">
+          <div class="pcard-top-row"><div class="pcard-badge">Fortnite</div><img class="pcard-flag" src="https://flagcdn.com/w20/ua.png" alt="Ukraine"></div>
+          <div class="pcard-pseudo">Ve1ryy</div>
+          <div class="pcard-realname">First Last</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/ve1ryy" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://www.twitch.tv/ve1ryy" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="main.js"></script>
+<script>
+  injectNav('talents.html');
+  injectFooter();
+
+  let activeGame = 'all';
+  let activeRegion = 'all';
+
+  function applyFilters() {
+    const cards = document.querySelectorAll('.pcard');
+    let visible = 0;
+    cards.forEach(card => {
+      const gameMatch = activeGame === 'all' || card.dataset.game === activeGame;
+      const regionMatch = activeRegion === 'all' || card.dataset.region === activeRegion;
+      const show = gameMatch && regionMatch;
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+
+    // Show/hide no results message
+    let noRes = document.getElementById('no-results');
+    if (visible === 0) {
+      if (!noRes) {
+        noRes = document.createElement('div');
+        noRes.id = 'no-results';
+        noRes.className = 'no-results';
+        noRes.textContent = 'No players found for this selection.';
+        document.getElementById('talents-grid').appendChild(noRes);
+      }
+      noRes.style.display = '';
+    } else if (noRes) {
+      noRes.style.display = 'none';
+    }
+  }
+
+  document.querySelectorAll('#game-filter .filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeGame = btn.dataset.game;
+      document.querySelectorAll('#game-filter .filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyFilters();
+    });
+  });
+
+  document.querySelectorAll('#region-filter .filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeRegion = btn.dataset.region;
+      document.querySelectorAll('#region-filter .filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      applyFilters();
+    });
+  });
+</script>
+</body>
+</html>

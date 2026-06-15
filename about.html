@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — AL Management</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .page-hero {
+      padding: 90px 60px 70px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .page-hero-inner { max-width: 720px; }
+
+    .about-body {
+      padding: 90px 60px;
+      background: var(--bg);
+    }
+    .about-body-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .about-text p {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 24px;
+    }
+    .about-text p:last-child { margin-bottom: 0; }
+
+    .values-col {}
+    .values-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 20px;
+      letter-spacing: -0.5px;
+    }
+    .values { display: flex; flex-direction: column; gap: 16px; }
+    .value-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px 20px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      transition: border-color 0.2s;
+    }
+    .value-card:hover { border-color: var(--purple-mid); }
+    .value-icon {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      border-radius: 9px;
+      background: var(--purple-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: var(--purple-light);
+    }
+    .value-content h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .value-content p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    @media (max-width: 900px) {
+      .page-hero, .about-body { padding: 60px 24px; }
+      .about-body-inner { grid-template-columns: 1fr; gap: 48px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <div class="s-eyebrow">About</div>
+    <h1 class="s-title">AL Management</h1>
+    <p class="s-sub">Built on passion, driven by ambition. Discover our story.</p>
+  </div>
+</section>
+
+<section class="about-body">
+  <div class="about-body-inner">
+    <div class="about-text">
+      <p>Founded in June 2025, AL Management is an esports management agency built with a simple ambition: helping talented players access the best opportunities.</p>
+      <p>Driven by passionate and dedicated agents with more than five years of experience in the esports industry, our agency places the interests and ambitions of its clients at the heart of every decision.</p>
+      <p>Like the players we represent, we are a growing organization driven by the desire to improve, innovate, and reach the highest levels of competition.</p>
+      <p>At AL Management, we build tomorrow's success today.</p>
+    </div>
+
+    <div class="values-col">
+      <div class="values-title">Our values</div>
+      <div class="values">
+        <div class="value-card">
+          <div class="value-icon"><i class="ti ti-shield-check"></i></div>
+          <div class="value-content">
+            <h4>Trust</h4>
+            <p>Lasting relationships built on listening, transparency, and mutual respect.</p>
+          </div>
+        </div>
+        <div class="value-card">
+          <div class="value-icon"><i class="ti ti-heart-handshake"></i></div>
+          <div class="value-content">
+            <h4>Loyalty</h4>
+            <p>We defend the interests of our talents with the same commitment as if they were our own.</p>
+          </div>
+        </div>
+        <div class="value-card">
+          <div class="value-icon"><i class="ti ti-flame"></i></div>
+          <div class="value-content">
+            <h4>Dedication</h4>
+            <p>We are fully committed to supporting each player in their development and success.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="main.js"></script>
+<script>
+  injectNav('about.html');
+  injectFooter();
+</script>
+</body>
+</html>

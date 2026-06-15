@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Pseudo] — AL Management</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .profile-hero {
+      padding: 90px 60px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .profile-hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 52px;
+      align-items: center;
+    }
+    .profile-photo {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: var(--purple-dim);
+      border: 3px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: var(--muted);
+      font-style: italic;
+    }
+    .profile-info .s-eyebrow { margin-bottom: 8px; }
+    .profile-pseudo {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 800;
+      letter-spacing: -1.5px;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .profile-realname {
+      font-size: 16px;
+      color: var(--muted);
+      margin-bottom: 20px;
+    }
+    .profile-tags {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .profile-tag {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 14px;
+      border-radius: 20px;
+      background: var(--purple-dim);
+      color: var(--purple-light);
+    }
+    .profile-socials { display: flex; gap: 10px; }
+    .profile-socials a {
+      width: 38px; height: 38px;
+      border-radius: 9px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+      color: var(--purple-light);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .profile-socials a:hover { background: var(--purple); border-color: var(--purple); color: #fff; }
+
+    .profile-body {
+      padding: 80px 60px;
+      background: var(--bg);
+    }
+    .profile-body-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 60px;
+    }
+    .profile-bio p {
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.85;
+      margin-bottom: 20px;
+    }
+    .profile-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .stat-row {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .stat-row .label { font-size: 13px; color: var(--muted); }
+    .stat-row .value {
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    @media (max-width: 900px) {
+      .profile-hero, .profile-body { padding: 60px 24px; }
+      .profile-hero-inner { grid-template-columns: 1fr; gap: 28px; }
+      .profile-body-inner { grid-template-columns: 1fr; }
+      .profile-photo { width: 110px; height: 110px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<section class="profile-hero">
+  <div class="profile-hero-inner">
+    <div class="profile-photo">Photo</div>
+    <div class="profile-info">
+      <div class="s-eyebrow">EA FC · 🏳</div>
+      <div class="profile-pseudo">[Pseudo]</div>
+      <div class="profile-realname">First Last</div>
+      <div class="profile-tags">
+        <span class="profile-tag">EA FC</span>
+        <span class="profile-tag">Age: —</span>
+        <span class="profile-tag">— Followers</span>
+      </div>
+      <div class="profile-socials">
+        <a href="#" aria-label="Twitter"><i class="ti ti-brand-x"></i></a>
+        <a href="#" aria-label="Twitch"><i class="ti ti-brand-twitch"></i></a>
+        <a href="#" aria-label="Instagram"><i class="ti ti-brand-instagram"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="profile-body">
+  <div class="profile-body-inner">
+    <div class="profile-bio">
+      <div class="s-eyebrow">Bio</div>
+      <h2 class="s-title" style="margin-bottom:24px">About [Pseudo]</h2>
+      <p>Bio paragraph to be filled in.</p>
+      <p>Second paragraph — achievements, style of play, etc.</p>
+    </div>
+    <div class="profile-stats">
+      <div class="stat-row"><span class="label">Game</span><span class="value">EA FC</span></div>
+      <div class="stat-row"><span class="label">Nationality</span><span class="value">🏳 —</span></div>
+      <div class="stat-row"><span class="label">Age</span><span class="value">—</span></div>
+      <div class="stat-row"><span class="label">Followers</span><span class="value">—</span></div>
+      <div class="stat-row"><span class="label">Team</span><span class="value">Free agent</span></div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="../main.js"></script>
+<script>
+  injectNav('talents.html');
+  injectFooter();
+</script>
+</body>
+</html>

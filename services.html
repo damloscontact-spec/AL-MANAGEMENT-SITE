@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Services — AL Management</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .page-hero {
+      padding: 90px 60px 70px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .page-hero-inner { max-width: 720px; }
+
+    .services-section {
+      padding: 80px 60px 100px;
+      background: var(--bg);
+    }
+    .services-inner { max-width: 1100px; margin: 0 auto; }
+
+    .srv-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+    }
+    .srv {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px 32px;
+      display: flex;
+      gap: 22px;
+      align-items: flex-start;
+      transition: border-color 0.2s;
+    }
+    .srv:hover { border-color: var(--purple-mid); }
+    .srv-ico {
+      width: 48px; height: 48px;
+      min-width: 48px;
+      background: var(--purple-dim);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      color: var(--purple-light);
+    }
+    .srv-body h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .srv-body p { font-size: 14px; color: var(--muted); line-height: 1.75; }
+
+    /* TESTIMONIALS */
+    .testimonials {
+      padding: 80px 60px 100px;
+      background: var(--surface);
+    }
+    .testimonials-inner { max-width: 1100px; margin: 0 auto; }
+    .testimonials-header { margin-bottom: 44px; }
+
+    .carousel-wrap { position: relative; }
+    .carousel-track-outer { overflow: hidden; }
+    .carousel-track { display: flex; transition: transform 0.45s cubic-bezier(.4,0,.2,1); }
+
+    .tcard {
+      flex: 0 0 calc(33.333% - 14px);
+      margin-right: 20px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      transition: border-color 0.2s;
+    }
+    .tcard:hover { border-color: var(--purple-mid); }
+    .tcard-quote {
+      font-size: 32px;
+      color: var(--purple-light);
+      font-family: 'Syne', sans-serif;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .tcard-text {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.8;
+      margin-bottom: 28px;
+      font-style: italic;
+    }
+    .tcard-author { display: flex; align-items: center; gap: 14px; }
+    .tcard-avatar {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: top center;
+      background: var(--purple-dim);
+      border: 2px solid var(--border);
+    }
+    .tcard-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+    .tcard-role { font-size: 12px; color: var(--muted); }
+
+    .carousel-arrows { display: flex; gap: 10px; justify-content: center; margin-top: 28px; }
+    .carousel-btn {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: var(--muted); font-size: 15px;
+      transition: all 0.2s;
+    }
+    .carousel-btn:hover { background: var(--purple); border-color: var(--purple); color: #fff; }
+
+    @media (max-width: 900px) {
+      .page-hero, .services-section, .testimonials { padding: 60px 24px; }
+      .srv-grid { grid-template-columns: 1fr; }
+      .tcard { flex: 0 0 90%; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="nav-placeholder"></div>
+
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <div class="s-eyebrow">Our Services</div>
+    <h1 class="s-title">What we offer</h1>
+    <p class="s-sub">Dedicated expertise to help you reach the next level.</p>
+  </div>
+</section>
+
+<section class="services-section">
+  <div class="services-inner">
+    <div class="srv-grid">
+
+      <div class="srv">
+        <div class="srv-ico"><i class="ti ti-chart-arrows"></i></div>
+        <div class="srv-body">
+          <h3>Career Management</h3>
+          <p>We support our talents throughout every stage of their journey by providing strategic guidance and personalized support. From identifying opportunities to planning long-term development, we help build strong and sustainable careers.</p>
+        </div>
+      </div>
+
+      <div class="srv">
+        <div class="srv-ico"><i class="ti ti-speakerphone"></i></div>
+        <div class="srv-body">
+          <h3>Brand Partnerships & Sponsorships</h3>
+          <p>We connect our talents with brands and partners that align with their image, values, and ambitions. Our goal is to develop meaningful collaborations that enhance visibility and create new opportunities.</p>
+        </div>
+      </div>
+
+      <div class="srv">
+        <div class="srv-ico"><i class="ti ti-file-certificate"></i></div>
+        <div class="srv-body">
+          <h3>Contract Negotiation</h3>
+          <p>We represent and protect our clients' interests throughout the negotiation process to secure the best possible terms. Every agreement is approached with transparency, professionalism, and a long-term perspective.</p>
+        </div>
+      </div>
+
+      <div class="srv">
+        <div class="srv-ico"><i class="ti ti-scale"></i></div>
+        <div class="srv-body">
+          <h3>Administrative & Legal Support</h3>
+          <p>We assist our talents with the administrative and contractual aspects of their careers. Our role is to provide clarity, security, and peace of mind, allowing them to focus entirely on their performance.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="testimonials-inner">
+    <div class="testimonials-header">
+      <div class="s-eyebrow">Testimonials</div>
+      <h2 class="s-title">What our clients say</h2>
+    </div>
+    <div class="carousel-wrap">
+      <div class="carousel-track-outer">
+        <div class="carousel-track" id="t-track">
+
+          <div class="tcard">
+            <div class="tcard-quote">"</div>
+            <p class="tcard-text">I am very grateful for everything the agency has brought me since the beginning. I am very satisfied with the investment and commitment the agency has shown.</p>
+            <div class="tcard-author">
+              <img class="tcard-avatar" src="https://i.imgur.com/pUnhdMu.jpeg" alt="Baxo">
+              <div>
+                <div class="tcard-name">Baxo</div>
+                <div class="tcard-role">Fortnite Player</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tcard">
+            <div class="tcard-quote">"</div>
+            <p class="tcard-text">Review to be filled in.</p>
+            <div class="tcard-author">
+              <img class="tcard-avatar" src="https://i.imgur.com/TTDchys.jpeg" alt="Noia" style="object-position:top center">
+              <div>
+                <div class="tcard-name">Noia</div>
+                <div class="tcard-role">Fortnite Player</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tcard">
+            <div class="tcard-quote">"</div>
+            <p class="tcard-text">Review to be filled in.</p>
+            <div class="tcard-author">
+              <img class="tcard-avatar" src="https://i.imgur.com/a7YSqVw.jpeg" alt="Magicien">
+              <div>
+                <div class="tcard-name">Magicien</div>
+                <div class="tcard-role">EA FC Player</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="carousel-arrows">
+        <div class="carousel-btn" id="t-prev"><i class="ti ti-chevron-left"></i></div>
+        <div class="carousel-btn" id="t-next"><i class="ti ti-chevron-right"></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="footer-placeholder"></div>
+<script src="main.js"></script>
+<script>
+  injectNav('services.html');
+  injectFooter();
+
+  const track = document.getElementById('t-track');
+  const cards = track.querySelectorAll('.tcard');
+  let current = 0;
+  const total = cards.length;
+
+  function goTo(index) {
+    current = (index + total) % total;
+    const cardW = track.parentElement.offsetWidth / 3;
+    track.style.transform = `translateX(-${current * (cardW + 20)}px)`;
+  }
+
+  document.getElementById('t-next').addEventListener('click', () => goTo(current + 1));
+  document.getElementById('t-prev').addEventListener('click', () => goTo(current - 1));
+  window.addEventListener('resize', () => goTo(current));
+</script>
+</body>
+</html>
