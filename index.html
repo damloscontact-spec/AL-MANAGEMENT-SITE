@@ -72,6 +72,7 @@
     .pcard {
       flex: 0 0 calc(25% - 15px);
       margin-right: 20px;
+      min-width: 0;
       position: relative;
       border-radius: var(--radius-lg);
       overflow: hidden;
@@ -136,7 +137,7 @@
       #contact { padding: 60px 24px !important; }
     }
     @media (max-width: 480px) {
-      .pcard { flex: 0 0 calc(85% - 10px); }
+      .pcard { flex: 0 0 calc(100% - 0px); height: 280px; }
     }
   </style>
 </head>
@@ -352,10 +353,18 @@
   let current = 0;
   const total = 2;
  
+  function getCardsPerView() {
+    return window.innerWidth <= 480 ? 1 : window.innerWidth <= 900 ? 2 : 4;
+  }
+ 
   function goTo(index) {
     current = index;
-    const cardW = track.parentElement.offsetWidth / 4;
-    track.style.transform = `translateX(-${current * cardW * 4}px)`;
+    const perView = getCardsPerView();
+    const containerW = track.parentElement.offsetWidth;
+    const gap = 20;
+    const cardW = (containerW - gap * (perView - 1)) / perView;
+    const slideW = (cardW + gap) * perView;
+    track.style.transform = `translateX(-${current * slideW}px)`;
     dots.forEach((d, i) => d.classList.toggle('active', i === current));
   }
  
