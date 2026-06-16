@@ -43,7 +43,7 @@
       line-height: 1.75;
       font-style: italic;
     }
-
+ 
     .about-strip { padding: 90px 60px; background: var(--surface); }
     .about-inner {
       max-width: 1000px;
@@ -58,17 +58,17 @@
     .stat { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 18px; }
     .stat .num { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; color: var(--purple-light); }
     .stat .lbl { font-size: 12px; color: var(--muted); margin-top: 5px; line-height: 1.4; }
-
+ 
     .featured { padding: 80px 60px; background: var(--bg); }
     .featured-inner { max-width: 1000px; margin: 0 auto; }
     .featured-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 36px; }
     .featured-header a { font-size: 13px; color: var(--purple-light); font-weight: 500; }
     .featured-header a:hover { color: var(--text); }
-
+ 
     .carousel-wrap { position: relative; }
     .carousel-track-outer { overflow: hidden; border-radius: var(--radius-lg); }
     .carousel-track { display: flex; transition: transform 0.45s cubic-bezier(.4,0,.2,1); }
-
+ 
     .pcard {
       flex: 0 0 calc(25% - 15px);
       margin-right: 20px;
@@ -96,14 +96,14 @@
     .pcard-socials { display: flex; gap: 6px; }
     .pcard-socials a { width: 26px; height: 26px; border-radius: 6px; background: rgba(42,26,94,0.85); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--purple-light); transition: background 0.2s; backdrop-filter: blur(4px); }
     .pcard-socials a:hover { background: var(--purple); color: #fff; }
-
+ 
     .carousel-arrows { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
     .carousel-btn { width: 38px; height: 38px; border-radius: 50%; background: var(--card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--muted); font-size: 15px; transition: all 0.2s; }
     .carousel-btn:hover { background: var(--purple); border-color: var(--purple); color: #fff; }
     .carousel-controls { display: flex; gap: 8px; justify-content: center; margin-top: 12px; }
     .carousel-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); cursor: pointer; transition: background 0.2s; }
     .carousel-dot.active { background: var(--purple-light); }
-
+ 
     .partners {
       padding: 44px 0;
       background: var(--surface);
@@ -127,25 +127,30 @@
     .partner-item:hover { opacity: 1; }
     .partner-logo { height: 36px; width: auto; object-fit: contain; }
     .partner-name { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: 2px; text-transform: uppercase; }
-
+ 
     @media (max-width: 900px) {
       .about-inner { grid-template-columns: 1fr; gap: 40px; }
       .about-strip, .featured { padding: 60px 24px; }
       .featured-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .pcard { flex: 0 0 calc(50% - 10px); height: 260px; }
+      #contact { padding: 60px 24px !important; }
+    }
+    @media (max-width: 480px) {
+      .pcard { flex: 0 0 calc(85% - 10px); }
     }
   </style>
 </head>
 <body>
-
+ 
 <div id="nav-placeholder"></div>
-
+ 
 <section class="hero">
   <div class="hero-glow"></div>
   <div class="s-eyebrow">AL Management</div>
   <h1>We build<br><em>esport careers</em></h1>
   <p class="hero-sub">Representing the next generation of champions.</p>
 </section>
-
+ 
 <section class="about-strip">
   <div class="about-inner">
     <div class="about-text">
@@ -162,7 +167,7 @@
     </div>
   </div>
 </section>
-
+ 
 <section class="featured">
   <div class="featured-inner">
     <div class="featured-header">
@@ -175,7 +180,7 @@
     <div class="carousel-wrap">
       <div class="carousel-track-outer">
         <div class="carousel-track" id="carousel-track">
-
+ 
           <!-- SLIDE 1 -->
           <div class="pcard">
             <div class="pcard-bg"><img src="https://i.imgur.com/TP7gQIN.jpeg" alt="XaviK"></div>
@@ -190,7 +195,7 @@
               </div>
             </div>
           </div>
-
+ 
           <div class="pcard">
             <div class="pcard-bg"><img src="https://i.imgur.com/a7YSqVw.jpeg" alt="Magicien"></div>
             <div class="pcard-overlay"></div>
@@ -204,7 +209,7 @@
               </div>
             </div>
           </div>
-
+ 
           <div class="pcard">
             <div class="pcard-bg"><img src="https://i.imgur.com/TTDchys.jpeg" alt="Noia" style="object-position:top center"></div>
             <div class="pcard-overlay"></div>
@@ -218,7 +223,7 @@
               </div>
             </div>
           </div>
-
+ 
           <div class="pcard">
             <div class="pcard-anon"><div class="anon-icon"><i class="ti ti-user"></i></div></div>
             <div class="pcard-overlay"></div>
@@ -232,7 +237,7 @@
               </div>
             </div>
           </div>
-
+ 
           <!-- SLIDE 2 -->
           <div class="pcard">
             <div class="pcard-bg"><img src="https://i.imgur.com/6FIUwG3.jpeg" alt="Dexxjunior"></div>
@@ -247,7 +252,7 @@
               </div>
             </div>
           </div>
-
+ 
           <div class="pcard">
             <div class="pcard-bg"><img src="https://i.imgur.com/5SJVTrH.jpeg" alt="XeRBoy" style="object-position:top center"></div>
             <div class="pcard-overlay"></div>
@@ -261,7 +266,7 @@
               </div>
             </div>
           </div>
-
+ 
           <div class="pcard">
             <div class="pcard-bg"><img src="https://i.imgur.com/pUnhdMu.jpeg" alt="Baxo"></div>
             <div class="pcard-overlay"></div>
@@ -275,7 +280,7 @@
               </div>
             </div>
           </div>
-
+ 
           <div class="pcard">
             <div class="pcard-bg"><img src="https://i.imgur.com/Z12iryO.jpeg" alt="Milou" style="object-position:top center"></div>
             <div class="pcard-overlay"></div>
@@ -289,7 +294,7 @@
               </div>
             </div>
           </div>
-
+ 
         </div>
       </div>
       <div class="carousel-arrows">
@@ -303,12 +308,12 @@
     </div>
   </div>
 </section>
-
+ 
 <div class="partners">
   <div class="partners-label">Clubs & organizations we have worked with</div>
   <div class="ticker-track" id="ticker"></div>
 </div>
-
+ 
 <section id="contact" style="padding:90px 60px;background:var(--surface);text-align:center">
   <div style="max-width:560px;margin:0 auto">
     <div class="s-eyebrow">Contact</div>
@@ -320,40 +325,40 @@
     </div>
   </div>
 </section>
-
+ 
 <div id="footer-placeholder"></div>
-
+ 
 <script src="main.js"></script>
 <script>
   injectNav('');
   injectFooter();
-
+ 
   const partners = [
-    { name: 'GameWard',      logo: 'logos/gameward.png',     url: 'https://x.com/GameWardTeam' },
-    { name: 'Northern Star', logo: 'logos/northernstar.png', url: 'https://x.com/NorthernStarEU' },
-    { name: 'NTO',           logo: 'logos/nto.png',          url: 'https://x.com/NTOcorp' },
-    { name: 'Lyost',         logo: 'logos/lyost.png',        url: 'https://x.com/Lyost_Esport' },
-    { name: 'Solarytv',      logo: 'logos/solarytv.png',     url: 'https://x.com/solarytv' },
-    { name: 'WIP Esports',   logo: 'logos/wip.png',          url: 'https://x.com/WIP_EsportsTeam' },
-    { name: 'RCD Mallorca',  logo: 'logos/mallorca.png',     url: 'https://x.com/RCD_Mallorca' },
+    { name: 'GameWard',      logo: 'gameward.png',     url: 'https://x.com/GameWardTeam' },
+    { name: 'Northern Star', logo: 'northernstar.png', url: 'https://x.com/NorthernStarEU' },
+    { name: 'NTO',           logo: 'nto.png',          url: 'https://x.com/NTOcorp' },
+    { name: 'Lyost',         logo: 'lyost.png',        url: 'https://x.com/Lyost_Esport' },
+    { name: 'Solarytv',      logo: 'solarytv.png',     url: 'https://x.com/solarytv' },
+    { name: 'WIP Esports',   logo: 'wip.png',          url: 'https://x.com/WIP_EsportsTeam' },
+    { name: 'RCD Mallorca',  logo: 'mallorca.png',     url: 'https://x.com/RCD_Mallorca' },
   ];
   const ticker = document.getElementById('ticker');
   [...partners, ...partners].forEach(p => {
     ticker.innerHTML += `<a class="partner-item" href="${p.url}" target="_blank" rel="noopener"><img class="partner-logo" src="${p.logo}" alt="${p.name}"><span class="partner-name">${p.name}</span></a>`;
   });
-
+ 
   const track = document.getElementById('carousel-track');
   const dots = document.querySelectorAll('.carousel-dot');
   let current = 0;
   const total = 2;
-
+ 
   function goTo(index) {
     current = index;
     const cardW = track.parentElement.offsetWidth / 4;
     track.style.transform = `translateX(-${current * cardW * 4}px)`;
     dots.forEach((d, i) => d.classList.toggle('active', i === current));
   }
-
+ 
   document.getElementById('next').addEventListener('click', () => goTo((current + 1) % total));
   document.getElementById('prev').addEventListener('click', () => goTo((current - 1 + total) % total));
   dots.forEach(d => d.addEventListener('click', () => goTo(parseInt(d.dataset.slide))));
@@ -361,3 +366,4 @@
 </script>
 </body>
 </html>
+ 
