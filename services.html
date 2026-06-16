@@ -12,13 +12,13 @@
       border-bottom: 1px solid var(--border);
     }
     .page-hero-inner { max-width: 720px; }
-
+ 
     .services-section {
       padding: 80px 60px 100px;
       background: var(--bg);
     }
     .services-inner { max-width: 1100px; margin: 0 auto; }
-
+ 
     .srv-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -52,7 +52,7 @@
       margin-bottom: 10px;
     }
     .srv-body p { font-size: 14px; color: var(--muted); line-height: 1.75; }
-
+ 
     /* TESTIMONIALS */
     .testimonials {
       padding: 80px 60px 100px;
@@ -60,14 +60,15 @@
     }
     .testimonials-inner { max-width: 1100px; margin: 0 auto; }
     .testimonials-header { margin-bottom: 44px; }
-
+ 
     .carousel-wrap { position: relative; }
     .carousel-track-outer { overflow: hidden; }
     .carousel-track { display: flex; transition: transform 0.45s cubic-bezier(.4,0,.2,1); }
-
+ 
     .tcard {
       flex: 0 0 calc(33.333% - 14px);
       margin-right: 20px;
+      min-width: 0;
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
@@ -107,7 +108,7 @@
       margin-bottom: 2px;
     }
     .tcard-role { font-size: 12px; color: var(--muted); }
-
+ 
     .carousel-arrows { display: flex; gap: 10px; justify-content: center; margin-top: 28px; }
     .carousel-btn {
       width: 38px; height: 38px;
@@ -119,18 +120,21 @@
       transition: all 0.2s;
     }
     .carousel-btn:hover { background: var(--purple); border-color: var(--purple); color: #fff; }
-
+ 
     @media (max-width: 900px) {
       .page-hero, .services-section, .testimonials { padding: 60px 24px; }
       .srv-grid { grid-template-columns: 1fr; }
-      .tcard { flex: 0 0 90%; }
+      .tcard { flex: 0 0 calc(50% - 10px); }
+    }
+    @media (max-width: 600px) {
+      .tcard { flex: 0 0 calc(100%); }
     }
   </style>
 </head>
 <body>
-
+ 
 <div id="nav-placeholder"></div>
-
+ 
 <section class="page-hero">
   <div class="page-hero-inner">
     <div class="s-eyebrow">Our Services</div>
@@ -138,11 +142,11 @@
     <p class="s-sub">Dedicated expertise to help you reach the next level.</p>
   </div>
 </section>
-
+ 
 <section class="services-section">
   <div class="services-inner">
     <div class="srv-grid">
-
+ 
       <div class="srv">
         <div class="srv-ico"><i class="ti ti-chart-arrows"></i></div>
         <div class="srv-body">
@@ -150,7 +154,7 @@
           <p>We support our talents throughout every stage of their journey by providing strategic guidance and personalized support. From identifying opportunities to planning long-term development, we help build strong and sustainable careers.</p>
         </div>
       </div>
-
+ 
       <div class="srv">
         <div class="srv-ico"><i class="ti ti-speakerphone"></i></div>
         <div class="srv-body">
@@ -158,7 +162,7 @@
           <p>We connect our talents with brands and partners that align with their image, values, and ambitions. Our goal is to develop meaningful collaborations that enhance visibility and create new opportunities.</p>
         </div>
       </div>
-
+ 
       <div class="srv">
         <div class="srv-ico"><i class="ti ti-file-certificate"></i></div>
         <div class="srv-body">
@@ -166,7 +170,7 @@
           <p>We represent and protect our clients' interests throughout the negotiation process to secure the best possible terms. Every agreement is approached with transparency, professionalism, and a long-term perspective.</p>
         </div>
       </div>
-
+ 
       <div class="srv">
         <div class="srv-ico"><i class="ti ti-scale"></i></div>
         <div class="srv-body">
@@ -174,11 +178,11 @@
           <p>We assist our talents with the administrative and contractual aspects of their careers. Our role is to provide clarity, security, and peace of mind, allowing them to focus entirely on their performance.</p>
         </div>
       </div>
-
+ 
     </div>
   </div>
 </section>
-
+ 
 <!-- TESTIMONIALS -->
 <section class="testimonials">
   <div class="testimonials-inner">
@@ -189,7 +193,7 @@
     <div class="carousel-wrap">
       <div class="carousel-track-outer">
         <div class="carousel-track" id="t-track">
-
+ 
           <div class="tcard">
             <div class="tcard-quote">"</div>
             <p class="tcard-text">I am very grateful for everything the agency has brought me since the beginning. I am very satisfied with the investment and commitment the agency has shown.</p>
@@ -201,7 +205,7 @@
               </div>
             </div>
           </div>
-
+ 
           <div class="tcard">
             <div class="tcard-quote">"</div>
             <p class="tcard-text">Review to be filled in.</p>
@@ -213,7 +217,7 @@
               </div>
             </div>
           </div>
-
+ 
           <div class="tcard">
             <div class="tcard-quote">"</div>
             <p class="tcard-text">Review to be filled in.</p>
@@ -225,7 +229,7 @@
               </div>
             </div>
           </div>
-
+ 
         </div>
       </div>
       <div class="carousel-arrows">
@@ -235,27 +239,35 @@
     </div>
   </div>
 </section>
-
+ 
 <div id="footer-placeholder"></div>
 <script src="main.js"></script>
 <script>
   injectNav('services.html');
   injectFooter();
-
+ 
   const track = document.getElementById('t-track');
   const cards = track.querySelectorAll('.tcard');
   let current = 0;
   const total = cards.length;
-
+ 
+  function getPerView() {
+    return window.innerWidth <= 600 ? 1 : window.innerWidth <= 900 ? 2 : 3;
+  }
+ 
   function goTo(index) {
     current = (index + total) % total;
-    const cardW = track.parentElement.offsetWidth / 3;
-    track.style.transform = `translateX(-${current * (cardW + 20)}px)`;
+    const perView = getPerView();
+    const containerW = track.parentElement.offsetWidth;
+    const gap = 20;
+    const cardW = (containerW - gap * (perView - 1)) / perView;
+    track.style.transform = `translateX(-${current * (cardW + gap)}px)`;
   }
-
+ 
   document.getElementById('t-next').addEventListener('click', () => goTo(current + 1));
   document.getElementById('t-prev').addEventListener('click', () => goTo(current - 1));
   window.addEventListener('resize', () => goTo(current));
 </script>
 </body>
 </html>
+ 
