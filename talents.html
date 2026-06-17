@@ -12,13 +12,13 @@
       border-bottom: 1px solid var(--border);
     }
     .page-hero-inner { max-width: 720px; }
-
+ 
     .talents-section {
       padding: 70px 60px 100px;
       background: var(--bg);
     }
     .talents-inner { max-width: 1100px; margin: 0 auto; }
-
+ 
     .filters-wrap {
       display: flex;
       flex-direction: column;
@@ -32,6 +32,7 @@
       border-radius: 12px;
       padding: 5px;
       width: fit-content;
+      flex-wrap: wrap;
     }
     .filter-btn {
       padding: 10px 24px;
@@ -46,13 +47,13 @@
     }
     .filter-btn.active { background: var(--purple); color: #fff; }
     .filter-btn:hover:not(.active) { color: var(--text); }
-
+ 
     .pgrid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 20px;
     }
-
+ 
     .pcard {
       position: relative;
       border-radius: var(--radius-lg);
@@ -64,7 +65,7 @@
       cursor: pointer;
     }
     .pcard:hover { border-color: var(--purple-mid); transform: translateY(-4px); }
-
+ 
     .pcard-bg {
       position: absolute;
       inset: 0;
@@ -99,7 +100,13 @@
       bottom: 0; left: 0; right: 0;
       padding: 16px 14px;
     }
-    .pcard-top-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+    .pcard-top-row {
+      position: absolute;
+      top: 12px; left: 12px; right: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
     .pcard-badge {
       display: inline-block;
       font-size: 9px;
@@ -107,11 +114,43 @@
       letter-spacing: 1px;
       text-transform: uppercase;
       color: var(--purple-light);
-      background: var(--purple-dim);
-      padding: 2px 8px;
+      background: rgba(42,26,94,0.9);
+      padding: 3px 9px;
       border-radius: 20px;
       border: 1px solid rgba(180,139,250,0.2);
       white-space: nowrap;
+      backdrop-filter: blur(4px);
+    }
+    .pcard-club {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .pcard-club img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .pcard-club.text-badge {
+      width: auto;
+      height: auto;
+      border-radius: 20px;
+      padding: 3px 9px;
+      background: rgba(42,26,94,0.9);
+      border: 1px solid rgba(180,139,250,0.3);
+      backdrop-filter: blur(4px);
+    }
+    .pcard-club.text-badge span {
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: var(--purple-light);
     }
     .pcard-flag { width: 18px; height: 13px; border-radius: 2px; object-fit: cover; }
     .pcard-pseudo {
@@ -124,6 +163,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+    .pcard-flag-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
     .pcard-realname { font-size: 10px; color: var(--muted); margin-bottom: 10px; }
     .pcard-socials { display: flex; gap: 6px; }
     .pcard-socials a {
@@ -137,7 +177,7 @@
       backdrop-filter: blur(4px);
     }
     .pcard-socials a:hover { background: var(--purple); color: #fff; }
-
+ 
     .no-results {
       grid-column: 1 / -1;
       text-align: center;
@@ -145,7 +185,7 @@
       color: var(--muted);
       font-size: 15px;
     }
-
+ 
     @media (max-width: 900px) {
       .page-hero, .talents-section { padding: 60px 24px; }
       .pgrid { grid-template-columns: repeat(2, 1fr); }
@@ -154,9 +194,9 @@
   </style>
 </head>
 <body>
-
+ 
 <div id="nav-placeholder"></div>
-
+ 
 <section class="page-hero">
   <div class="page-hero-inner">
     <div class="s-eyebrow">Our Talents</div>
@@ -164,17 +204,15 @@
     <p class="s-sub">They chose AL Management to help them achieve excellence.</p>
   </div>
 </section>
-
+ 
 <section class="talents-section">
   <div class="talents-inner">
     <div class="filters-wrap">
-      <!-- Game filter -->
       <div class="filter-bar" id="game-filter">
         <div class="filter-btn active" data-game="all">All games</div>
         <div class="filter-btn" data-game="fortnite">Fortnite</div>
         <div class="filter-btn" data-game="eafc">EA FC</div>
       </div>
-      <!-- Region filter -->
       <div class="filter-bar" id="region-filter">
         <div class="filter-btn active" data-region="all">All regions</div>
         <div class="filter-btn" data-region="emea">EMEA</div>
@@ -183,43 +221,21 @@
         <div class="filter-btn" data-region="apac">APAC</div>
       </div>
     </div>
-
+ 
     <div class="pgrid" id="talents-grid">
-
-      <!-- EA FC — EMEA -->
-      <div class="pcard" data-game="eafc" data-region="emea">
-        <div class="pcard-bg"><img src="https://i.imgur.com/TP7gQIN.jpeg" alt="XaviK"></div>
-        <div class="pcard-overlay"></div>
-        <div class="pcard-content">
-          <div class="pcard-top-row"><div class="pcard-badge">EA FC</div><img class="pcard-flag" src="https://flagcdn.com/w20/es.png" alt="Spain"></div>
-          <div class="pcard-pseudo">XaviK</div>
-          <div class="pcard-realname">Xavier Riera</div>
-          <div class="pcard-socials">
-            <a href="https://x.com/xavik_05" target="_blank"><i class="ti ti-brand-x"></i></a>
-            <a href="https://t.co/iqfumTDIz2" target="_blank"><i class="ti ti-brand-twitch"></i></a>
-          </div>
-        </div>
-      </div>
-
-      <div class="pcard" data-game="eafc" data-region="emea">
-        <div class="pcard-bg"><img src="https://i.imgur.com/a7YSqVw.jpeg" alt="Magicien"></div>
-        <div class="pcard-overlay"></div>
-        <div class="pcard-content">
-          <div class="pcard-top-row"><div class="pcard-badge">EA FC</div><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
-          <div class="pcard-pseudo">Magicien</div>
-          <div class="pcard-realname">Tony Desree</div>
-          <div class="pcard-socials">
-            <a href="https://x.com/DesreeTony" target="_blank"><i class="ti ti-brand-x"></i></a>
-            <a href="https://www.twitch.tv/eg_magiciennn" target="_blank"><i class="ti ti-brand-twitch"></i></a>
-          </div>
-        </div>
-      </div>
-
+ 
+      <!-- ===== EA FC (order of arrival) ===== -->
+ 
+      <!-- Dexxjunior — F/A -->
       <div class="pcard" data-game="eafc" data-region="emea">
         <div class="pcard-bg"><img src="https://i.imgur.com/6FIUwG3.jpeg" alt="Dexxjunior"></div>
         <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">EA FC</div>
+          <div class="pcard-club text-badge"><span>F/A</span></div>
+        </div>
         <div class="pcard-content">
-          <div class="pcard-top-row"><div class="pcard-badge">EA FC</div><img class="pcard-flag" src="https://flagcdn.com/w20/sn.png" alt="Senegal"></div>
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/sn.png" alt="Senegal"></div>
           <div class="pcard-pseudo" style="font-size:12px">Dexxjunior</div>
           <div class="pcard-realname">Moustapha Thiam</div>
           <div class="pcard-socials">
@@ -228,12 +244,55 @@
           </div>
         </div>
       </div>
-
+ 
+      <!-- XaviK — Mallorca -->
+      <div class="pcard" data-game="eafc" data-region="emea">
+        <div class="pcard-bg"><img src="https://i.imgur.com/TP7gQIN.jpeg" alt="XaviK"></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">EA FC</div>
+          <div class="pcard-club"><img src="mallorca.png" alt="RCD Mallorca"></div>
+        </div>
+        <div class="pcard-content">
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/es.png" alt="Spain"></div>
+          <div class="pcard-pseudo">XaviK</div>
+          <div class="pcard-realname">Xavier Riera</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/xavik_05" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://t.co/iqfumTDIz2" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Magicien — F/A -->
+      <div class="pcard" data-game="eafc" data-region="emea">
+        <div class="pcard-bg"><img src="https://i.imgur.com/a7YSqVw.jpeg" alt="Magicien"></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">EA FC</div>
+          <div class="pcard-club text-badge"><span>F/A</span></div>
+        </div>
+        <div class="pcard-content">
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-pseudo">Magicien</div>
+          <div class="pcard-realname">Tony Desree</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/DesreeTony" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://www.twitch.tv/eg_magiciennn" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- XeRBoy — F/A -->
       <div class="pcard" data-game="eafc" data-region="emea">
         <div class="pcard-bg"><img src="https://i.imgur.com/5SJVTrH.jpeg" alt="XeRBoy" style="object-position:top center"></div>
         <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">EA FC</div>
+          <div class="pcard-club text-badge"><span>F/A</span></div>
+        </div>
         <div class="pcard-content">
-          <div class="pcard-top-row"><div class="pcard-badge">EA FC</div><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
           <div class="pcard-pseudo">XeRBoy</div>
           <div class="pcard-realname">Yoni Boisgontier</div>
           <div class="pcard-socials">
@@ -242,13 +301,19 @@
           </div>
         </div>
       </div>
-
-      <!-- Fortnite — EMEA -->
+ 
+      <!-- ===== Fortnite (order of arrival) ===== -->
+ 
+      <!-- Noia — NTO -->
       <div class="pcard" data-game="fortnite" data-region="emea">
         <div class="pcard-bg"><img src="https://i.imgur.com/TTDchys.jpeg" alt="Noia" style="object-position:top center"></div>
         <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">Fortnite</div>
+          <div class="pcard-club"><img src="nto.png" alt="NTO"></div>
+        </div>
         <div class="pcard-content">
-          <div class="pcard-top-row"><div class="pcard-badge">Fortnite</div><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
           <div class="pcard-pseudo">Noia</div>
           <div class="pcard-realname">First Last</div>
           <div class="pcard-socials">
@@ -257,12 +322,17 @@
           </div>
         </div>
       </div>
-
+ 
+      <!-- Seekk — HavoK -->
       <div class="pcard" data-game="fortnite" data-region="emea">
         <div class="pcard-anon"><i class="ti ti-user"></i></div>
         <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">Fortnite</div>
+          <div class="pcard-club"><img src="havok.png" alt="HavoK"></div>
+        </div>
         <div class="pcard-content">
-          <div class="pcard-top-row"><div class="pcard-badge">Fortnite</div><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
           <div class="pcard-pseudo">Seekk</div>
           <div class="pcard-realname">First Last</div>
           <div class="pcard-socials">
@@ -271,12 +341,17 @@
           </div>
         </div>
       </div>
-
+ 
+      <!-- Baxo — Gameward -->
       <div class="pcard" data-game="fortnite" data-region="emea">
         <div class="pcard-bg"><img src="https://i.imgur.com/pUnhdMu.jpeg" alt="Baxo"></div>
         <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">Fortnite</div>
+          <div class="pcard-club"><img src="gameward.png" alt="GameWard"></div>
+        </div>
         <div class="pcard-content">
-          <div class="pcard-top-row"><div class="pcard-badge">Fortnite</div><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
           <div class="pcard-pseudo">Baxo</div>
           <div class="pcard-realname">First Last</div>
           <div class="pcard-socials">
@@ -285,40 +360,17 @@
           </div>
         </div>
       </div>
-
-      <div class="pcard" data-game="fortnite" data-region="emea">
-        <div class="pcard-bg"><img src="https://i.imgur.com/Z12iryO.jpeg" alt="Milou" style="object-position:top center"></div>
-        <div class="pcard-overlay"></div>
-        <div class="pcard-content">
-          <div class="pcard-top-row"><div class="pcard-badge">Fortnite</div><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
-          <div class="pcard-pseudo">Milou</div>
-          <div class="pcard-realname">First Last</div>
-          <div class="pcard-socials">
-            <a href="https://x.com/Miloufnr" target="_blank"><i class="ti ti-brand-x"></i></a>
-            <a href="https://www.twitch.tv/miloufnr" target="_blank"><i class="ti ti-brand-twitch"></i></a>
-          </div>
-        </div>
-      </div>
-
+ 
+      <!-- Snaylyx — TBA -->
       <div class="pcard" data-game="fortnite" data-region="emea">
         <div class="pcard-anon"><i class="ti ti-user"></i></div>
         <div class="pcard-overlay"></div>
-        <div class="pcard-content">
-          <div class="pcard-top-row"><div class="pcard-badge">Fortnite</div><img class="pcard-flag" src="https://flagcdn.com/w20/es.png" alt="Spain"></div>
-          <div class="pcard-pseudo">Xaizzing</div>
-          <div class="pcard-realname">First Last</div>
-          <div class="pcard-socials">
-            <a href="https://x.com/Xaizzing" target="_blank"><i class="ti ti-brand-x"></i></a>
-            <a href="https://www.twitch.tv/xaizzing" target="_blank"><i class="ti ti-brand-twitch"></i></a>
-          </div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">Fortnite</div>
+          <div class="pcard-club text-badge"><span>TBA</span></div>
         </div>
-      </div>
-
-      <div class="pcard" data-game="fortnite" data-region="emea">
-        <div class="pcard-anon"><i class="ti ti-user"></i></div>
-        <div class="pcard-overlay"></div>
         <div class="pcard-content">
-          <div class="pcard-top-row"><div class="pcard-badge">Fortnite</div><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
           <div class="pcard-pseudo">Snaylyx</div>
           <div class="pcard-realname">First Last</div>
           <div class="pcard-socials">
@@ -327,27 +379,17 @@
           </div>
         </div>
       </div>
-
-      <div class="pcard" data-game="fortnite" data-region="emea">
-        <div class="pcard-anon"><i class="ti ti-user"></i></div>
-        <div class="pcard-overlay"></div>
-        <div class="pcard-content">
-          <div class="pcard-top-row"><div class="pcard-badge">Fortnite</div><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
-          <div class="pcard-pseudo">Skyze</div>
-          <div class="pcard-realname">First Last</div>
-          <div class="pcard-socials">
-            <a href="https://x.com/Skyzefn7" target="_blank"><i class="ti ti-brand-x"></i></a>
-            <a href="https://t.co/tEVf3S3RrP" target="_blank"><i class="ti ti-brand-twitch"></i></a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Fortnite — CIS -->
+ 
+      <!-- Ve1ryy — WIP -->
       <div class="pcard" data-game="fortnite" data-region="cis">
         <div class="pcard-anon"><i class="ti ti-user"></i></div>
         <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">Fortnite</div>
+          <div class="pcard-club"><img src="wip.png" alt="WIP Esports"></div>
+        </div>
         <div class="pcard-content">
-          <div class="pcard-top-row"><div class="pcard-badge">Fortnite</div><img class="pcard-flag" src="https://flagcdn.com/w20/ua.png" alt="Ukraine"></div>
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/ua.png" alt="Ukraine"></div>
           <div class="pcard-pseudo">Ve1ryy</div>
           <div class="pcard-realname">First Last</div>
           <div class="pcard-socials">
@@ -356,20 +398,77 @@
           </div>
         </div>
       </div>
-
+ 
+      <!-- Skyze — 2R -->
+      <div class="pcard" data-game="fortnite" data-region="emea">
+        <div class="pcard-anon"><i class="ti ti-user"></i></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">Fortnite</div>
+          <div class="pcard-club"><img src="2r.png" alt="2R"></div>
+        </div>
+        <div class="pcard-content">
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-pseudo">Skyze</div>
+          <div class="pcard-realname">First Last</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/Skyzefn7" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://t.co/tEVf3S3RrP" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Milou — TBA -->
+      <div class="pcard" data-game="fortnite" data-region="emea">
+        <div class="pcard-bg"><img src="https://i.imgur.com/Z12iryO.jpeg" alt="Milou" style="object-position:top center"></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">Fortnite</div>
+          <div class="pcard-club text-badge"><span>TBA</span></div>
+        </div>
+        <div class="pcard-content">
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-pseudo">Milou</div>
+          <div class="pcard-realname">First Last</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/Miloufnr" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://www.twitch.tv/miloufnr" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>
+ 
+      <!-- Xaizzing — F/A -->
+      <div class="pcard" data-game="fortnite" data-region="emea">
+        <div class="pcard-anon"><i class="ti ti-user"></i></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">Fortnite</div>
+          <div class="pcard-club text-badge"><span>F/A</span></div>
+        </div>
+        <div class="pcard-content">
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/es.png" alt="Spain"></div>
+          <div class="pcard-pseudo">Xaizzing</div>
+          <div class="pcard-realname">First Last</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/Xaizzing" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://www.twitch.tv/xaizzing" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>
+ 
     </div>
   </div>
 </section>
-
+ 
 <div id="footer-placeholder"></div>
 <script src="main.js"></script>
 <script>
   injectNav('talents.html');
   injectFooter();
-
+ 
   let activeGame = 'all';
   let activeRegion = 'all';
-
+ 
   function applyFilters() {
     const cards = document.querySelectorAll('.pcard');
     let visible = 0;
@@ -380,8 +479,7 @@
       card.style.display = show ? '' : 'none';
       if (show) visible++;
     });
-
-    // Show/hide no results message
+ 
     let noRes = document.getElementById('no-results');
     if (visible === 0) {
       if (!noRes) {
@@ -396,7 +494,7 @@
       noRes.style.display = 'none';
     }
   }
-
+ 
   document.querySelectorAll('#game-filter .filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       activeGame = btn.dataset.game;
@@ -405,7 +503,7 @@
       applyFilters();
     });
   });
-
+ 
   document.querySelectorAll('#region-filter .filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       activeRegion = btn.dataset.region;
@@ -417,3 +515,4 @@
 </script>
 </body>
 </html>
+ 
