@@ -32,7 +32,7 @@ function injectNav(activePage) {
  
   document.getElementById('nav-placeholder').innerHTML = `
     <nav>
-      <a class="nav-logo" href="index.html">AL <span>Management</span></a>
+      <a class="nav-logo" href="index.html"><img src="logo.png" alt="AL Management" style="height:36px;width:auto;object-fit:contain;vertical-align:middle;margin-right:8px">AL <span>Management</span></a>
       <div class="nav-links">${links}</div>
       <a href="#contact" class="nav-cta">Work with us</a>
       <div class="nav-hamburger" id="hamburger" aria-label="Menu">
@@ -61,7 +61,7 @@ function closeMobileMenu() {
 function injectFooter() {
   document.getElementById('footer-placeholder').innerHTML = `
     <footer>
-      <div class="footer-logo">AL <span>Management</span></div>
+      <div class="footer-logo"><img src="logo.png" alt="AL Management" style="height:28px;width:auto;object-fit:contain;vertical-align:middle;margin-right:8px">AL <span>Management</span></div>
       <div class="footer-copy">© 2026 AL Management. All rights reserved.</div>
     </footer>`;
 }
