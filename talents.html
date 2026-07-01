@@ -566,6 +566,320 @@
       applyFilters();
     });
   });
+  python3 << 'EOF'
+with open('/home/claude/al-management/talents.html', 'r') as f:
+    content = f.read()
+
+# Extract the grid section and rebuild in correct order
+# Define all cards
+xavik = '''      <!-- XaviK — Mallorca -->
+      <div class="pcard" data-game="eafc" data-region="emea">
+        <div class="pcard-bg"><img src="https://i.imgur.com/TP7gQIN.jpeg" alt="XaviK"></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">EA FC</div>
+          <div class="pcard-club"><img src="mallorca.png" alt="RCD Mallorca"></div>
+        </div>
+        <div class="pcard-content">
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/es.png" alt="Spain"></div>
+          <div class="pcard-pseudo">XaviK</div>
+          <div class="pcard-realname">Xavier Riera</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/xavik_05" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://t.co/iqfumTDIz2" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>'''
+
+dexxjunior = '''      <!-- Dexxjunior — Together We Rise -->
+      <div class="pcard" data-game="eafc" data-region="emea">
+        <div class="pcard-bg"><img src="https://i.imgur.com/6FIUwG3.jpeg" alt="Dexxjunior"></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">EA FC</div>
+          <div class="pcard-club"><img src="togetherwerise.png" alt="Together We Rise"></div>
+        </div>
+        <div class="pcard-content">
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/sn.png" alt="Senegal"></div>
+          <div class="pcard-pseudo" style="font-size:12px">Dexxjunior</div>
+          <div class="pcard-realname">Moustapha Thiam</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/dexxjunior03" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://t.co/kxuwTxpf9K" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>'''
+
+magicien = '''      <!-- Magicien — F/A -->
+      <div class="pcard" data-game="eafc" data-region="emea">
+        <div class="pcard-bg"><img src="https://i.imgur.com/a7YSqVw.jpeg" alt="Magicien"></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">EA FC</div>
+          <div class="pcard-club text-badge"><span>F/A</span></div>
+        </div>
+        <div class="pcard-content">
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-pseudo">Magicien</div>
+          <div class="pcard-realname">Tony Desree</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/DesreeTony" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://www.twitch.tv/eg_magiciennn" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>'''
+
+xerboy = '''      <!-- XeRBoy — F/A -->
+      <div class="pcard" data-game="eafc" data-region="emea">
+        <div class="pcard-bg"><img src="https://i.imgur.com/5SJVTrH.jpeg" alt="XeRBoy" style="object-position:top center"></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">EA FC</div>
+          <div class="pcard-club text-badge"><span>F/A</span></div>
+        </div>
+        <div class="pcard-content">
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-pseudo">XeRBoy</div>
+          <div class="pcard-realname">Yoni Boisgontier</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/XeRBoy_" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://t.co/18PGGMPInV" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>'''
+
+noia = '''      <!-- Noia — NTO -->
+      <div class="pcard" data-game="fortnite" data-region="emea">
+        <div class="pcard-bg"><img src="https://i.imgur.com/TTDchys.jpeg" alt="Noia" style="object-position:top center"></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">Fortnite</div>
+          <div class="pcard-club"><img src="nto.png" alt="NTO"></div>
+        </div>
+        <div class="pcard-content">
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-pseudo">Noia</div>
+          <div class="pcard-realname">First Last</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/noia_gg" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://t.co/RtLJw0TMux" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>'''
+
+seekk = '''      <!-- Seekk — HavoK -->
+      <div class="pcard" data-game="fortnite" data-region="emea">
+        <div class="pcard-anon"><i class="ti ti-user"></i></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">Fortnite</div>
+          <div class="pcard-club"><img src="havok.png" alt="HavoK"></div>
+        </div>
+        <div class="pcard-content">
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-pseudo">Seekk</div>
+          <div class="pcard-realname">First Last</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/Seekkfn" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://t.co/5r3dfcxdaB" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>'''
+
+baxo = '''      <!-- Baxo — Gameward -->
+      <div class="pcard" data-game="fortnite" data-region="emea">
+        <div class="pcard-bg"><img src="https://i.imgur.com/pUnhdMu.jpeg" alt="Baxo"></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">Fortnite</div>
+          <div class="pcard-club"><img src="gameward.png" alt="GameWard"></div>
+        </div>
+        <div class="pcard-content">
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-pseudo">Baxo</div>
+          <div class="pcard-realname">First Last</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/baxofnbr" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://www.twitch.tv/baxoftn" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>'''
+
+ve1ryy = '''      <!-- Ve1ryy — WIP -->
+      <div class="pcard" data-game="fortnite" data-region="cis">
+        <div class="pcard-anon"><i class="ti ti-user"></i></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">Fortnite</div>
+          <div class="pcard-club"><img src="wip.png" alt="WIP Esports"></div>
+        </div>
+        <div class="pcard-content">
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/ua.png" alt="Ukraine"></div>
+          <div class="pcard-pseudo">Ve1ryy</div>
+          <div class="pcard-realname">First Last</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/ve1ryy" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://www.twitch.tv/ve1ryy" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>'''
+
+milou = '''      <!-- Milou — K13 -->
+      <div class="pcard" data-game="fortnite" data-region="emea">
+        <div class="pcard-bg"><img src="https://i.imgur.com/Z12iryO.jpeg" alt="Milou" style="object-position:top center"></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">Fortnite</div>
+          <div class="pcard-club"><img src="k13.png" alt="K13"></div>
+        </div>
+        <div class="pcard-content">
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-pseudo">Milou</div>
+          <div class="pcard-realname">First Last</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/Miloufnr" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://www.twitch.tv/miloufnr" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>'''
+
+azkx = '''      <!-- Azkx — K13 -->
+      <div class="pcard" data-game="fortnite" data-region="emea">
+        <div class="pcard-bg"><img src="https://i.imgur.com/OpFPL1X.jpeg" alt="Azkx"></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">Fortnite</div>
+          <div class="pcard-club"><img src="k13.png" alt="K13"></div>
+        </div>
+        <div class="pcard-content">
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-pseudo">Azkx</div>
+          <div class="pcard-realname">First Last</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/azkxfn" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://t.co/lCqTlu8OvI" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>'''
+
+skyze = '''      <!-- Skyze — 2R -->
+      <div class="pcard" data-game="fortnite" data-region="emea">
+        <div class="pcard-anon"><i class="ti ti-user"></i></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">Fortnite</div>
+          <div class="pcard-club"><img src="2r.png" alt="2R"></div>
+        </div>
+        <div class="pcard-content">
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-pseudo">Skyze</div>
+          <div class="pcard-realname">First Last</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/Skyzefn7" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://t.co/tEVf3S3RrP" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>'''
+
+snaylyx = '''      <!-- Snaylyx — TBA -->
+      <div class="pcard" data-game="fortnite" data-region="emea">
+        <div class="pcard-anon"><i class="ti ti-user"></i></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">Fortnite</div>
+          <div class="pcard-club text-badge"><span>TBA</span></div>
+        </div>
+        <div class="pcard-content">
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
+          <div class="pcard-pseudo">Snaylyx</div>
+          <div class="pcard-realname">First Last</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/snaylyx_" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://www.twitch.tv/snaylyxftnn" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>'''
+
+palochka = '''      <!-- Palochka — F/A -->
+      <div class="pcard" data-game="fortnite" data-region="cis">
+        <div class="pcard-anon"><i class="ti ti-user"></i></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">Fortnite</div>
+          <div class="pcard-club text-badge"><span>F/A</span></div>
+        </div>
+        <div class="pcard-content">
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/by.png" alt="Belarus"></div>
+          <div class="pcard-pseudo">Palochka</div>
+          <div class="pcard-realname">First Last</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/fs1palochka" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://t.co/MhEQqarYXx" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>'''
+
+xaizzing = '''      <!-- Xaizzing — F/A -->
+      <div class="pcard" data-game="fortnite" data-region="emea">
+        <div class="pcard-anon"><i class="ti ti-user"></i></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">Fortnite</div>
+          <div class="pcard-club text-badge"><span>F/A</span></div>
+        </div>
+        <div class="pcard-content">
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/es.png" alt="Spain"></div>
+          <div class="pcard-pseudo">Xaizzing</div>
+          <div class="pcard-realname">First Last</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/Xaizzing" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://www.twitch.tv/xaizzing" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>'''
+
+scoezz = '''      <!-- ScoezZ — F/A -->
+      <div class="pcard" data-game="fortnite" data-region="emea">
+        <div class="pcard-anon"><i class="ti ti-user"></i></div>
+        <div class="pcard-overlay"></div>
+        <div class="pcard-top-row">
+          <div class="pcard-badge">Fortnite</div>
+          <div class="pcard-club text-badge"><span>F/A</span></div>
+        </div>
+        <div class="pcard-content">
+          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/es.png" alt="Spain"></div>
+          <div class="pcard-pseudo">ScoezZ</div>
+          <div class="pcard-realname">First Last</div>
+          <div class="pcard-socials">
+            <a href="https://x.com/scoezzfn" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://t.co/VGlQhnNFkv" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>'''
+
+new_grid = '''    <div class="pgrid" id="talents-grid">
+
+      <!-- ===== EA FC ===== -->
+''' + xavik + '\n\n' + dexxjunior + '\n\n' + magicien + '\n\n' + xerboy + '''
+
+      <!-- ===== Fortnite ===== -->
+''' + noia + '\n\n' + seekk + '\n\n' + baxo + '\n\n' + ve1ryy + '\n\n' + milou + '\n\n' + azkx + '\n\n' + skyze + '\n\n' + snaylyx + '\n\n' + palochka + '\n\n' + xaizzing + '\n\n' + scoezz + '''
+
+    </div>'''
+
+# Find and replace the grid section
+import re
+new_content = re.sub(
+    r'<div class="pgrid" id="talents-grid">.*?</div>\s*</div>\s*</section>',
+    new_grid + '\n    </div>\n  </div>\n</section>',
+    content,
+    flags=re.DOTALL
+)
+
+with open('/home/claude/al-management/talents.html', 'w') as f:
+    f.write(new_content)
+print("done")
+EOF
 </script>
 </body>
 </html>
