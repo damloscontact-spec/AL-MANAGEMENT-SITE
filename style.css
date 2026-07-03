@@ -8,14 +8,14 @@
   --surface:      #0d0d0d;
   --card:         #111111;
   --card-hover:   #161616;
-  --purple:       #02F5A1;
+  --purple:       #02d98e;
   --purple-mid:   #00d988;
-  --purple-light: #5fffc7;
-  --purple-dim:   #012e20;
+  --purple-light: #02F5A1;
+  --purple-dim:   #0a2218;
   --purple-glow:  rgba(2,245,161,0.12);
-  --text:         #f0fff8;
-  --muted:        #6b8c7d;
-  --border:       #1a2e26;
+  --text:         #f0f0f0;
+  --muted:        #888888;
+  --border:       #222222;
   --radius:       12px;
   --radius-lg:    18px;
 }
