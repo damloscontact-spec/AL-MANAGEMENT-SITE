@@ -299,4 +299,6 @@ footer {
 @media (max-width: 480px) {
   .pgrid { grid-template-columns: 1fr 1fr; gap: 12px; }
 }
- 
+
+
+
