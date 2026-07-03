@@ -53,7 +53,6 @@
     }
     .srv-body p { font-size: 14px; color: var(--muted); line-height: 1.75; }
  
-    /* TESTIMONIALS */
     .testimonials {
       padding: 80px 60px 100px;
       background: var(--surface);
@@ -66,7 +65,7 @@
     .carousel-track { display: flex; transition: transform 0.45s cubic-bezier(.4,0,.2,1); }
  
     .tcard {
-      flex: 0 0 calc(33.333% - 14px);
+      flex: 0 0 calc(50% - 10px);
       margin-right: 20px;
       min-width: 0;
       background: var(--card);
@@ -124,9 +123,6 @@
     @media (max-width: 900px) {
       .page-hero, .services-section, .testimonials { padding: 60px 24px; }
       .srv-grid { grid-template-columns: 1fr; }
-      .tcard { flex: 0 0 calc(50% - 10px); }
-    }
-    @media (max-width: 600px) {
       .tcard { flex: 0 0 calc(100%); }
     }
   </style>
@@ -183,7 +179,6 @@
   </div>
 </section>
  
-<!-- TESTIMONIALS -->
 <section class="testimonials">
   <div class="testimonials-inner">
     <div class="testimonials-header">
@@ -198,7 +193,7 @@
             <div class="tcard-quote">"</div>
             <p class="tcard-text">I am very grateful for everything the agency has brought me since the beginning. I am very satisfied with the investment and commitment the agency has shown.</p>
             <div class="tcard-author">
-              <img class="tcard-avatar" src="https://i.imgur.com/pUnhdMu.jpeg" alt="Baxo">
+              <img class="tcard-avatar" src="https://i.imgur.com/X3pyswX.jpeg" alt="Baxo">
               <div>
                 <div class="tcard-name">Baxo</div>
                 <div class="tcard-role">Fortnite Player</div>
@@ -210,21 +205,9 @@
             <div class="tcard-quote">"</div>
             <p class="tcard-text">There is a great team. The support is appreciated and good at all times.</p>
             <div class="tcard-author">
-              <img class="tcard-avatar" src="https://i.imgur.com/TP7gQIN.jpeg" alt="XaviK">
+              <img class="tcard-avatar" src="https://i.imgur.com/AH8HIf2.jpeg" alt="XaviK">
               <div>
                 <div class="tcard-name">XaviK</div>
-                <div class="tcard-role">EA FC Player</div>
-              </div>
-            </div>
-          </div>
- 
-          <div class="tcard">
-            <div class="tcard-quote">"</div>
-            <p class="tcard-text">Review to be filled in.</p>
-            <div class="tcard-author">
-              <img class="tcard-avatar" src="https://i.imgur.com/a7YSqVw.jpeg" alt="Magicien">
-              <div>
-                <div class="tcard-name">Magicien</div>
                 <div class="tcard-role">EA FC Player</div>
               </div>
             </div>
@@ -252,7 +235,7 @@
   const total = cards.length;
  
   function getPerView() {
-    return window.innerWidth <= 600 ? 1 : window.innerWidth <= 900 ? 2 : 3;
+    return window.innerWidth <= 900 ? 1 : 2;
   }
  
   function goTo(index) {
