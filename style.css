@@ -5,17 +5,17 @@
  
 :root {
   --bg:           #0a0910;
-  --surface:      #0d0d0d;
-  --card:         #111111;
-  --card-hover:   #161616;
-  --purple:       #02d98e;
-  --purple-mid:   #00d988;
-  --purple-light: #02F5A1;
-  --purple-dim:   #0a2218;
-  --purple-glow:  rgba(2,245,161,0.12);
-  --text:         #f0f0f0;
-  --muted:        #888888;
-  --border:       #222222;
+  --surface:      #110f1c;
+  --card:         #18152a;
+  --card-hover:   #1e1a33;
+  --purple:       #7c3aed;
+  --purple-mid:   #9d5ff5;
+  --purple-light: #b48bfa;
+  --purple-dim:   #2a1a5e;
+  --purple-glow:  rgba(124,58,237,0.18);
+  --text:         #ede9ff;
+  --muted:        #7e7a9a;
+  --border:       #26204a;
   --radius:       12px;
   --radius-lg:    18px;
 }
@@ -299,6 +299,4 @@ footer {
 @media (max-width: 480px) {
   .pgrid { grid-template-columns: 1fr 1fr; gap: 12px; }
 }
-
-
-
+ 
