@@ -1,15 +1,16 @@
+
 // ── PLAYER DATA ──────────────────────────────────────────────
 const PLAYERS = [
   { id: 'dexxjunior', pseudo: 'Dexxjunior', realname: 'Moustapha Thiam', game: 'eafc', region: 'emea', flag: 'sn', age: '—', followers: '—', photo: 'https://i.imgur.com/6FIUwG3.jpeg', twitter: 'https://x.com/dexxjunior03', twitch: 'https://t.co/kxuwTxpf9K' },
-  { id: 'xavik',      pseudo: 'XaviK',      realname: 'Xavier Riera',     game: 'eafc', region: 'emea', flag: 'es', age: '—', followers: '—', photo: 'https://i.imgur.com/TP7gQIN.jpeg', twitter: 'https://x.com/xavik_05', twitch: 'https://t.co/iqfumTDIz2' },
-  { id: 'magicien',   pseudo: 'Magicien',   realname: 'Tony Desree',      game: 'eafc', region: 'emea', flag: 'fr', age: '—', followers: '—', photo: 'https://i.imgur.com/a7YSqVw.jpeg', twitter: 'https://x.com/DesreeTony', twitch: 'https://www.twitch.tv/eg_magiciennn' },
+  { id: 'xavik',      pseudo: 'XaviK',      realname: 'Xavier Riera',     game: 'eafc', region: 'emea', flag: 'es', age: '—', followers: '—', photo: 'https://i.imgur.com/AH8HIf2.jpeg', twitter: 'https://x.com/xavik_05', twitch: 'https://t.co/iqfumTDIz2' },
+  { id: 'magicien',   pseudo: 'Magicien',   realname: 'Tony Desree',      game: 'eafc', region: 'emea', flag: 'fr', age: '—', followers: '—', photo: 'https://i.imgur.com/RNAfj5P.jpeg', twitter: 'https://x.com/DesreeTony', twitch: 'https://www.twitch.tv/eg_magiciennn' },
   { id: 'xerboy',     pseudo: 'XeRBoy',     realname: 'Yoni Boisgontier', game: 'eafc', region: 'emea', flag: 'fr', age: '—', followers: '—', photo: 'https://i.imgur.com/5SJVTrH.jpeg', twitter: 'https://x.com/XeRBoy_', twitch: 'https://t.co/18PGGMPInV' },
   { id: 've1ryy',     pseudo: 'Ve1ryy',     realname: 'First Last',       game: 'fortnite', region: 'cis',  flag: 'ua', age: '—', followers: '—', photo: null, twitter: 'https://x.com/ve1ryy', twitch: 'https://www.twitch.tv/ve1ryy' },
   { id: 'noia',       pseudo: 'Noia',       realname: 'First Last',       game: 'fortnite', region: 'emea', flag: 'fr', age: '—', followers: '—', photo: 'https://i.imgur.com/TTDchys.jpeg', twitter: 'https://x.com/noia_gg', twitch: 'https://t.co/RtLJw0TMux' },
   { id: 'snaylyx',    pseudo: 'Snaylyx',    realname: 'First Last',       game: 'fortnite', region: 'emea', flag: 'fr', age: '—', followers: '—', photo: null, twitter: 'https://x.com/snaylyx_', twitch: 'https://www.twitch.tv/snaylyxftnn' },
   { id: 'seekk',      pseudo: 'Seekk',      realname: 'First Last',       game: 'fortnite', region: 'emea', flag: 'fr', age: '—', followers: '—', photo: null, twitter: 'https://x.com/Seekkfn', twitch: 'https://t.co/5r3dfcxdaB' },
   { id: 'xaizzing',   pseudo: 'Xaizzing',  realname: 'First Last',       game: 'fortnite', region: 'emea', flag: 'es', age: '—', followers: '—', photo: null, twitter: 'https://x.com/Xaizzing', twitch: 'https://www.twitch.tv/xaizzing' },
-  { id: 'baxo',       pseudo: 'Baxo',       realname: 'First Last',       game: 'fortnite', region: 'emea', flag: 'fr', age: '—', followers: '—', photo: 'https://i.imgur.com/pUnhdMu.jpeg', twitter: 'https://x.com/baxofnbr', twitch: 'https://www.twitch.tv/baxoftn' },
+  { id: 'baxo',       pseudo: 'Baxo',       realname: 'First Last',       game: 'fortnite', region: 'emea', flag: 'fr', age: '—', followers: '—', photo: 'https://i.imgur.com/X3pyswX.jpeg', twitter: 'https://x.com/baxofnbr', twitch: 'https://www.twitch.tv/baxoftn' },
   { id: 'milou',      pseudo: 'Milou',      realname: 'First Last',       game: 'fortnite', region: 'emea', flag: 'fr', age: '—', followers: '—', photo: 'https://i.imgur.com/Z12iryO.jpeg', twitter: 'https://x.com/Miloufnr', twitch: 'https://www.twitch.tv/miloufnr' },
   { id: 'skyze',      pseudo: 'Skyze',      realname: 'First Last',       game: 'fortnite', region: 'emea', flag: 'fr', age: '—', followers: '—', photo: null, twitter: 'https://x.com/Skyzefn7', twitch: 'https://t.co/tEVf3S3RrP' },
 ];
@@ -32,7 +33,7 @@ function injectNav(activePage) {
  
   document.getElementById('nav-placeholder').innerHTML = `
     <nav>
-      <a class="nav-logo" href="index.html"><img src="logo.png" alt="AL Management" style="height:36px;width:auto;object-fit:contain;vertical-align:middle;margin-right:8px">AL <span>Management</span></a>
+      <a class="nav-logo" href="home.html"><img src="logo.png" alt="AL Management" style="height:36px;width:auto;object-fit:contain;vertical-align:middle;margin-right:8px">AL <span>Management</span></a>
       <div class="nav-links">${links}</div>
       <a href="#contact" class="nav-cta">Work with us</a>
       <div class="nav-hamburger" id="hamburger" aria-label="Menu">
