@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AL Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
  
@@ -17,92 +18,91 @@
     }
  
     .intro-wrap {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
     }
  
-    /* Glow ring behind logo */
-    .glow-ring {
+    /* Glow behind */
+    .glow {
       position: absolute;
-      width: 220px;
-      height: 220px;
+      width: 300px;
+      height: 300px;
       border-radius: 50%;
-      background: radial-gradient(ellipse, rgba(124,58,237,0.35) 0%, transparent 70%);
-      animation: pulse-glow 1.8s ease-in-out infinite alternate;
+      background: radial-gradient(ellipse, rgba(124,58,237,0.4) 0%, transparent 70%);
+      animation: glow-pulse 1.5s ease-in-out infinite alternate;
       opacity: 0;
-      animation-delay: 0.4s;
+      animation-delay: 0.5s;
+      animation-fill-mode: forwards;
     }
  
-    @keyframes pulse-glow {
-      from { transform: scale(0.9); opacity: 0.6; }
-      to   { transform: scale(1.2); opacity: 1; }
+    @keyframes glow-pulse {
+      0%   { opacity: 0; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1.15); }
     }
  
-    /* Logo image */
-    .logo-img {
-      width: 140px;
-      height: 140px;
-      object-fit: contain;
+    /* Logo text */
+    .logo-text {
       position: relative;
+      font-family: 'Syne', sans-serif;
+      font-size: 100px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -4px;
       opacity: 0;
-      animation:
-        fade-in   0.5s ease forwards 0.2s,
-        spin-in   1.8s cubic-bezier(.2,.8,.3,1) forwards 0.2s,
-        fade-out  0.6s ease forwards 2.8s;
+      transform: rotate(-180deg) scale(0.3);
+      animation: spin-appear 1.6s cubic-bezier(0.2, 0.8, 0.3, 1) forwards 0.3s;
     }
  
-    @keyframes fade-in {
-      from { opacity: 0; }
-      to   { opacity: 1; }
+    .logo-text .dot {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      background: #7c3aed;
+      border-radius: 3px;
+      transform: rotate(45deg);
+      margin-left: 4px;
+      vertical-align: middle;
+      margin-bottom: 12px;
     }
  
-    @keyframes spin-in {
-      0%   { transform: rotate(-180deg) scale(0.4); }
-      60%  { transform: rotate(8deg)   scale(1.05); }
-      80%  { transform: rotate(-4deg)  scale(0.98); }
-      100% { transform: rotate(0deg)   scale(1); }
+    @keyframes spin-appear {
+      0%   { opacity: 0; transform: rotate(-180deg) scale(0.3); }
+      60%  { opacity: 1; transform: rotate(6deg) scale(1.05); }
+      80%  { transform: rotate(-3deg) scale(0.97); }
+      100% { opacity: 1; transform: rotate(0deg) scale(1); }
     }
  
-    @keyframes fade-out {
-      from { opacity: 1; }
-      to   { opacity: 0; }
-    }
- 
-    /* Full screen fade to page */
-    .overlay {
+    /* Fade out everything */
+    .fade-out {
       position: fixed;
       inset: 0;
       background: #0a0910;
-      opacity: 1;
+      opacity: 0;
       pointer-events: none;
-      animation: overlay-out 0.7s ease forwards 3.2s;
-      z-index: 10;
+      animation: do-fade-out 0.7s ease forwards 2.8s;
+      z-index: 99;
     }
  
-    @keyframes overlay-out {
-      from { opacity: 1; }
-      to   { opacity: 0; }
+    @keyframes do-fade-out {
+      0%   { opacity: 0; }
+      100% { opacity: 1; }
     }
   </style>
 </head>
 <body>
- 
   <div class="intro-wrap">
-    <div class="glow-ring"></div>
-    <img class="logo-img" src="logo.png" alt="AL Management">
+    <div class="glow"></div>
+    <div class="logo-text">AL<span class="dot"></span></div>
   </div>
- 
-  <div class="overlay"></div>
+  <div class="fade-out"></div>
  
   <script>
-    // Redirect to index after animation completes
     setTimeout(() => {
       window.location.href = 'home.html';
-    }, 3500);
+    }, 3400);
   </script>
- 
 </body>
 </html>
  
