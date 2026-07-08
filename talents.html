@@ -6,47 +6,156 @@
   <title>Our Talents — AL Management</title>
   <link rel="stylesheet" href="style.css">
   <style>
+ 
+    /* ── PAGE HERO ── */
     .page-hero {
-      padding: 90px 60px 70px;
+      padding: 80px 60px 60px;
       background: var(--surface);
       border-bottom: 1px solid var(--border);
     }
-    .page-hero-inner { max-width: 720px; }
+    .page-hero-inner { max-width: 760px; }
  
+    /* ── WORLD MAP SECTION ── */
+    .map-section {
+      padding: 70px 60px 60px;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .map-section-inner { max-width: 1100px; margin: 0 auto; }
+    .map-header { text-align: center; margin-bottom: 40px; }
+    .map-header .s-eyebrow { justify-content: center; display: block; text-align: center; }
+    .map-subtitle {
+      font-size: 15px;
+      color: var(--muted);
+      margin-top: 8px;
+      letter-spacing: 0.2px;
+    }
+ 
+    /* SVG Map */
+    .map-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+      opacity: 0;
+      animation: map-reveal 1s ease forwards 0.3s;
+    }
+    @keyframes map-reveal {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .world-svg {
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 4px 24px rgba(124,58,237,0.08));
+    }
+    .country-base {
+      fill: #1a1630;
+      stroke: #26204a;
+      stroke-width: 0.5;
+      transition: fill 0.3s ease;
+    }
+    .country-active {
+      fill: #2a1a5e;
+      stroke: #7c3aed;
+      stroke-width: 0.8;
+      cursor: pointer;
+      transition: fill 0.3s ease;
+    }
+    .country-active:hover, .country-active.selected {
+      fill: #3d2080;
+    }
+ 
+    /* Glow dots on active countries */
+    .map-dot {
+      fill: #b48bfa;
+      opacity: 0;
+      animation: dot-appear 0.6s ease forwards;
+      filter: drop-shadow(0 0 6px rgba(180,139,250,0.8));
+    }
+    @keyframes dot-appear {
+      from { opacity: 0; r: 0; }
+      to   { opacity: 1; }
+    }
+ 
+    /* ── FILTER BAR ── */
+    .filter-section {
+      padding: 40px 60px;
+      background: var(--bg);
+      position: sticky;
+      top: 68px;
+      z-index: 50;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      background: rgba(10,9,16,0.9);
+    }
+    .filter-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .filter-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .filter-pills {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .pill {
+      padding: 7px 16px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      background: var(--card);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+      white-space: nowrap;
+    }
+    .pill:hover { color: var(--text); border-color: var(--purple-mid); }
+    .pill.active {
+      background: var(--purple);
+      color: #fff;
+      border-color: var(--purple);
+    }
+ 
+    .filter-divider {
+      width: 1px;
+      height: 40px;
+      background: var(--border);
+      align-self: flex-end;
+      margin-bottom: 2px;
+    }
+ 
+    /* ── TALENTS GRID ── */
     .talents-section {
-      padding: 70px 60px 100px;
+      padding: 60px 60px 100px;
       background: var(--bg);
     }
     .talents-inner { max-width: 1100px; margin: 0 auto; }
  
-    .filters-wrap {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      margin-bottom: 44px;
-    }
-    .filter-bar {
-      display: flex;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 5px;
-      width: fit-content;
-      flex-wrap: wrap;
-    }
-    .filter-btn {
-      padding: 10px 24px;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
+    .results-info {
+      font-size: 12px;
       color: var(--muted);
-      cursor: pointer;
-      transition: all 0.2s;
-      user-select: none;
-      white-space: nowrap;
+      margin-bottom: 32px;
+      letter-spacing: 0.5px;
     }
-    .filter-btn.active { background: var(--purple); color: #fff; }
-    .filter-btn:hover:not(.active) { color: var(--text); }
+    .results-info span { color: var(--purple-light); font-weight: 600; }
  
     .pgrid {
       display: grid;
@@ -54,139 +163,249 @@
       gap: 20px;
     }
  
+    /* ── PREMIUM PLAYER CARD ── */
     .pcard {
       position: relative;
-      border-radius: var(--radius-lg);
+      border-radius: 20px;
       overflow: hidden;
-      height: 280px;
-      border: 1px solid var(--border);
-      transition: border-color 0.25s, transform 0.25s;
-      background: var(--card);
+      height: 320px;
       cursor: pointer;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      transform-style: preserve-3d;
+      background: linear-gradient(145deg, #18152a, #110e20);
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
     }
-    .pcard:hover { border-color: var(--purple-mid); transform: translateY(-4px); }
- 
-    .pcard-bg {
+    .pcard:hover {
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 30px rgba(124,58,237,0.15);
+      transform: translateY(-6px) scale(1.015);
+    }
+    /* Shimmer effect on hover */
+    .pcard::before {
+      content: '';
       position: absolute;
       inset: 0;
-      background: var(--purple-dim);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.04) 50%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 3;
+      pointer-events: none;
     }
-    .pcard-bg img {
+    .pcard:hover::before { opacity: 1; }
+ 
+    /* Glass border */
+    .pcard::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      pointer-events: none;
+      z-index: 4;
+    }
+ 
+    .pcard-photo {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center center;
+      object-position: center top;
+      transition: transform 0.4s ease;
+      z-index: 0;
     }
+    .pcard:hover .pcard-photo { transform: scale(1.04); }
+ 
     .pcard-anon {
       position: absolute;
       inset: 0;
-      background: var(--purple-dim);
+      background: linear-gradient(145deg, #1e1a33, #150f28);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 52px;
-      color: var(--muted);
+      z-index: 0;
     }
+    .pcard-anon i { font-size: 56px; color: #2a1a5e; }
+ 
+    /* Gradient overlay */
     .pcard-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, rgba(8,6,18,0.97) 0%, rgba(8,6,18,0.45) 55%, transparent 100%);
+      background: linear-gradient(
+        to top,
+        rgba(6,4,16,0.98) 0%,
+        rgba(6,4,16,0.7) 45%,
+        rgba(6,4,16,0.1) 75%,
+        transparent 100%
+      );
+      z-index: 1;
+      transition: background 0.3s ease;
     }
-    .pcard-content {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 16px 14px;
+    .pcard:hover .pcard-overlay {
+      background: linear-gradient(
+        to top,
+        rgba(6,4,16,0.99) 0%,
+        rgba(6,4,16,0.75) 50%,
+        rgba(6,4,16,0.15) 80%,
+        transparent 100%
+      );
     }
-    .pcard-top-row {
+ 
+    /* Top badges */
+    .pcard-top {
       position: absolute;
-      top: 12px; left: 12px; right: 12px;
+      top: 14px;
+      left: 14px;
+      right: 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      z-index: 2;
     }
-    .pcard-badge {
-      display: inline-block;
-      font-size: 9px;
+    .pcard-game-badge {
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(180,139,250,0.9);
+      background: rgba(42,26,94,0.75);
+      padding: 4px 10px;
+      border-radius: 100px;
+      border: 1px solid rgba(124,58,237,0.3);
+      backdrop-filter: blur(8px);
+    }
+    .pcard-club-logo {
+      width: 36px;
+      height: 36px;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+    }
+    .pcard-status-badge {
+      font-size: 8px;
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: var(--purple-light);
-      background: rgba(42,26,94,0.9);
-      padding: 3px 9px;
-      border-radius: 20px;
-      border: 1px solid rgba(180,139,250,0.2);
-      white-space: nowrap;
-      backdrop-filter: blur(4px);
+      padding: 4px 10px;
+      border-radius: 100px;
+      backdrop-filter: blur(8px);
     }
-    .pcard-club {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.6));
+    .pcard-status-fa {
+      color: rgba(180,139,250,0.8);
+      background: rgba(42,26,94,0.7);
+      border: 1px solid rgba(124,58,237,0.25);
     }
-    .pcard-club img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
+    .pcard-status-tba {
+      color: rgba(251,191,36,0.9);
+      background: rgba(92,60,0,0.7);
+      border: 1px solid rgba(251,191,36,0.2);
     }
-    .pcard-club.text-badge {
-      width: auto;
-      height: auto;
-      border-radius: 20px;
-      padding: 3px 9px;
-      background: rgba(42,26,94,0.9);
-      border: 1px solid rgba(180,139,250,0.3);
-      backdrop-filter: blur(4px);
+ 
+    /* Bottom content */
+    .pcard-content {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 18px 16px;
+      z-index: 2;
     }
-    .pcard-club.text-badge span {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      color: var(--purple-light);
+ 
+    .pcard-flag {
+      width: 20px;
+      height: 14px;
+      border-radius: 3px;
+      object-fit: cover;
+      margin-bottom: 6px;
+      opacity: 0.9;
     }
-    .pcard-flag { width: 18px; height: 13px; border-radius: 2px; object-fit: cover; }
-    .pcard-pseudo {
+ 
+    .pcard-name {
       font-family: 'Syne', sans-serif;
-      font-size: clamp(12px, 1.3vw, 16px);
+      font-size: clamp(14px, 1.4vw, 17px);
       font-weight: 800;
-      color: var(--text);
+      color: #fff;
+      letter-spacing: -0.3px;
       margin-bottom: 2px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .pcard-flag-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
-    .pcard-realname { font-size: 10px; color: var(--muted); margin-bottom: 10px; }
+    .pcard-realname {
+      font-size: 11px;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+ 
+    /* Hover reveal — socials + badge */
+    .pcard-hover-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .pcard:hover .pcard-hover-row {
+      opacity: 1;
+      transform: translateY(0);
+    }
+ 
     .pcard-socials { display: flex; gap: 6px; }
     .pcard-socials a {
       width: 28px; height: 28px;
-      border-radius: 6px;
-      background: rgba(42,26,94,0.85);
+      border-radius: 8px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
       display: flex; align-items: center; justify-content: center;
       font-size: 13px;
-      color: var(--purple-light);
-      transition: background 0.2s;
+      color: rgba(255,255,255,0.6);
+      transition: all 0.2s;
       backdrop-filter: blur(4px);
     }
-    .pcard-socials a:hover { background: var(--purple); color: #fff; }
+    .pcard-socials a:hover { background: var(--purple); border-color: var(--purple); color: #fff; }
  
+    .pcard-al-badge {
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: rgba(180,139,250,0.6);
+      white-space: nowrap;
+    }
+ 
+    /* Card appear animation */
+    .pcard {
+      animation: card-in 0.4s ease both;
+    }
+    @keyframes card-in {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .pcard.hidden {
+      display: none;
+    }
+ 
+    /* No results */
     .no-results {
       grid-column: 1 / -1;
       text-align: center;
-      padding: 60px 0;
+      padding: 80px 0;
       color: var(--muted);
       font-size: 15px;
     }
+    .no-results span { color: var(--purple-light); }
  
+    @media (max-width: 1100px) { .pgrid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 900px) {
-      .page-hero, .talents-section { padding: 60px 24px; }
+      .page-hero, .map-section, .filter-section, .talents-section { padding-left: 24px; padding-right: 24px; }
       .pgrid { grid-template-columns: repeat(2, 1fr); }
-      .filter-bar { flex-wrap: wrap; }
+      .filter-inner { gap: 12px; }
+      .filter-section { top: 68px; }
+    }
+    @media (max-width: 480px) {
+      .pgrid { grid-template-columns: 1fr 1fr; gap: 12px; }
     }
   </style>
 </head>
@@ -194,6 +413,7 @@
  
 <div id="nav-placeholder"></div>
  
+<!-- PAGE HERO -->
 <section class="page-hero">
   <div class="page-hero-inner">
     <div class="s-eyebrow">Our Talents</div>
@@ -202,313 +422,463 @@
   </div>
 </section>
  
-<section class="talents-section">
-  <div class="talents-inner">
-    <div class="filters-wrap">
-      <div class="filter-bar" id="game-filter">
-        <div class="filter-btn active" data-game="all">All games</div>
-        <div class="filter-btn" data-game="fortnite">Fortnite</div>
-        <div class="filter-btn" data-game="eafc">EA FC</div>
-      </div>
-      <div class="filter-bar" id="region-filter">
-        <div class="filter-btn active" data-region="all">All regions</div>
-        <div class="filter-btn" data-region="emea">EMEA</div>
-        <div class="filter-btn" data-region="mena">MENA</div>
-        <div class="filter-btn" data-region="cis">CIS</div>
-        <div class="filter-btn" data-region="apac">APAC</div>
+<!-- WORLD MAP -->
+<section class="map-section">
+  <div class="map-section-inner">
+    <div class="map-header">
+      <div class="s-eyebrow">Our International Network</div>
+      <p class="map-subtitle">Representing professional esports players across multiple countries.</p>
+    </div>
+    <div class="map-wrap">
+      <svg class="world-svg" viewBox="0 0 1000 500" xmlns="http://www.w3.org/2000/svg" id="world-map">
+ 
+        <!-- Simplified world map paths -->
+        <!-- Europe base block -->
+        <rect class="country-base" x="430" y="100" width="120" height="100" rx="4"/>
+        <!-- Africa base -->
+        <rect class="country-base" x="450" y="210" width="80" height="130" rx="4"/>
+        <!-- Americas base -->
+        <rect class="country-base" x="100" y="80" width="200" height="260" rx="4"/>
+        <!-- Asia base -->
+        <rect class="country-base" x="560" y="80" width="280" height="180" rx="4"/>
+        <!-- Oceania base -->
+        <rect class="country-base" x="760" y="280" width="80" height="60" rx="4"/>
+ 
+        <!-- ACTIVE COUNTRIES -->
+        <!-- France -->
+        <rect class="country-active" id="country-fr" data-country="fr" data-name="France"
+              x="447" y="118" width="28" height="22" rx="3"/>
+        <!-- Spain -->
+        <rect class="country-active" id="country-es" data-country="es" data-name="Spain"
+              x="436" y="140" width="28" height="20" rx="3"/>
+        <!-- Ukraine (CIS) -->
+        <rect class="country-active" id="country-ua" data-country="ua" data-name="Ukraine"
+              x="510" y="118" width="28" height="20" rx="3"/>
+        <!-- Belarus (CIS) -->
+        <rect class="country-active" id="country-by" data-country="by" data-name="Belarus"
+              x="510" y="105" width="22" height="15" rx="3"/>
+        <!-- Senegal -->
+        <rect class="country-active" id="country-sn" data-country="sn" data-name="Senegal"
+              x="428" y="222" width="20" height="16" rx="3"/>
+ 
+        <!-- GLOW DOTS -->
+        <circle class="map-dot" cx="461" cy="129" r="4" style="animation-delay:0.5s"/>
+        <circle class="map-dot" cx="450" cy="150" r="4" style="animation-delay:0.7s"/>
+        <circle class="map-dot" cx="524" cy="128" r="4" style="animation-delay:0.9s"/>
+        <circle class="map-dot" cx="521" cy="112" r="4" style="animation-delay:1.1s"/>
+        <circle class="map-dot" cx="438" cy="230" r="4" style="animation-delay:1.3s"/>
+ 
+        <!-- Country labels -->
+        <text x="461" y="144" text-anchor="middle" font-size="6" fill="rgba(180,139,250,0.7)" font-family="Arial">FR</text>
+        <text x="450" y="165" text-anchor="middle" font-size="6" fill="rgba(180,139,250,0.7)" font-family="Arial">ES</text>
+        <text x="524" y="144" text-anchor="middle" font-size="6" fill="rgba(180,139,250,0.7)" font-family="Arial">UA</text>
+        <text x="521" y="126" text-anchor="middle" font-size="6" fill="rgba(180,139,250,0.7)" font-family="Arial">BY</text>
+        <text x="438" y="244" text-anchor="middle" font-size="6" fill="rgba(180,139,250,0.7)" font-family="Arial">SN</text>
+ 
+      </svg>
+ 
+      <!-- Country tooltip -->
+      <div id="map-tooltip" style="
+        position:absolute;
+        background:rgba(18,15,30,0.95);
+        border:1px solid rgba(124,58,237,0.3);
+        border-radius:8px;
+        padding:8px 14px;
+        font-size:12px;
+        color:#fff;
+        pointer-events:none;
+        opacity:0;
+        transition:opacity 0.2s;
+        backdrop-filter:blur(8px);
+        white-space:nowrap;
+        z-index:10;
+      "></div>
+    </div>
+  </div>
+</section>
+ 
+<!-- FILTERS -->
+<section class="filter-section">
+  <div class="filter-inner">
+ 
+    <div class="filter-group">
+      <div class="filter-label">Game</div>
+      <div class="filter-pills" id="game-filter">
+        <div class="pill active" data-game="all">All</div>
+        <div class="pill" data-game="eafc">EA FC</div>
+        <div class="pill" data-game="fortnite">Fortnite</div>
       </div>
     </div>
  
-        <div class="pgrid" id="talents-grid">
+    <div class="filter-divider"></div>
+ 
+    <div class="filter-group">
+      <div class="filter-label">Country</div>
+      <div class="filter-pills" id="country-filter">
+        <div class="pill active" data-country="all">All</div>
+        <div class="pill" data-country="fr">🇫🇷 France</div>
+        <div class="pill" data-country="es">🇪🇸 Spain</div>
+        <div class="pill" data-country="sn">🇸🇳 Senegal</div>
+        <div class="pill" data-country="ua">🇺🇦 Ukraine</div>
+        <div class="pill" data-country="by">🇧🇾 Belarus</div>
+      </div>
+    </div>
+ 
+    <div class="filter-divider"></div>
+ 
+    <div class="filter-group">
+      <div class="filter-label">Status</div>
+      <div class="filter-pills" id="status-filter">
+        <div class="pill active" data-status="all">All</div>
+        <div class="pill" data-status="signed">Signed</div>
+        <div class="pill" data-status="fa">Free Agent</div>
+        <div class="pill" data-status="tba">TBA</div>
+      </div>
+    </div>
+ 
+  </div>
+</section>
+ 
+<!-- TALENTS GRID -->
+<section class="talents-section">
+  <div class="talents-inner">
+    <div class="results-info" id="results-info"><span id="results-count">15</span> players</div>
+    <div class="pgrid" id="talents-grid">
  
       <!-- ===== EA FC ===== -->
-      <!-- XaviK — Mallorca -->
-      <div class="pcard" data-game="eafc" data-region="emea">
-        <div class="pcard-bg"><img src="https://i.imgur.com/AH8HIf2.jpeg" alt="XaviK" style="object-position:center 10%"></div>
+ 
+      <!-- XaviK — Mallorca — ES — signed -->
+      <div class="pcard" data-game="eafc" data-country="es" data-status="signed">
+        <img class="pcard-photo" src="https://i.imgur.com/AH8HIf2.jpeg" alt="XaviK" style="object-position:center 10%">
         <div class="pcard-overlay"></div>
-        <div class="pcard-top-row">
-          <div class="pcard-badge">EA FC</div>
-          <div class="pcard-club"><img src="mallorca.png" alt="RCD Mallorca"></div>
+        <div class="pcard-top">
+          <div class="pcard-game-badge">EA FC</div>
+          <img class="pcard-club-logo" src="mallorca.png" alt="RCD Mallorca">
         </div>
         <div class="pcard-content">
-          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/es.png" alt="Spain"></div>
-          <div class="pcard-pseudo">XaviK</div>
+          <img class="pcard-flag" src="https://flagcdn.com/w20/es.png" alt="Spain">
+          <div class="pcard-name">XaviK</div>
           <div class="pcard-realname">Xavier Riera</div>
-          <div class="pcard-socials">
-            <a href="https://x.com/xavik_05" target="_blank"><i class="ti ti-brand-x"></i></a>
-            <a href="https://t.co/iqfumTDIz2" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          <div class="pcard-hover-row">
+            <div class="pcard-socials">
+              <a href="https://x.com/xavik_05" target="_blank"><i class="ti ti-brand-x"></i></a>
+              <a href="https://t.co/iqfumTDIz2" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+            </div>
+            <div class="pcard-al-badge">AL Management</div>
           </div>
         </div>
       </div>
  
-      <!-- Dexxjunior — Together We Rise -->
-      <div class="pcard" data-game="eafc" data-region="emea">
-        <div class="pcard-bg"><img src="https://i.imgur.com/6FIUwG3.jpeg" alt="Dexxjunior"></div>
+      <!-- Dexxjunior — Together We Rise — SN — signed -->
+      <div class="pcard" data-game="eafc" data-country="sn" data-status="signed">
+        <img class="pcard-photo" src="https://i.imgur.com/6FIUwG3.jpeg" alt="Dexxjunior">
         <div class="pcard-overlay"></div>
-        <div class="pcard-top-row">
-          <div class="pcard-badge">EA FC</div>
-          <div class="pcard-club"><img src="togetherwerise.png" alt="Together We Rise"></div>
+        <div class="pcard-top">
+          <div class="pcard-game-badge">EA FC</div>
+          <img class="pcard-club-logo" src="togetherwerise.png" alt="Together We Rise">
         </div>
         <div class="pcard-content">
-          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/sn.png" alt="Senegal"></div>
-          <div class="pcard-pseudo" style="font-size:12px">Dexxjunior</div>
+          <img class="pcard-flag" src="https://flagcdn.com/w20/sn.png" alt="Senegal">
+          <div class="pcard-name" style="font-size:13px">Dexxjunior</div>
           <div class="pcard-realname">Moustapha Thiam</div>
-          <div class="pcard-socials">
-            <a href="https://x.com/dexxjunior03" target="_blank"><i class="ti ti-brand-x"></i></a>
-            <a href="https://t.co/kxuwTxpf9K" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          <div class="pcard-hover-row">
+            <div class="pcard-socials">
+              <a href="https://x.com/dexxjunior03" target="_blank"><i class="ti ti-brand-x"></i></a>
+              <a href="https://t.co/kxuwTxpf9K" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+            </div>
+            <div class="pcard-al-badge">AL Management</div>
           </div>
         </div>
       </div>
  
-      <!-- Magicien — F/A -->
-      <div class="pcard" data-game="eafc" data-region="emea">
-        <div class="pcard-bg"><img src="https://i.imgur.com/RNAfj5P.jpeg" alt="Magicien" style="object-position:center 10%"></div>
+      <!-- Magicien — F/A — FR -->
+      <div class="pcard" data-game="eafc" data-country="fr" data-status="fa">
+        <img class="pcard-photo" src="https://i.imgur.com/RNAfj5P.jpeg" alt="Magicien" style="object-position:center 10%">
         <div class="pcard-overlay"></div>
-        <div class="pcard-top-row">
-          <div class="pcard-badge">EA FC</div>
-          <div class="pcard-club text-badge"><span>F/A</span></div>
+        <div class="pcard-top">
+          <div class="pcard-game-badge">EA FC</div>
+          <div class="pcard-status-badge pcard-status-fa">F/A</div>
         </div>
         <div class="pcard-content">
-          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
-          <div class="pcard-pseudo">Magicien</div>
+          <img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France">
+          <div class="pcard-name">Magicien</div>
           <div class="pcard-realname">Tony Desree</div>
-          <div class="pcard-socials">
-            <a href="https://x.com/DesreeTony" target="_blank"><i class="ti ti-brand-x"></i></a>
-            <a href="https://www.twitch.tv/eg_magiciennn" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          <div class="pcard-hover-row">
+            <div class="pcard-socials">
+              <a href="https://x.com/DesreeTony" target="_blank"><i class="ti ti-brand-x"></i></a>
+              <a href="https://www.twitch.tv/eg_magiciennn" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+            </div>
+            <div class="pcard-al-badge">AL Management</div>
           </div>
         </div>
       </div>
  
-      <!-- XeRBoy — F/A -->
-      <div class="pcard" data-game="eafc" data-region="emea">
-        <div class="pcard-bg"><img src="https://i.imgur.com/5SJVTrH.jpeg" alt="XeRBoy" style="object-position:top center"></div>
+      <!-- XeRBoy — F/A — FR -->
+      <div class="pcard" data-game="eafc" data-country="fr" data-status="fa">
+        <img class="pcard-photo" src="https://i.imgur.com/5SJVTrH.jpeg" alt="XeRBoy" style="object-position:top center">
         <div class="pcard-overlay"></div>
-        <div class="pcard-top-row">
-          <div class="pcard-badge">EA FC</div>
-          <div class="pcard-club text-badge"><span>F/A</span></div>
+        <div class="pcard-top">
+          <div class="pcard-game-badge">EA FC</div>
+          <div class="pcard-status-badge pcard-status-fa">F/A</div>
         </div>
         <div class="pcard-content">
-          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
-          <div class="pcard-pseudo">XeRBoy</div>
+          <img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France">
+          <div class="pcard-name">XeRBoy</div>
           <div class="pcard-realname">Yoni Boisgontier</div>
-          <div class="pcard-socials">
-            <a href="https://x.com/XeRBoy_" target="_blank"><i class="ti ti-brand-x"></i></a>
-            <a href="https://t.co/18PGGMPInV" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          <div class="pcard-hover-row">
+            <div class="pcard-socials">
+              <a href="https://x.com/XeRBoy_" target="_blank"><i class="ti ti-brand-x"></i></a>
+              <a href="https://t.co/18PGGMPInV" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+            </div>
+            <div class="pcard-al-badge">AL Management</div>
           </div>
         </div>
       </div>
  
       <!-- ===== Fortnite ===== -->
-      <!-- Noia — NTO -->
-      <div class="pcard" data-game="fortnite" data-region="emea">
-        <div class="pcard-bg"><img src="https://i.imgur.com/TTDchys.jpeg" alt="Noia" style="object-position:top center"></div>
+ 
+      <!-- Noia — NTO — FR — signed -->
+      <div class="pcard" data-game="fortnite" data-country="fr" data-status="signed">
+        <img class="pcard-photo" src="https://i.imgur.com/TTDchys.jpeg" alt="Noia" style="object-position:top center">
         <div class="pcard-overlay"></div>
-        <div class="pcard-top-row">
-          <div class="pcard-badge">Fortnite</div>
-          <div class="pcard-club"><img src="nto.png" alt="NTO"></div>
+        <div class="pcard-top">
+          <div class="pcard-game-badge">Fortnite</div>
+          <img class="pcard-club-logo" src="nto.png" alt="NTO">
         </div>
         <div class="pcard-content">
-          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
-          <div class="pcard-pseudo">Noia</div>
+          <img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France">
+          <div class="pcard-name">Noia</div>
           <div class="pcard-realname"></div>
-          <div class="pcard-socials">
-            <a href="https://x.com/noia_gg" target="_blank"><i class="ti ti-brand-x"></i></a>
-            <a href="https://t.co/RtLJw0TMux" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          <div class="pcard-hover-row">
+            <div class="pcard-socials">
+              <a href="https://x.com/noia_gg" target="_blank"><i class="ti ti-brand-x"></i></a>
+              <a href="https://t.co/RtLJw0TMux" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+            </div>
+            <div class="pcard-al-badge">AL Management</div>
           </div>
         </div>
       </div>
  
-      <!-- Seekk — HavoK -->
-      <div class="pcard" data-game="fortnite" data-region="emea">
+      <!-- Seekk — HavoK — FR — signed -->
+      <div class="pcard" data-game="fortnite" data-country="fr" data-status="signed">
         <div class="pcard-anon"><i class="ti ti-user"></i></div>
         <div class="pcard-overlay"></div>
-        <div class="pcard-top-row">
-          <div class="pcard-badge">Fortnite</div>
-          <div class="pcard-club"><img src="havok.png" alt="HavoK"></div>
+        <div class="pcard-top">
+          <div class="pcard-game-badge">Fortnite</div>
+          <img class="pcard-club-logo" src="havok.png" alt="HavoK">
         </div>
         <div class="pcard-content">
-          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
-          <div class="pcard-pseudo">Seekk</div>
+          <img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France">
+          <div class="pcard-name">Seekk</div>
           <div class="pcard-realname"></div>
-          <div class="pcard-socials">
-            <a href="https://x.com/Seekkfn" target="_blank"><i class="ti ti-brand-x"></i></a>
-            <a href="https://t.co/5r3dfcxdaB" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          <div class="pcard-hover-row">
+            <div class="pcard-socials">
+              <a href="https://x.com/Seekkfn" target="_blank"><i class="ti ti-brand-x"></i></a>
+              <a href="https://t.co/5r3dfcxdaB" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+            </div>
+            <div class="pcard-al-badge">AL Management</div>
           </div>
         </div>
       </div>
  
-      <!-- Baxo — Gameward -->
-      <div class="pcard" data-game="fortnite" data-region="emea">
-        <div class="pcard-bg"><img src="https://i.imgur.com/X3pyswX.jpeg" alt="Baxo" style="object-position:center 15%"></div>
+      <!-- Baxo — GameWard — FR — signed -->
+      <div class="pcard" data-game="fortnite" data-country="fr" data-status="signed">
+        <img class="pcard-photo" src="https://i.imgur.com/X3pyswX.jpeg" alt="Baxo" style="object-position:center 15%">
         <div class="pcard-overlay"></div>
-        <div class="pcard-top-row">
-          <div class="pcard-badge">Fortnite</div>
-          <div class="pcard-club"><img src="gameward.png" alt="GameWard"></div>
+        <div class="pcard-top">
+          <div class="pcard-game-badge">Fortnite</div>
+          <img class="pcard-club-logo" src="gameward.png" alt="GameWard">
         </div>
         <div class="pcard-content">
-          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
-          <div class="pcard-pseudo">Baxo</div>
+          <img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France">
+          <div class="pcard-name">Baxo</div>
           <div class="pcard-realname"></div>
-          <div class="pcard-socials">
-            <a href="https://x.com/baxofnbr" target="_blank"><i class="ti ti-brand-x"></i></a>
-            <a href="https://www.twitch.tv/baxoftn" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          <div class="pcard-hover-row">
+            <div class="pcard-socials">
+              <a href="https://x.com/baxofnbr" target="_blank"><i class="ti ti-brand-x"></i></a>
+              <a href="https://www.twitch.tv/baxoftn" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+            </div>
+            <div class="pcard-al-badge">AL Management</div>
           </div>
         </div>
       </div>
  
-      <!-- Ve1ryy — WIP -->
-      <div class="pcard" data-game="fortnite" data-region="cis">
+      <!-- Ve1ryy — WIP — UA — signed -->
+      <div class="pcard" data-game="fortnite" data-country="ua" data-status="signed">
         <div class="pcard-anon"><i class="ti ti-user"></i></div>
         <div class="pcard-overlay"></div>
-        <div class="pcard-top-row">
-          <div class="pcard-badge">Fortnite</div>
-          <div class="pcard-club"><img src="wip.png" alt="WIP Esports"></div>
+        <div class="pcard-top">
+          <div class="pcard-game-badge">Fortnite</div>
+          <img class="pcard-club-logo" src="wip.png" alt="WIP Esports">
         </div>
         <div class="pcard-content">
-          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/ua.png" alt="Ukraine"></div>
-          <div class="pcard-pseudo">Ve1ryy</div>
+          <img class="pcard-flag" src="https://flagcdn.com/w20/ua.png" alt="Ukraine">
+          <div class="pcard-name">Ve1ryy</div>
           <div class="pcard-realname"></div>
-          <div class="pcard-socials">
-            <a href="https://x.com/ve1ryy" target="_blank"><i class="ti ti-brand-x"></i></a>
-            <a href="https://www.twitch.tv/ve1ryy" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          <div class="pcard-hover-row">
+            <div class="pcard-socials">
+              <a href="https://x.com/ve1ryy" target="_blank"><i class="ti ti-brand-x"></i></a>
+              <a href="https://www.twitch.tv/ve1ryy" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+            </div>
+            <div class="pcard-al-badge">AL Management</div>
           </div>
         </div>
       </div>
  
-      <!-- Milou — K13 -->
-      <div class="pcard" data-game="fortnite" data-region="emea">
-        <div class="pcard-bg"><img src="https://i.imgur.com/Z12iryO.jpeg" alt="Milou" style="object-position:top center"></div>
+      <!-- Milou — K13 — FR — signed -->
+      <div class="pcard" data-game="fortnite" data-country="fr" data-status="signed">
+        <img class="pcard-photo" src="https://i.imgur.com/Z12iryO.jpeg" alt="Milou" style="object-position:top center">
         <div class="pcard-overlay"></div>
-        <div class="pcard-top-row">
-          <div class="pcard-badge">Fortnite</div>
-          <div class="pcard-club"><img src="k13.png" alt="K13"></div>
+        <div class="pcard-top">
+          <div class="pcard-game-badge">Fortnite</div>
+          <img class="pcard-club-logo" src="k13.png" alt="K13">
         </div>
         <div class="pcard-content">
-          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
-          <div class="pcard-pseudo">Milou</div>
+          <img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France">
+          <div class="pcard-name">Milou</div>
           <div class="pcard-realname"></div>
-          <div class="pcard-socials">
-            <a href="https://x.com/Miloufnr" target="_blank"><i class="ti ti-brand-x"></i></a>
-            <a href="https://www.twitch.tv/miloufnr" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          <div class="pcard-hover-row">
+            <div class="pcard-socials">
+              <a href="https://x.com/Miloufnr" target="_blank"><i class="ti ti-brand-x"></i></a>
+              <a href="https://www.twitch.tv/miloufnr" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+            </div>
+            <div class="pcard-al-badge">AL Management</div>
           </div>
         </div>
       </div>
  
-      <!-- Azkx — K13 -->
-      <div class="pcard" data-game="fortnite" data-region="emea">
-        <div class="pcard-bg"><img src="https://i.imgur.com/OpFPL1X.jpeg" alt="Azkx" style="object-position:center 30%"></div>
+      <!-- Azkx — K13 — FR — signed -->
+      <div class="pcard" data-game="fortnite" data-country="fr" data-status="signed">
+        <img class="pcard-photo" src="https://i.imgur.com/OpFPL1X.jpeg" alt="Azkx" style="object-position:center 30%">
         <div class="pcard-overlay"></div>
-        <div class="pcard-top-row">
-          <div class="pcard-badge">Fortnite</div>
-          <div class="pcard-club"><img src="k13.png" alt="K13"></div>
+        <div class="pcard-top">
+          <div class="pcard-game-badge">Fortnite</div>
+          <img class="pcard-club-logo" src="k13.png" alt="K13">
         </div>
         <div class="pcard-content">
-          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
-          <div class="pcard-pseudo">Azkx</div>
+          <img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France">
+          <div class="pcard-name">Azkx</div>
           <div class="pcard-realname"></div>
-          <div class="pcard-socials">
-            <a href="https://x.com/azkxfn" target="_blank"><i class="ti ti-brand-x"></i></a>
-            <a href="https://t.co/lCqTlu8OvI" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          <div class="pcard-hover-row">
+            <div class="pcard-socials">
+              <a href="https://x.com/azkxfn" target="_blank"><i class="ti ti-brand-x"></i></a>
+              <a href="https://t.co/lCqTlu8OvI" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+            </div>
+            <div class="pcard-al-badge">AL Management</div>
           </div>
         </div>
       </div>
  
-      <!-- Skyze — 2R -->
-      <div class="pcard" data-game="fortnite" data-region="emea">
+      <!-- Skyze — 2R — FR — signed -->
+      <div class="pcard" data-game="fortnite" data-country="fr" data-status="signed">
         <div class="pcard-anon"><i class="ti ti-user"></i></div>
         <div class="pcard-overlay"></div>
-        <div class="pcard-top-row">
-          <div class="pcard-badge">Fortnite</div>
-          <div class="pcard-club"><img src="2r.png" alt="2R"></div>
+        <div class="pcard-top">
+          <div class="pcard-game-badge">Fortnite</div>
+          <img class="pcard-club-logo" src="2r.png" alt="2R">
         </div>
         <div class="pcard-content">
-          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
-          <div class="pcard-pseudo">Skyze</div>
+          <img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France">
+          <div class="pcard-name">Skyze</div>
           <div class="pcard-realname"></div>
-          <div class="pcard-socials">
-            <a href="https://x.com/Skyzefn7" target="_blank"><i class="ti ti-brand-x"></i></a>
-            <a href="https://t.co/tEVf3S3RrP" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          <div class="pcard-hover-row">
+            <div class="pcard-socials">
+              <a href="https://x.com/Skyzefn7" target="_blank"><i class="ti ti-brand-x"></i></a>
+              <a href="https://t.co/tEVf3S3RrP" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+            </div>
+            <div class="pcard-al-badge">AL Management</div>
           </div>
         </div>
       </div>
  
-      <!-- Snaylyx — TBA -->
-      <div class="pcard" data-game="fortnite" data-region="emea">
+      <!-- Snaylyx — TBA — FR -->
+      <div class="pcard" data-game="fortnite" data-country="fr" data-status="tba">
         <div class="pcard-anon"><i class="ti ti-user"></i></div>
         <div class="pcard-overlay"></div>
-        <div class="pcard-top-row">
-          <div class="pcard-badge">Fortnite</div>
-          <div class="pcard-club text-badge"><span>TBA</span></div>
+        <div class="pcard-top">
+          <div class="pcard-game-badge">Fortnite</div>
+          <div class="pcard-status-badge pcard-status-tba">TBA</div>
         </div>
         <div class="pcard-content">
-          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
-          <div class="pcard-pseudo">Snaylyx</div>
+          <img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France">
+          <div class="pcard-name">Snaylyx</div>
           <div class="pcard-realname"></div>
-          <div class="pcard-socials">
-            <a href="https://x.com/snaylyx_" target="_blank"><i class="ti ti-brand-x"></i></a>
-            <a href="https://www.twitch.tv/snaylyxftnn" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          <div class="pcard-hover-row">
+            <div class="pcard-socials">
+              <a href="https://x.com/snaylyx_" target="_blank"><i class="ti ti-brand-x"></i></a>
+              <a href="https://www.twitch.tv/snaylyxftnn" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+            </div>
+            <div class="pcard-al-badge">AL Management</div>
           </div>
         </div>
       </div>
  
-      <!-- Palochka — F/A -->
-      <div class="pcard" data-game="fortnite" data-region="cis">
+      <!-- Palochka — F/A — BY -->
+      <div class="pcard" data-game="fortnite" data-country="by" data-status="fa">
         <div class="pcard-anon"><i class="ti ti-user"></i></div>
         <div class="pcard-overlay"></div>
-        <div class="pcard-top-row">
-          <div class="pcard-badge">Fortnite</div>
-          <div class="pcard-club text-badge"><span>F/A</span></div>
+        <div class="pcard-top">
+          <div class="pcard-game-badge">Fortnite</div>
+          <div class="pcard-status-badge pcard-status-fa">F/A</div>
         </div>
         <div class="pcard-content">
-          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/by.png" alt="Belarus"></div>
-          <div class="pcard-pseudo">Palochka</div>
+          <img class="pcard-flag" src="https://flagcdn.com/w20/by.png" alt="Belarus">
+          <div class="pcard-name">Palochka</div>
           <div class="pcard-realname"></div>
-          <div class="pcard-socials">
-            <a href="https://x.com/fs1palochka" target="_blank"><i class="ti ti-brand-x"></i></a>
-            <a href="https://t.co/MhEQqarYXx" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          <div class="pcard-hover-row">
+            <div class="pcard-socials">
+              <a href="https://x.com/fs1palochka" target="_blank"><i class="ti ti-brand-x"></i></a>
+              <a href="https://t.co/MhEQqarYXx" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+            </div>
+            <div class="pcard-al-badge">AL Management</div>
           </div>
         </div>
       </div>
  
-      <!-- Xaizzing — F/A -->
-      <div class="pcard" data-game="fortnite" data-region="emea">
+      <!-- Xaizzing — F/A — ES -->
+      <div class="pcard" data-game="fortnite" data-country="es" data-status="fa">
         <div class="pcard-anon"><i class="ti ti-user"></i></div>
         <div class="pcard-overlay"></div>
-        <div class="pcard-top-row">
-          <div class="pcard-badge">Fortnite</div>
-          <div class="pcard-club text-badge"><span>F/A</span></div>
+        <div class="pcard-top">
+          <div class="pcard-game-badge">Fortnite</div>
+          <div class="pcard-status-badge pcard-status-fa">F/A</div>
         </div>
         <div class="pcard-content">
-          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/es.png" alt="Spain"></div>
-          <div class="pcard-pseudo">Xaizzing</div>
+          <img class="pcard-flag" src="https://flagcdn.com/w20/es.png" alt="Spain">
+          <div class="pcard-name">Xaizzing</div>
           <div class="pcard-realname"></div>
-          <div class="pcard-socials">
-            <a href="https://x.com/Xaizzing" target="_blank"><i class="ti ti-brand-x"></i></a>
-            <a href="https://www.twitch.tv/xaizzing" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          <div class="pcard-hover-row">
+            <div class="pcard-socials">
+              <a href="https://x.com/Xaizzing" target="_blank"><i class="ti ti-brand-x"></i></a>
+              <a href="https://www.twitch.tv/xaizzing" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+            </div>
+            <div class="pcard-al-badge">AL Management</div>
           </div>
         </div>
       </div>
  
-      <!-- ScoezZ — F/A -->
-      <div class="pcard" data-game="fortnite" data-region="emea">
+      <!-- ScoezZ — F/A — ES -->
+      <div class="pcard" data-game="fortnite" data-country="es" data-status="fa">
         <div class="pcard-anon"><i class="ti ti-user"></i></div>
         <div class="pcard-overlay"></div>
-        <div class="pcard-top-row">
-          <div class="pcard-badge">Fortnite</div>
-          <div class="pcard-club text-badge"><span>F/A</span></div>
+        <div class="pcard-top">
+          <div class="pcard-game-badge">Fortnite</div>
+          <div class="pcard-status-badge pcard-status-fa">F/A</div>
         </div>
         <div class="pcard-content">
-          <div class="pcard-flag-row"><img class="pcard-flag" src="https://flagcdn.com/w20/es.png" alt="Spain"></div>
-          <div class="pcard-pseudo">ScoezZ</div>
+          <img class="pcard-flag" src="https://flagcdn.com/w20/es.png" alt="Spain">
+          <div class="pcard-name">ScoezZ</div>
           <div class="pcard-realname"></div>
-          <div class="pcard-socials">
-            <a href="https://x.com/scoezzfn" target="_blank"><i class="ti ti-brand-x"></i></a>
-            <a href="https://t.co/VGlQhnNFkv" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          <div class="pcard-hover-row">
+            <div class="pcard-socials">
+              <a href="https://x.com/scoezzfn" target="_blank"><i class="ti ti-brand-x"></i></a>
+              <a href="https://t.co/VGlQhnNFkv" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+            </div>
+            <div class="pcard-al-badge">AL Management</div>
           </div>
         </div>
       </div>
  
-    </div>
     </div>
   </div>
 </section>
@@ -519,52 +889,129 @@
   injectNav('talents.html');
   injectFooter();
  
-  let activeGame = 'all';
-  let activeRegion = 'all';
+  // ── FILTER STATE ─────────────────────────────────────────
+  let activeGame    = 'all';
+  let activeCountry = 'all';
+  let activeStatus  = 'all';
  
-  function applyFilters() {
+  function applyFilters(animate = true) {
     const cards = document.querySelectorAll('.pcard');
     let visible = 0;
-    cards.forEach(card => {
-      const gameMatch = activeGame === 'all' || card.dataset.game === activeGame;
-      const regionMatch = activeRegion === 'all' || card.dataset.region === activeRegion;
-      const show = gameMatch && regionMatch;
-      card.style.display = show ? '' : 'none';
-      if (show) visible++;
+ 
+    cards.forEach((card, i) => {
+      const gameMatch    = activeGame    === 'all' || card.dataset.game    === activeGame;
+      const countryMatch = activeCountry === 'all' || card.dataset.country === activeCountry;
+      const statusMatch  = activeStatus  === 'all' || card.dataset.status  === activeStatus;
+      const show = gameMatch && countryMatch && statusMatch;
+ 
+      if (show) {
+        card.style.display = '';
+        card.style.animation = 'none';
+        card.offsetHeight; // reflow
+        card.style.animation = animate ? `card-in 0.35s ease ${i * 0.04}s both` : '';
+        visible++;
+      } else {
+        card.style.display = 'none';
+      }
     });
  
+    const info = document.getElementById('results-info');
+    const count = document.getElementById('results-count');
+    count.textContent = visible;
+ 
+    // No results
     let noRes = document.getElementById('no-results');
     if (visible === 0) {
       if (!noRes) {
         noRes = document.createElement('div');
         noRes.id = 'no-results';
         noRes.className = 'no-results';
-        noRes.textContent = 'No players found for this selection.';
+        noRes.innerHTML = 'No players found. <span>Try different filters.</span>';
         document.getElementById('talents-grid').appendChild(noRes);
       }
       noRes.style.display = '';
     } else if (noRes) {
       noRes.style.display = 'none';
     }
+ 
+    // Sync map highlight
+    syncMapHighlight();
   }
  
-  document.querySelectorAll('#game-filter .filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      activeGame = btn.dataset.game;
-      document.querySelectorAll('#game-filter .filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+  // ── PILL FILTERS ─────────────────────────────────────────
+  document.querySelectorAll('#game-filter .pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      activeGame = pill.dataset.game;
+      document.querySelectorAll('#game-filter .pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
       applyFilters();
     });
   });
  
-  document.querySelectorAll('#region-filter .filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      activeRegion = btn.dataset.region;
-      document.querySelectorAll('#region-filter .filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
+  document.querySelectorAll('#country-filter .pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      activeCountry = pill.dataset.country;
+      document.querySelectorAll('#country-filter .pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
       applyFilters();
     });
   });
+ 
+  document.querySelectorAll('#status-filter .pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      activeStatus = pill.dataset.status;
+      document.querySelectorAll('#status-filter .pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      applyFilters();
+    });
+  });
+ 
+  // ── MAP INTERACTION ───────────────────────────────────────
+  const tooltip = document.getElementById('map-tooltip');
+ 
+  document.querySelectorAll('.country-active').forEach(country => {
+    country.addEventListener('click', () => {
+      const code = country.dataset.country;
+      const name = country.dataset.name;
+ 
+      // Update country filter
+      activeCountry = code;
+      document.querySelectorAll('#country-filter .pill').forEach(p => {
+        p.classList.toggle('active', p.dataset.country === code);
+      });
+      applyFilters();
+ 
+      // Scroll to grid
+      document.querySelector('.talents-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+ 
+    country.addEventListener('mouseenter', (e) => {
+      tooltip.textContent = country.dataset.name;
+      tooltip.style.opacity = '1';
+    });
+ 
+    country.addEventListener('mousemove', (e) => {
+      const rect = document.querySelector('.map-wrap').getBoundingClientRect();
+      tooltip.style.left = (e.clientX - rect.left + 12) + 'px';
+      tooltip.style.top  = (e.clientY - rect.top - 36) + 'px';
+    });
+ 
+    country.addEventListener('mouseleave', () => {
+      tooltip.style.opacity = '0';
+    });
+  });
+ 
+  function syncMapHighlight() {
+    document.querySelectorAll('.country-active').forEach(c => c.classList.remove('selected'));
+    if (activeCountry !== 'all') {
+      const el = document.getElementById('country-' + activeCountry);
+      if (el) el.classList.add('selected');
+    }
+  }
+ 
+  // Initial count
+  applyFilters(false);
 </script>
 </body>
 </html>
+ 
