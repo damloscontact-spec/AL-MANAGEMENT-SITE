@@ -232,6 +232,14 @@
       z-index: 2;
     }
     .pcard-flag { width: 20px; height: 14px; border-radius: 3px; object-fit: cover; margin-bottom: 6px; opacity: 0.9; }
+    .pcard-realname {
+      font-size: 10px;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     .pcard-name {
       font-family: 'Syne', sans-serif;
       font-size: clamp(14px, 1.4vw, 17px);
@@ -269,13 +277,56 @@
     .no-results { grid-column: 1/-1; text-align: center; padding: 80px 0; color: var(--muted); font-size: 15px; }
     .no-results span { color: var(--purple-light); }
  
-    @media (max-width: 1100px) { .pgrid { grid-template-columns: repeat(3,1fr); } }
-    @media (max-width: 900px) {
-      .page-hero,.map-section,.filter-section,.talents-section { padding-left:24px; padding-right:24px; }
-      .pgrid { grid-template-columns: repeat(2,1fr); }
-      .filter-inner { gap: 12px; }
+    /* ── TABLET (max 1100px) ── */
+    @media (max-width: 1100px) {
+      .pgrid { grid-template-columns: repeat(3, 1fr); }
     }
-    @media (max-width: 480px) { .pgrid { grid-template-columns: 1fr 1fr; gap: 12px; } }
+ 
+    /* ── TABLET PORTRAIT / LARGE PHONE (max 900px) ── */
+    @media (max-width: 900px) {
+      .page-hero, .map-section, .filter-section, .talents-section {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+      .page-hero { padding-top: 60px; padding-bottom: 40px; }
+      .map-section { padding-top: 50px; padding-bottom: 40px; }
+      .talents-section { padding-top: 40px; padding-bottom: 60px; }
+      .pgrid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+      .filter-inner { gap: 10px; }
+      .filter-group { gap: 5px; }
+      .pill { padding: 6px 12px; font-size: 11px; }
+      .pcard { height: 280px; }
+    }
+ 
+    /* ── MOBILE (max 600px) ── */
+    @media (max-width: 600px) {
+      .page-hero, .map-section, .filter-section, .talents-section {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+      .pgrid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .pcard { height: 240px; border-radius: 14px; }
+      .pcard-name { font-size: 12px !important; }
+      .pcard-realname { display: none; }
+      .pcard-flag { width: 16px; height: 11px; }
+      .pcard-game-badge { font-size: 7px; padding: 3px 7px; }
+      .pcard-club-logo { width: 28px; height: 28px; }
+      .pcard-status-badge { font-size: 7px; padding: 3px 7px; }
+      .pcard-content { padding: 12px 10px; }
+      .pcard-top { top: 10px; left: 10px; right: 10px; }
+      .filter-inner { flex-direction: column; gap: 14px; }
+      .filter-divider { display: none; }
+      .filter-pills { flex-wrap: wrap; }
+      .map-header .s-title { font-size: 22px; }
+      .map-subtitle { font-size: 13px; }
+    }
+ 
+    /* ── SMALL MOBILE (max 380px) ── */
+    @media (max-width: 380px) {
+      .pgrid { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .pcard { height: 210px; }
+      .pill { padding: 5px 10px; font-size: 10px; }
+    }
   </style>
 </head>
 <body>
@@ -358,6 +409,7 @@
         <div class="pcard-content">
           <img class="pcard-flag" src="https://flagcdn.com/w20/es.png" alt="Spain">
           <div class="pcard-name">XaviK</div>
+          <div class="pcard-realname">Xavier Riera</div>
           <div class="pcard-hover-row">
             <div class="pcard-socials">
               <a href="https://x.com/xavik_05" target="_blank"><i class="ti ti-brand-x"></i></a>
@@ -378,6 +430,7 @@
         <div class="pcard-content">
           <img class="pcard-flag" src="https://flagcdn.com/w20/sn.png" alt="Senegal">
           <div class="pcard-name" style="font-size:13px">Dexxjunior</div>
+          <div class="pcard-realname">Moustapha Thiam</div>
           <div class="pcard-hover-row">
             <div class="pcard-socials">
               <a href="https://x.com/dexxjunior03" target="_blank"><i class="ti ti-brand-x"></i></a>
@@ -398,6 +451,7 @@
         <div class="pcard-content">
           <img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France">
           <div class="pcard-name">Magicien</div>
+          <div class="pcard-realname">Tony Desree</div>
           <div class="pcard-hover-row">
             <div class="pcard-socials">
               <a href="https://x.com/DesreeTony" target="_blank"><i class="ti ti-brand-x"></i></a>
@@ -418,6 +472,7 @@
         <div class="pcard-content">
           <img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France">
           <div class="pcard-name">XeRBoy</div>
+          <div class="pcard-realname">Yoni Boisgontier</div>
           <div class="pcard-hover-row">
             <div class="pcard-socials">
               <a href="https://x.com/XeRBoy_" target="_blank"><i class="ti ti-brand-x"></i></a>
