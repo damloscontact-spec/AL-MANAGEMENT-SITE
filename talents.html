@@ -83,12 +83,8 @@
     /* ── FILTERS ── */
     .filter-section {
       padding: 28px 60px;
-      position: sticky;
-      top: 68px;
-      z-index: 50;
       border-bottom: 1px solid var(--border);
-      background: rgba(10,9,16,0.92);
-      backdrop-filter: blur(14px);
+      background: var(--bg);
     }
     .filter-inner {
       max-width: 1100px;
@@ -706,7 +702,7 @@ fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
     // Bounding boxes to exclude overseas territories (e.g. French Guiana for France)
     // We only highlight the main territory by checking centroid longitude/latitude
     const COUNTRY_BOUNDS = {
-      'fr': { minLon: -5,  maxLon: 10,  minLat: 41, maxLat: 52 },  // Metropolitan France only
+      'fr': { minLon: -5,  maxLon: 8.5, minLat: 42.3, maxLat: 51.2 },  // Mainland France only (excludes Corsica)
       'es': { minLon: -10, maxLon: 5,   minLat: 35, maxLat: 45 },
       'ua': { minLon: 22,  maxLon: 40,  minLat: 44, maxLat: 53 },
       'by': { minLon: 23,  maxLon: 33,  minLat: 51, maxLat: 57 },
