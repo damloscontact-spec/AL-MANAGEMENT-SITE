@@ -699,22 +699,42 @@ fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
     const path = d3.geoPath().projection(projection);
     const countries = topojson.feature(world, world.objects.countries);
  
-    // Bounding boxes to exclude overseas territories (e.g. French Guiana for France)
-    // We only highlight the main territory by checking centroid longitude/latitude
-    const COUNTRY_BOUNDS = {
-      'fr': { minLon: -6,  maxLon: 10,  minLat: 41,   maxLat: 52 },  // Metropolitan France (Guyane is at lon -54 so excluded)
-      'es': { minLon: -10, maxLon: 5,   minLat: 35, maxLat: 45 },
-      'ua': { minLon: 22,  maxLon: 40,  minLat: 44, maxLat: 53 },
-      'by': { minLon: 23,  maxLon: 33,  minLat: 51, maxLat: 57 },
-      'sn': { minLon: -18, maxLon: -11, minLat: 12, maxLat: 17 },
-    };
+    // For countries with overseas territories, we split features by geometry
+    // and only highlight the largest polygon (main territory)
+    function getMainFeature(feature) {
+      if (!feature || !feature.geometry) return feature;
+      if (feature.geometry.type === 'Polygon') return feature;
+      if (feature.geometry.type === 'MultiPolygon') {
+        // Find largest polygon by coordinate count (approximation of area)
+        let largest = null, maxLen = 0;
+        feature.geometry.coordinates.forEach(poly => {
+          const len = poly[0].length;
+          if (len > maxLen) { maxLen = len; largest = poly; }
+        });
+        if (!largest) return feature;
+        return {
+          ...feature,
+          geometry: { type: 'Polygon', coordinates: largest }
+        };
+      }
+      return feature;
+    }
  
     function isMainTerritory(feature, code) {
-      const bounds = COUNTRY_BOUNDS[code];
-      if (!bounds) return true;
-      const centroid = d3.geoCentroid(feature);
-      return centroid[0] >= bounds.minLon && centroid[0] <= bounds.maxLon &&
-             centroid[1] >= bounds.minLat && centroid[1] <= bounds.maxLat;
+      // Use centroid of the LARGEST polygon only
+      const mainFeature = getMainFeature(feature);
+      const centroid = d3.geoCentroid(mainFeature);
+      const BOUNDS = {
+        'fr': { minLon: -6,  maxLon: 10,  minLat: 41, maxLat: 52 },
+        'es': { minLon: -10, maxLon: 5,   minLat: 35, maxLat: 45 },
+        'ua': { minLon: 22,  maxLon: 40,  minLat: 44, maxLat: 53 },
+        'by': { minLon: 23,  maxLon: 33,  minLat: 51, maxLat: 57 },
+        'sn': { minLon: -18, maxLon: -11, minLat: 12, maxLat: 17 },
+      };
+      const b = BOUNDS[code];
+      if (!b) return true;
+      return centroid[0] >= b.minLon && centroid[0] <= b.maxLon &&
+             centroid[1] >= b.minLat && centroid[1] <= b.maxLat;
     }
  
     const g = d3.select(svg).append('g');
@@ -759,7 +779,8 @@ fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
     Object.entries(ACTIVE_ISO).forEach(([id, code], i) => {
       const feature = countries.features.find(f => String(f.id) === String(id));
       if (!feature || !isMainTerritory(feature, code)) return;
-      const centroid = path.centroid(feature);
+      const mainFeature = getMainFeature(feature);
+      const centroid = path.centroid(mainFeature);
       if (!centroid || isNaN(centroid[0])) return;
       const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
       circle.setAttribute('cx', centroid[0]);
@@ -875,7 +896,4 @@ applyFilters(false);
 </script>
 </body>
 </html>
-
-
-
  
