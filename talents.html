@@ -702,7 +702,7 @@ fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
     // Bounding boxes to exclude overseas territories (e.g. French Guiana for France)
     // We only highlight the main territory by checking centroid longitude/latitude
     const COUNTRY_BOUNDS = {
-      'fr': { minLon: -5,  maxLon: 8.5, minLat: 42.3, maxLat: 51.2 },  // Mainland France only (excludes Corsica)
+      'fr': { minLon: -6,  maxLon: 10,  minLat: 41,   maxLat: 52 },  // Metropolitan France (Guyane is at lon -54 so excluded)
       'es': { minLon: -10, maxLon: 5,   minLat: 35, maxLat: 45 },
       'ua': { minLon: 22,  maxLon: 40,  minLat: 44, maxLat: 53 },
       'by': { minLon: 23,  maxLon: 33,  minLat: 51, maxLat: 57 },
