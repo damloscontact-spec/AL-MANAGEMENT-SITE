@@ -395,21 +395,55 @@
       flex-wrap: wrap;
     }
  
-    /* ── RESPONSIVE ── */
+    /* ── TABLET (max 1024px) ── */
+    @media (max-width: 1024px) {
+      .why-grid { grid-template-columns: repeat(3, 1fr); gap: 14px; }
+      .why, .talents, .cta-final { padding: 80px 36px; }
+    }
+ 
+    /* ── TABLET PORTRAIT (max 900px) ── */
     @media (max-width: 900px) {
       .why, .talents, .cta-final { padding: 70px 24px; }
       .why-grid { grid-template-columns: 1fr; gap: 14px; }
-      .talents-grid { grid-template-columns: repeat(2, 1fr); }
+      .talents-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
       .talents-header { flex-direction: column; align-items: flex-start; gap: 10px; }
-      .hero-stats { gap: 24px; }
+      .hero-stats { gap: 28px; flex-wrap: wrap; }
       .hero-stat-divider { display: none; }
+      .hero h1 { letter-spacing: -1.5px; }
     }
+ 
+    /* ── MOBILE (max 600px) ── */
     @media (max-width: 600px) {
-      .hero { padding: 100px 24px 60px; }
-      .hero-ctas { flex-direction: column; align-items: center; }
-      .hero-stats { gap: 20px; }
-      .talents-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-      .tcard { height: 240px; }
+      .hero { padding: 90px 20px 60px; }
+      .hero-logo { height: clamp(40px, 10vw, 56px); margin-bottom: 20px; }
+      .hero h1 { letter-spacing: -1px; margin-bottom: 16px; }
+      .hero-sub { font-size: 14px; margin-bottom: 28px; }
+      .hero-ctas { flex-direction: column; align-items: center; width: 100%; }
+      .hero-ctas .btn-primary, .hero-ctas .btn-ghost { width: 100%; max-width: 280px; text-align: center; }
+      .hero-stats { gap: 16px; margin-top: 40px; }
+      .hero-stat-num { font-size: 26px; }
+      .hero-stat-label { font-size: 9px; letter-spacing: 1.5px; }
+      .why { padding: 60px 20px; }
+      .why-grid { grid-template-columns: 1fr; gap: 12px; }
+      .why-card { padding: 24px 20px; }
+      .talents-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .tcard { height: 220px; border-radius: 14px; }
+      .tcard-name { font-size: 12px; }
+      .tcard-badge { font-size: 7px; padding: 3px 7px; }
+      .tcard-club { width: 28px; height: 28px; }
+      .tcard-content { padding: 12px 10px; }
+      .tcard-top { top: 10px; left: 10px; right: 10px; }
+      .orgs { padding: 36px 0; }
+      .cta-final { padding: 70px 20px; }
+      .cta-btns { flex-direction: column; align-items: center; }
+      .cta-btns .btn-primary, .cta-btns .btn-ghost { width: 100%; max-width: 280px; text-align: center; }
+    }
+ 
+    /* ── SMALL MOBILE (max 380px) ── */
+    @media (max-width: 380px) {
+      .talents-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .tcard { height: 190px; }
+      .hero-stats { justify-content: center; }
     }
   </style>
 </head>
@@ -426,25 +460,20 @@
   <h1>We build<br><em>esport careers</em></h1>
   <p class="hero-sub">Representing the next generation of professional players.</p>
  
-  <div class="hero-ctas">
-    <a href="talents.html" class="btn-primary">Meet our talents</a>
-    <a href="#contact" class="btn-ghost">Work with us</a>
-  </div>
- 
   <div class="hero-stats">
     <div class="hero-stat">
-      <div class="hero-stat-num"><span class="counter" data-target="15">0</span>+</div>
-      <div class="hero-stat-label">Players</div>
+      <div class="hero-stat-num">+<span class="counter" data-target="60">0</span></div>
+      <div class="hero-stat-label">Players accompanied</div>
     </div>
     <div class="hero-stat-divider"></div>
     <div class="hero-stat">
-      <div class="hero-stat-num"><span class="counter" data-target="2">0</span></div>
-      <div class="hero-stat-label">Games</div>
+      <div class="hero-stat-num">+<span class="counter" data-target="5">0</span></div>
+      <div class="hero-stat-label">Years of experience</div>
     </div>
     <div class="hero-stat-divider"></div>
     <div class="hero-stat">
-      <div class="hero-stat-num"><span class="counter" data-target="5">0</span></div>
-      <div class="hero-stat-label">Countries</div>
+      <div class="hero-stat-num">+<span class="counter" data-target="50">0</span></div>
+      <div class="hero-stat-label">Contracts signed</div>
     </div>
     <div class="hero-stat-divider"></div>
     <div class="hero-stat">
@@ -604,7 +633,7 @@ const partners = [
   { name: 'HavoK',          logo: 'havok.png',          url: 'https://x.com/HvKGGs' },
   { name: '2R',             logo: '2r.png',             url: 'https://x.com/2R_Esport' },
   { name: 'K13',            logo: 'k13.png',            url: 'https://x.com/K13esport' },
-  { name: 'Together We Rise', logo: 'togetherwerise.png', url: 'https://x.com/TogetherWeRise' },
+  { name: 'Solo Club', logo: 'togetherwerise.png', url: 'https://x.com/TogetherWeRise' },
 ];
 const ticker = document.getElementById('ticker');
 [...partners, ...partners].forEach(p => {
