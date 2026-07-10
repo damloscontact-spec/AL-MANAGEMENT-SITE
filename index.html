@@ -4,130 +4,308 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AL Management</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/topojson@3/dist/topojson.min.js"></script>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
  
     body {
       background: #0a0910;
+      overflow: hidden;
+      height: 100vh;
+      width: 100vw;
+    }
+ 
+    /* ── PRELOADER WRAP ── */
+    #preloader {
+      position: fixed;
+      inset: 0;
+      background: #0a0910;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
-      overflow: hidden;
-      gap: 24px;
+      z-index: 1000;
+      gap: 28px;
     }
  
-    .intro-wrap {
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
- 
-    .glow {
+    /* ── WORLD MAP BACKGROUND ── */
+    #map-bg {
       position: absolute;
-      width: 260px;
-      height: 260px;
-      border-radius: 50%;
-      background: radial-gradient(ellipse, rgba(124,58,237,0.5) 0%, transparent 70%);
+      inset: 0;
       opacity: 0;
-      animation: glow-in 0.6s ease forwards 0.3s;
+      transition: opacity 1.2s ease;
+      pointer-events: none;
+    }
+    #map-bg.visible { opacity: 1; }
+ 
+    #world-svg-bg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
  
-    @keyframes glow-in {
-      0%   { opacity: 0; transform: scale(0.6); }
-      100% { opacity: 1; transform: scale(1); }
+    .map-country {
+      fill: #14112a;
+      stroke: #1e1a36;
+      stroke-width: 0.3;
     }
+    .map-country-active {
+      fill: #1e1552;
+      stroke: #4a2fa0;
+      stroke-width: 0.6;
+      transition: fill 0.8s ease;
+    }
+    .map-dot-bg {
+      fill: #7c3aed;
+      opacity: 0;
+      filter: drop-shadow(0 0 4px rgba(124,58,237,0.7));
+      transition: opacity 0.6s ease;
+    }
+    .map-dot-bg.visible { opacity: 0.9; }
  
-    .logo-text {
+    /* ── LOGO CONTAINER ── */
+    .logo-wrap {
       position: relative;
-      font-family: Arial Black, Arial, sans-serif;
-      font-size: 110px;
-      font-weight: 900;
-      color: #ffffff;
-      letter-spacing: -5px;
+      z-index: 2;
       opacity: 0;
-      transform: rotate(-180deg) scale(0.2);
-      animation: spin-appear 1.2s cubic-bezier(0.2, 0.8, 0.3, 1) forwards 0.2s;
+      transform: scale(0.88);
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.2, 0.8, 0.3, 1);
+    }
+    .logo-wrap.visible {
+      opacity: 1;
+      transform: scale(1);
     }
  
-    .dot {
-      display: inline-block;
-      width: 18px;
-      height: 18px;
-      background: #7c3aed;
-      border-radius: 3px;
-      transform: rotate(45deg);
-      margin-left: 6px;
-      vertical-align: middle;
-      margin-bottom: 16px;
+    .logo-img {
+      width: clamp(80px, 14vw, 130px);
+      height: auto;
+      display: block;
+      position: relative;
     }
  
-    @keyframes spin-appear {
-      0%   { opacity: 0; transform: rotate(-180deg) scale(0.2); }
-      65%  { opacity: 1; transform: rotate(6deg) scale(1.06); }
-      82%  { transform: rotate(-3deg) scale(0.97); }
-      100% { opacity: 1; transform: rotate(0deg) scale(1); }
+    /* Shimmer sweep over logo */
+    .logo-shimmer {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        105deg,
+        transparent 30%,
+        rgba(255,255,255,0.18) 50%,
+        transparent 70%
+      );
+      transform: translateX(-100%);
+      pointer-events: none;
+      border-radius: 4px;
+    }
+    .logo-shimmer.sweep {
+      animation: shimmer-sweep 0.9s ease forwards;
+    }
+    @keyframes shimmer-sweep {
+      from { transform: translateX(-100%); }
+      to   { transform: translateX(200%); }
     }
  
+    /* ── TAGLINE ── */
     .tagline {
-      font-family: Arial, sans-serif;
-      font-size: 16px;
-      font-weight: 400;
-      color: #7e7a9a;
+      position: relative;
+      z-index: 2;
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(13px, 2vw, 16px);
+      font-weight: 700;
       letter-spacing: 3px;
       text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
       opacity: 0;
-      animation: fade-in-tag 0.8s ease forwards 1.4s;
+      transform: translateY(10px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .tagline.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
  
-    @keyframes fade-in-tag {
-      0%   { opacity: 0; transform: translateY(8px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
- 
-    /* Full page fade out — fades to black then home loads underneath */
-    .fade-out {
-      position: fixed;
-      inset: 0;
-      background: #0a0910;
+    /* ── EXIT ANIMATION ── */
+    #preloader.exit {
+      transition: opacity 0.7s ease;
       opacity: 0;
       pointer-events: none;
-      animation: do-fade 0.6s ease forwards 2s;
-      z-index: 99;
     }
  
-    @keyframes do-fade {
-      0%   { opacity: 0; }
-      100% { opacity: 1; }
+    /* ── HOME PAGE (hidden behind preloader) ── */
+    #home-frame {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+      opacity: 0;
+      transition: opacity 0.7s ease;
+      z-index: 1;
     }
+    #home-frame.visible { opacity: 1; }
   </style>
 </head>
 <body>
-  <div class="intro-wrap">
-    <div class="glow"></div>
-    <div class="logo-text">AL<span class="dot"></span></div>
+ 
+<!-- Home page preloaded silently in iframe -->
+<iframe id="home-frame" src="home.html" title="AL Management"></iframe>
+ 
+<!-- Preloader overlay -->
+<div id="preloader">
+ 
+  <!-- World map background -->
+  <div id="map-bg">
+    <svg id="world-svg-bg" viewBox="0 0 960 500" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice"></svg>
   </div>
-  <div class="tagline">We build esport careers</div>
-  <div class="fade-out"></div>
  
-  <script>
-    // Précharge home.html en arrière-plan pendant l'intro
-    const link = document.createElement('link');
-    link.rel = 'prefetch';
-    link.href = 'home.html';
-    document.head.appendChild(link);
+  <!-- Logo -->
+  <div class="logo-wrap" id="logo-wrap">
+    <img class="logo-img" src="logo.png" alt="AL Management" id="logo-img">
+    <div class="logo-shimmer" id="logo-shimmer"></div>
+  </div>
  
-    setTimeout(() => {
-      // Fade vers home en douceur
-      document.body.style.transition = 'opacity 0.5s ease';
-      document.body.style.opacity = '0';
+  <!-- Tagline -->
+  <div class="tagline" id="tagline">We build esport careers.</div>
+ 
+</div>
+ 
+<script>
+// ── ACTIVE COUNTRIES ─────────────────────────────────────────
+const ACTIVE_ISO = {
+  '250': 'fr',
+  '724': 'es',
+  '804': 'ua',
+  '112': 'by',
+  '686': 'sn'
+};
+ 
+const COUNTRY_BOUNDS = {
+  'fr': { minLon: -6,  maxLon: 10,  minLat: 41, maxLat: 52 },
+  'es': { minLon: -10, maxLon: 5,   minLat: 35, maxLat: 45 },
+  'ua': { minLon: 22,  maxLon: 40,  minLat: 44, maxLat: 53 },
+  'by': { minLon: 23,  maxLon: 33,  minLat: 51, maxLat: 57 },
+  'sn': { minLon: -18, maxLon: -11, minLat: 12, maxLat: 17 },
+};
+ 
+function getMainFeature(feature) {
+  if (!feature?.geometry) return feature;
+  if (feature.geometry.type === 'Polygon') return feature;
+  if (feature.geometry.type === 'MultiPolygon') {
+    let largest = null, maxLen = 0;
+    feature.geometry.coordinates.forEach(poly => {
+      if (poly[0].length > maxLen) { maxLen = poly[0].length; largest = poly; }
+    });
+    return largest ? { ...feature, geometry: { type: 'Polygon', coordinates: largest } } : feature;
+  }
+  return feature;
+}
+ 
+function isMainTerritory(feature, code) {
+  const main = getMainFeature(feature);
+  const c = d3.geoCentroid(main);
+  const b = COUNTRY_BOUNDS[code];
+  if (!b) return true;
+  return c[0] >= b.minLon && c[0] <= b.maxLon && c[1] >= b.minLat && c[1] <= b.maxLat;
+}
+ 
+// ── TIMELINE ─────────────────────────────────────────────────
+const logo    = document.getElementById('logo-wrap');
+const tagline = document.getElementById('tagline');
+const mapBg   = document.getElementById('map-bg');
+const shimmer = document.getElementById('logo-shimmer');
+const preloader = document.getElementById('preloader');
+const homeFrame = document.getElementById('home-frame');
+const svg = document.getElementById('world-svg-bg');
+ 
+// Step 1: Logo appears at 400ms
+setTimeout(() => {
+  logo.classList.add('visible');
+}, 400);
+ 
+// Step 2: Shimmer sweeps at 1100ms
+setTimeout(() => {
+  shimmer.classList.add('sweep');
+}, 1100);
+ 
+// Step 3: World map fades in at 1400ms
+setTimeout(() => {
+  mapBg.classList.add('visible');
+}, 1400);
+ 
+// Step 4: Tagline appears at 1700ms
+setTimeout(() => {
+  tagline.classList.add('visible');
+}, 1700);
+ 
+// Step 5: Exit at 3200ms — fade out preloader, reveal home
+setTimeout(() => {
+  preloader.classList.add('exit');
+  homeFrame.classList.add('visible');
+}, 3200);
+ 
+// Step 6: Redirect at 3900ms (after fade completes)
+setTimeout(() => {
+  window.location.href = 'home.html';
+}, 3900);
+ 
+// ── WORLD MAP ─────────────────────────────────────────────────
+fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
+  .then(r => r.json())
+  .then(world => {
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+ 
+    const projection = d3.geoNaturalEarth1()
+      .scale(W < 600 ? 100 : 153)
+      .translate([480, 250]);
+ 
+    const path = d3.geoPath().projection(projection);
+    const countries = topojson.feature(world, world.objects.countries);
+    const dots = [];
+ 
+    const g = d3.select(svg).append('g');
+ 
+    g.selectAll('path')
+      .data(countries.features)
+      .enter()
+      .append('path')
+      .attr('d', path)
+      .attr('class', d => {
+        const code = ACTIVE_ISO[d.id];
+        if (!code || !isMainTerritory(d, code)) return 'map-country';
+        return 'map-country-active';
+      });
+ 
+    // Glow dots — appear progressively after map
+    Object.entries(ACTIVE_ISO).forEach(([id, code], i) => {
+      const feature = countries.features.find(f => String(f.id) === String(id));
+      if (!feature || !isMainTerritory(feature, code)) return;
+      const main = getMainFeature(feature);
+      const centroid = path.centroid(main);
+      if (!centroid || isNaN(centroid[0])) return;
+ 
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('cx', centroid[0]);
+      circle.setAttribute('cy', centroid[1]);
+      circle.setAttribute('r', 4);
+      circle.setAttribute('class', 'map-dot-bg');
+      svg.appendChild(circle);
+      dots.push({ el: circle, delay: i });
+    });
+ 
+    // Light up dots progressively starting at 1800ms
+    dots.forEach((dot, i) => {
       setTimeout(() => {
-        window.location.href = 'home.html';
-      }, 500);
-    }, 2400);
-  </script>
+        dot.el.classList.add('visible');
+      }, 1800 + i * 200);
+    });
+  })
+  .catch(() => {
+    // Silent fail — map just won't appear, preloader still works
+  });
+</script>
 </body>
 </html>
  
