@@ -6,376 +6,656 @@
   <title>AL Management — Esport Player Agency</title>
   <link rel="stylesheet" href="style.css">
   <style>
+ 
+    /* ── REVEAL ANIMATIONS ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.75s ease, transform 0.75s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+ 
+    /* ── HERO ── */
     .hero {
-      min-height: 92vh;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 80px 40px;
+      padding: 120px 40px 80px;
       position: relative;
       overflow: hidden;
     }
-    .hero-glow {
+ 
+    /* Subtle animated radial gradient */
+    .hero-bg {
       position: absolute;
-      top: -100px; left: 50%;
-      transform: translateX(-50%);
-      width: 800px; height: 600px;
-      background: radial-gradient(ellipse, var(--purple-glow) 0%, transparent 68%);
+      inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(124,58,237,0.13) 0%, transparent 70%);
+      animation: hero-breathe 8s ease-in-out infinite alternate;
       pointer-events: none;
+    }
+    @keyframes hero-breathe {
+      from { opacity: 0.6; transform: scale(1); }
+      to   { opacity: 1;   transform: scale(1.06); }
+    }
+ 
+    .hero-logo {
+      height: clamp(48px, 7vw, 72px);
+      width: auto;
+      object-fit: contain;
+      margin-bottom: 32px;
+      opacity: 0;
+      transform: scale(0.92) translateY(-8px);
+      animation: logo-in 0.9s cubic-bezier(0.2,0.8,0.3,1) forwards 0.2s;
+    }
+    @keyframes logo-in {
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+ 
+    .hero-eyebrow {
+      opacity: 0;
+      animation: fade-up 0.7s ease forwards 0.5s;
     }
     .hero h1 {
       font-family: 'Syne', sans-serif;
-      font-size: clamp(48px, 8vw, 88px);
+      font-size: clamp(42px, 7.5vw, 88px);
       font-weight: 800;
       line-height: 1.02;
       letter-spacing: -2.5px;
       color: var(--text);
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       position: relative;
+      opacity: 0;
+      animation: fade-up 0.8s ease forwards 0.7s;
     }
     .hero h1 em { font-style: normal; color: var(--purple-light); }
+ 
     .hero-sub {
-      font-size: 18px;
+      font-size: clamp(15px, 2vw, 18px);
       color: var(--muted);
-      max-width: 460px;
+      max-width: 420px;
       line-height: 1.75;
-      font-style: italic;
+      margin-bottom: 36px;
+      opacity: 0;
+      animation: fade-up 0.7s ease forwards 0.9s;
     }
  
-    .about-strip { padding: 90px 60px; background: var(--surface); }
-    .about-inner {
-      max-width: 1000px;
-      margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
+    .hero-ctas {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 60px;
+      opacity: 0;
+      animation: fade-up 0.7s ease forwards 1.1s;
     }
-    .about-text p { font-size: 16px; color: var(--muted); line-height: 1.8; margin-bottom: 18px; font-style: italic; }
-    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .stat { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px 18px; }
-    .stat .num { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800; color: var(--purple-light); }
-    .stat .lbl { font-size: 12px; color: var(--muted); margin-top: 5px; line-height: 1.4; }
  
-    .featured { padding: 80px 60px; background: var(--bg); }
-    .featured-inner { max-width: 1000px; margin: 0 auto; }
-    .featured-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 36px; }
-    .featured-header a { font-size: 13px; color: var(--purple-light); font-weight: 500; }
-    .featured-header a:hover { color: var(--text); }
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
  
-    .carousel-wrap { position: relative; }
-    .carousel-track-outer { overflow: hidden; border-radius: var(--radius-lg); }
-    .carousel-track { display: flex; transition: transform 0.45s cubic-bezier(.4,0,.2,1); }
- 
-    .pcard {
-      flex: 0 0 calc(25% - 15px);
-      margin-right: 20px;
-      min-width: 0;
+    /* Hero stats */
+    .hero-stats {
+      display: flex;
+      gap: 48px;
+      justify-content: center;
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: fade-up 0.7s ease forwards 1.3s;
       position: relative;
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      height: 300px;
-      border: 1px solid var(--border);
-      transition: border-color 0.25s, transform 0.25s;
-      background: var(--card);
-      cursor: pointer;
+      z-index: 1;
     }
-    .pcard:hover { border-color: var(--purple-mid); transform: translateY(-4px); }
-    .pcard-bg { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--purple-dim); }
-    .pcard-bg img { width: 100%; height: 100%; object-fit: cover; object-position: center center; }
-    .pcard-anon { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--purple-dim); }
-    .anon-icon { width: 72px; height: 72px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 32px; color: var(--muted); }
-    .pcard-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(8,6,18,0.97) 0%, rgba(8,6,18,0.45) 55%, transparent 100%); }
-    .pcard-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 14px 12px; }
-    .pcard-top-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
-    .pcard-badge { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--purple-light); background: var(--purple-dim); padding: 2px 8px; border-radius: 20px; border: 1px solid rgba(180,139,250,0.2); white-space: nowrap; }
-    .pcard-flag { width: 18px; height: 14px; border-radius: 2px; object-fit: cover; display: inline-block; }
-    .pcard-pseudo { font-family: 'Syne', sans-serif; font-weight: 800; color: var(--text); margin-bottom: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: clamp(11px, 1.2vw, 15px); }
-    .pcard-realname { font-size: 10px; color: var(--muted); margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .pcard-socials { display: flex; gap: 6px; }
-    .pcard-socials a { width: 26px; height: 26px; border-radius: 6px; background: rgba(42,26,94,0.85); display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--purple-light); transition: background 0.2s; backdrop-filter: blur(4px); }
-    .pcard-socials a:hover { background: var(--purple); color: #fff; }
+    .hero-stat { text-align: center; }
+    .hero-stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .hero-stat-num span { color: var(--purple-light); }
+    .hero-stat-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .hero-stat-divider {
+      width: 1px;
+      height: 40px;
+      background: var(--border);
+      align-self: center;
+    }
  
-    .carousel-arrows { display: flex; gap: 10px; justify-content: center; margin-top: 20px; }
-    .carousel-btn { width: 38px; height: 38px; border-radius: 50%; background: var(--card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--muted); font-size: 15px; transition: all 0.2s; }
-    .carousel-btn:hover { background: var(--purple); border-color: var(--purple); color: #fff; }
-    .carousel-controls { display: flex; gap: 8px; justify-content: center; margin-top: 12px; }
-    .carousel-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); cursor: pointer; transition: background 0.2s; }
-    .carousel-dot.active { background: var(--purple-light); }
- 
-    .partners {
-      padding: 44px 0;
+    /* ── ORGANIZATIONS TICKER ── */
+    .orgs {
+      padding: 52px 0;
       background: var(--surface);
       border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
       overflow: hidden;
     }
-    .partners-label {
+    .orgs-label {
       text-align: center;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 600;
-      letter-spacing: 3px;
+      letter-spacing: 3.5px;
       text-transform: uppercase;
       color: var(--muted);
-      margin-bottom: 28px;
+      margin-bottom: 32px;
+      opacity: 0.6;
     }
-    .ticker-track { display: flex; gap: 64px; animation: ticker 22s linear infinite; width: max-content; }
+    .ticker-wrap { overflow: hidden; position: relative; }
+    .ticker-track {
+      display: flex;
+      gap: 64px;
+      animation: ticker 28s linear infinite;
+      width: max-content;
+    }
     .ticker-track:hover { animation-play-state: paused; }
-    @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-    .partner-item { display: flex; align-items: center; gap: 12px; white-space: nowrap; opacity: 0.5; transition: opacity 0.2s; }
-    .partner-item:hover { opacity: 1; }
-    .partner-logo { height: 36px; width: auto; object-fit: contain; }
-    .partner-name { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: 2px; text-transform: uppercase; }
- 
-    @media (max-width: 900px) {
-      .about-inner { grid-template-columns: 1fr; gap: 40px; }
-      .about-strip, .featured { padding: 60px 24px; }
-      .featured-header { flex-direction: column; align-items: flex-start; gap: 12px; }
-      .pcard { flex: 0 0 calc(50% - 10px); height: 260px; }
-      #contact { padding: 60px 24px !important; }
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
     }
-    @media (max-width: 480px) {
-      .pcard { flex: 0 0 calc(100% - 0px); height: 280px; }
+    .org-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      white-space: nowrap;
+      opacity: 0.35;
+      transition: opacity 0.3s ease;
+      cursor: pointer;
+    }
+    .org-item:hover { opacity: 0.9; }
+    .org-logo {
+      height: 32px;
+      width: auto;
+      object-fit: contain;
+      filter: brightness(1.1);
+    }
+    .org-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+ 
+    /* ── WHY AL MANAGEMENT ── */
+    .why {
+      padding: 100px 60px;
+      background: var(--bg);
+    }
+    .why-inner { max-width: 1000px; margin: 0 auto; }
+    .why-header { margin-bottom: 56px; }
+ 
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .why-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px 28px;
+      transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
+    }
+    .why-card:hover {
+      border-color: var(--purple-mid);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.3), 0 0 20px rgba(124,58,237,0.06);
+    }
+    .why-ico {
+      width: 46px; height: 46px;
+      background: var(--purple-dim);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      color: var(--purple-light);
+      margin-bottom: 20px;
+      transition: background 0.3s ease;
+    }
+    .why-card:hover .why-ico { background: rgba(124,58,237,0.2); }
+    .why-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      letter-spacing: -0.3px;
+    }
+    .why-card p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+ 
+    /* ── MEET OUR TALENTS ── */
+    .talents {
+      padding: 100px 60px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+    }
+    .talents-inner { max-width: 1000px; margin: 0 auto; }
+    .talents-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 48px;
+      gap: 20px;
+    }
+    .talents-header a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--purple-light);
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    .talents-header a:hover { color: var(--text); }
+ 
+    .talents-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+ 
+    /* Premium player card */
+    .tcard {
+      position: relative;
+      border-radius: 18px;
+      overflow: hidden;
+      height: 300px;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(145deg, #18152a, #110e20);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+    .tcard:hover {
+      transform: translateY(-6px) scale(1.015);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.55), 0 0 24px rgba(124,58,237,0.12);
+    }
+    .tcard::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%; height: 100%;
+      background: linear-gradient(105deg, transparent, rgba(255,255,255,0.04), transparent);
+      transition: left 0.55s ease;
+      z-index: 3; pointer-events: none;
+    }
+    .tcard:hover::before { left: 150%; }
+ 
+    .tcard-photo {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      transition: transform 0.4s ease;
+      z-index: 0;
+    }
+    .tcard:hover .tcard-photo { transform: scale(1.04); }
+ 
+    .tcard-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(6,4,16,0.97) 0%, rgba(6,4,16,0.55) 45%, transparent 100%);
+      z-index: 1;
+    }
+ 
+    .tcard-top {
+      position: absolute; top: 12px; left: 12px; right: 12px;
+      display: flex; align-items: center; justify-content: space-between;
+      z-index: 2;
+    }
+    .tcard-badge {
+      font-size: 8px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+      color: rgba(180,139,250,0.9);
+      background: rgba(42,26,94,0.8);
+      padding: 4px 10px; border-radius: 100px;
+      border: 1px solid rgba(124,58,237,0.3);
+      backdrop-filter: blur(8px);
+    }
+    .tcard-club {
+      width: 34px; height: 34px; object-fit: contain;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.5));
+    }
+ 
+    .tcard-content {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 16px 14px; z-index: 2;
+    }
+    .tcard-flag {
+      width: 18px; height: 13px; border-radius: 2px;
+      object-fit: cover; margin-bottom: 5px; opacity: 0.85;
+    }
+    .tcard-name {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(13px, 1.4vw, 16px);
+      font-weight: 800; color: #fff;
+      margin-bottom: 10px;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .tcard-socials {
+      display: flex; gap: 6px;
+      opacity: 0; transform: translateY(4px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+    .tcard:hover .tcard-socials { opacity: 1; transform: translateY(0); }
+    .tcard-socials a {
+      width: 26px; height: 26px; border-radius: 7px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; color: rgba(255,255,255,0.6);
+      transition: all 0.2s; backdrop-filter: blur(4px);
+    }
+    .tcard-socials a:hover { background: var(--purple); border-color: var(--purple); color: #fff; }
+ 
+    /* ── CTA FINAL ── */
+    .cta-final {
+      padding: 120px 60px;
+      background: var(--bg);
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    .cta-final-inner { max-width: 560px; margin: 0 auto; }
+    .cta-final h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      color: var(--text);
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+    .cta-final p {
+      font-size: 15px;
+      color: var(--muted);
+      line-height: 1.75;
+      margin-bottom: 36px;
+    }
+    .cta-btns {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+ 
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .why, .talents, .cta-final { padding: 70px 24px; }
+      .why-grid { grid-template-columns: 1fr; gap: 14px; }
+      .talents-grid { grid-template-columns: repeat(2, 1fr); }
+      .talents-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .hero-stats { gap: 24px; }
+      .hero-stat-divider { display: none; }
+    }
+    @media (max-width: 600px) {
+      .hero { padding: 100px 24px 60px; }
+      .hero-ctas { flex-direction: column; align-items: center; }
+      .hero-stats { gap: 20px; }
+      .talents-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .tcard { height: 240px; }
     }
   </style>
 </head>
 <body>
- 
 <div id="nav-placeholder"></div>
  
+<!-- ── HERO ── -->
 <section class="hero">
-  <div class="hero-glow"></div>
-  <img src="logo.png" alt="AL Management" style="height:80px;width:auto;object-fit:contain;margin-bottom:28px;position:relative">
-  <div class="s-eyebrow">AL Management</div>
-  <h1>We build<br><em>esport careers</em></h1>
-  <p class="hero-sub">Representing the next generation of champions.</p>
-</section>
+  <div class="hero-bg"></div>
  
-<section class="about-strip">
-  <div class="about-inner">
-    <div class="about-text">
-      <div class="s-eyebrow">About us</div>
-      <h2 class="s-title">AL Management</h2>
-      <p>"We build tomorrow's success today."</p>
-      <a href="about.html" class="btn-ghost" style="margin-top:4px">Learn more</a>
+  <img class="hero-logo" src="logo.png" alt="AL Management">
+ 
+  <div class="s-eyebrow hero-eyebrow">AL Management</div>
+  <h1>We build<br><em>esport careers</em></h1>
+  <p class="hero-sub">Representing the next generation of professional players.</p>
+ 
+  <div class="hero-ctas">
+    <a href="talents.html" class="btn-primary">Meet our talents</a>
+    <a href="#contact" class="btn-ghost">Work with us</a>
+  </div>
+ 
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num"><span class="counter" data-target="15">0</span>+</div>
+      <div class="hero-stat-label">Players</div>
     </div>
-    <div class="stat-grid">
-      <div class="stat"><div class="num">+60</div><div class="lbl">Players accompanied</div></div>
-      <div class="stat"><div class="num">+5</div><div class="lbl">Years of experience</div></div>
-      <div class="stat"><div class="num">+50</div><div class="lbl">Contracts signed</div></div>
-      <div class="stat"><div class="num">2025</div><div class="lbl">Founded</div></div>
+    <div class="hero-stat-divider"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-num"><span class="counter" data-target="2">0</span></div>
+      <div class="hero-stat-label">Games</div>
+    </div>
+    <div class="hero-stat-divider"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-num"><span class="counter" data-target="5">0</span></div>
+      <div class="hero-stat-label">Countries</div>
+    </div>
+    <div class="hero-stat-divider"></div>
+    <div class="hero-stat">
+      <div class="hero-stat-num"><span class="counter" data-target="2025">0</span></div>
+      <div class="hero-stat-label">Founded</div>
     </div>
   </div>
 </section>
  
-<section class="featured">
-  <div class="featured-inner">
-    <div class="featured-header">
+<!-- ── ORGANIZATIONS ── -->
+<section class="orgs">
+  <div class="orgs-label">Organizations we've worked with</div>
+  <div class="ticker-wrap">
+    <div class="ticker-track" id="ticker"></div>
+  </div>
+</section>
+ 
+<!-- ── WHY AL MANAGEMENT ── -->
+<section class="why">
+  <div class="why-inner">
+    <div class="why-header reveal">
+      <div class="s-eyebrow">Why AL Management</div>
+      <h2 class="s-title">What makes us different</h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal reveal-delay-1">
+        <div class="why-ico"><i class="ti ti-chart-arrows"></i></div>
+        <h3>Career Strategy</h3>
+        <p>We build long-term plans for each player — from their first contract to their peak years. Every decision is made with the full picture in mind.</p>
+      </div>
+      <div class="why-card reveal reveal-delay-2">
+        <div class="why-ico"><i class="ti ti-file-certificate"></i></div>
+        <h3>Contract Expertise</h3>
+        <p>We negotiate every agreement with full transparency and legal support. Our players sign knowing exactly what they're committing to.</p>
+      </div>
+      <div class="why-card reveal reveal-delay-3">
+        <div class="why-ico"><i class="ti ti-world"></i></div>
+        <h3>International Reach</h3>
+        <p>From EMEA to CIS, we operate across multiple regions and bring our players opportunities that go beyond their local market.</p>
+      </div>
+    </div>
+  </div>
+</section>
+ 
+<!-- ── MEET OUR TALENTS ── -->
+<section class="talents">
+  <div class="talents-inner">
+    <div class="talents-header reveal">
       <div>
         <div class="s-eyebrow">Our Talents</div>
-        <h2 class="s-title">Featured clients</h2>
+        <h2 class="s-title">Meet some of our clients</h2>
       </div>
-      <a href="talents.html">View all our talents &rarr;</a>
+      <a href="talents.html">View all talents &rarr;</a>
     </div>
-    <div class="carousel-wrap">
-      <div class="carousel-track-outer">
-        <div class="carousel-track" id="carousel-track">
+    <div class="talents-grid">
  
-          <!-- SLIDE 1 -->
-          <div class="pcard">
-            <div class="pcard-bg"><img src="https://i.imgur.com/yv2bHMV.jpeg" alt="XaviK" style="object-position:center 10%"></div>
-            <div class="pcard-overlay"></div>
-            <div class="pcard-content">
-              <div class="pcard-top-row"><div class="pcard-badge">EA FC</div><img class="pcard-flag" src="https://flagcdn.com/w20/es.png" alt="Spain"></div>
-              <div class="pcard-pseudo">XaviK</div>
-              <div class="pcard-realname">Xavier Riera</div>
-              <div class="pcard-socials">
-                <a href="https://x.com/xavik_05" target="_blank"><i class="ti ti-brand-x"></i></a>
-                <a href="https://t.co/iqfumTDIz2" target="_blank"><i class="ti ti-brand-twitch"></i></a>
-              </div>
-            </div>
+      <div class="tcard reveal reveal-delay-1">
+        <img class="tcard-photo" src="https://i.imgur.com/AH8HIf2.jpeg" alt="XaviK" style="object-position:center 10%">
+        <div class="tcard-overlay"></div>
+        <div class="tcard-top">
+          <div class="tcard-badge">EA FC</div>
+          <img class="tcard-club" src="mallorca.png" alt="RCD Mallorca">
+        </div>
+        <div class="tcard-content">
+          <img class="tcard-flag" src="https://flagcdn.com/w20/es.png" alt="Spain">
+          <div class="tcard-name">XaviK</div>
+          <div class="tcard-socials">
+            <a href="https://x.com/xavik_05" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://t.co/iqfumTDIz2" target="_blank"><i class="ti ti-brand-twitch"></i></a>
           </div>
- 
-          <div class="pcard">
-            <div class="pcard-bg"><img src="https://i.imgur.com/RNAfj5P.jpeg" alt="Magicien" style="object-position:center 10%"></div>
-            <div class="pcard-overlay"></div>
-            <div class="pcard-content">
-              <div class="pcard-top-row"><div class="pcard-badge">EA FC</div><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
-              <div class="pcard-pseudo">Magicien</div>
-              <div class="pcard-realname">Tony Desree</div>
-              <div class="pcard-socials">
-                <a href="https://x.com/DesreeTony" target="_blank"><i class="ti ti-brand-x"></i></a>
-                <a href="https://www.twitch.tv/eg_magiciennn" target="_blank"><i class="ti ti-brand-twitch"></i></a>
-              </div>
-            </div>
-          </div>
- 
-          <div class="pcard">
-            <div class="pcard-bg"><img src="https://i.imgur.com/TTDchys.jpeg" alt="Noia" style="object-position:top center"></div>
-            <div class="pcard-overlay"></div>
-            <div class="pcard-content">
-              <div class="pcard-top-row"><div class="pcard-badge">Fortnite</div><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
-              <div class="pcard-pseudo">Noia</div>
-              <div class="pcard-realname">First Last</div>
-              <div class="pcard-socials">
-                <a href="https://x.com/noia_gg" target="_blank"><i class="ti ti-brand-x"></i></a>
-                <a href="https://t.co/RtLJw0TMux" target="_blank"><i class="ti ti-brand-twitch"></i></a>
-              </div>
-            </div>
-          </div>
- 
-          <div class="pcard">
-            <div class="pcard-anon"><div class="anon-icon"><i class="ti ti-user"></i></div></div>
-            <div class="pcard-overlay"></div>
-            <div class="pcard-content">
-              <div class="pcard-top-row"><div class="pcard-badge">Fortnite</div><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
-              <div class="pcard-pseudo">Seekk</div>
-              <div class="pcard-realname">First Last</div>
-              <div class="pcard-socials">
-                <a href="https://x.com/Seekkfn" target="_blank"><i class="ti ti-brand-x"></i></a>
-                <a href="https://t.co/5r3dfcxdaB" target="_blank"><i class="ti ti-brand-twitch"></i></a>
-              </div>
-            </div>
-          </div>
- 
-          <!-- SLIDE 2 -->
-          <div class="pcard">
-            <div class="pcard-bg"><img src="https://i.imgur.com/6FIUwG3.jpeg" alt="Dexxjunior"></div>
-            <div class="pcard-overlay"></div>
-            <div class="pcard-content">
-              <div class="pcard-top-row"><div class="pcard-badge">EA FC</div><img class="pcard-flag" src="https://flagcdn.com/w20/sn.png" alt="Senegal"></div>
-              <div class="pcard-pseudo" style="font-size:12px">Dexxjunior</div>
-              <div class="pcard-realname">Moustapha Thiam</div>
-              <div class="pcard-socials">
-                <a href="https://x.com/dexxjunior03" target="_blank"><i class="ti ti-brand-x"></i></a>
-                <a href="https://t.co/kxuwTxpf9K" target="_blank"><i class="ti ti-brand-twitch"></i></a>
-              </div>
-            </div>
-          </div>
- 
-          <div class="pcard">
-            <div class="pcard-bg"><img src="https://i.imgur.com/5SJVTrH.jpeg" alt="XeRBoy" style="object-position:top center"></div>
-            <div class="pcard-overlay"></div>
-            <div class="pcard-content">
-              <div class="pcard-top-row"><div class="pcard-badge">EA FC</div><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
-              <div class="pcard-pseudo">XeRBoy</div>
-              <div class="pcard-realname">Yoni Boisgontier</div>
-              <div class="pcard-socials">
-                <a href="https://x.com/XeRBoy_" target="_blank"><i class="ti ti-brand-x"></i></a>
-                <a href="https://t.co/18PGGMPInV" target="_blank"><i class="ti ti-brand-twitch"></i></a>
-              </div>
-            </div>
-          </div>
- 
-          <div class="pcard">
-            <div class="pcard-bg"><img src="https://i.imgur.com/X3pyswX.jpeg" alt="Baxo" style="object-position:center 15%"></div>
-            <div class="pcard-overlay"></div>
-            <div class="pcard-content">
-              <div class="pcard-top-row"><div class="pcard-badge">Fortnite</div><img class="pcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France"></div>
-              <div class="pcard-pseudo">Baxo</div>
-              <div class="pcard-realname">First Last</div>
-              <div class="pcard-socials">
-                <a href="https://x.com/baxofnbr" target="_blank"><i class="ti ti-brand-x"></i></a>
-                <a href="https://www.twitch.tv/baxoftn" target="_blank"><i class="ti ti-brand-twitch"></i></a>
-              </div>
-            </div>
-          </div>
- 
-          <div class="pcard">
-            <div class="pcard-anon"><div class="anon-icon"><i class="ti ti-user"></i></div></div>
-            <div class="pcard-overlay"></div>
-            <div class="pcard-content">
-              <div class="pcard-top-row"><div class="pcard-badge">Fortnite</div><img class="pcard-flag" src="https://flagcdn.com/w20/ua.png" alt="Ukraine"></div>
-              <div class="pcard-pseudo">Ve1ryy</div>
-              <div class="pcard-realname">First Last</div>
-              <div class="pcard-socials">
-                <a href="https://x.com/ve1ryy" target="_blank"><i class="ti ti-brand-x"></i></a>
-                <a href="https://www.twitch.tv/ve1ryy" target="_blank"><i class="ti ti-brand-twitch"></i></a>
-              </div>
-            </div>
-          </div>
- 
         </div>
       </div>
-      <div class="carousel-arrows">
-        <div class="carousel-btn" id="prev"><i class="ti ti-chevron-left"></i></div>
-        <div class="carousel-btn" id="next"><i class="ti ti-chevron-right"></i></div>
+ 
+      <div class="tcard reveal reveal-delay-2">
+        <img class="tcard-photo" src="https://i.imgur.com/RNAfj5P.jpeg" alt="Magicien" style="object-position:center 10%">
+        <div class="tcard-overlay"></div>
+        <div class="tcard-top">
+          <div class="tcard-badge">EA FC</div>
+          <div class="tcard-badge" style="background:rgba(42,26,94,0.7);color:rgba(180,139,250,0.7)">F/A</div>
+        </div>
+        <div class="tcard-content">
+          <img class="tcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France">
+          <div class="tcard-name">Magicien</div>
+          <div class="tcard-socials">
+            <a href="https://x.com/DesreeTony" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://www.twitch.tv/eg_magiciennn" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
       </div>
-      <div class="carousel-controls">
-        <div class="carousel-dot active" data-slide="0"></div>
-        <div class="carousel-dot" data-slide="1"></div>
+ 
+      <div class="tcard reveal reveal-delay-3">
+        <img class="tcard-photo" src="https://i.imgur.com/TTDchys.jpeg" alt="Noia" style="object-position:top center">
+        <div class="tcard-overlay"></div>
+        <div class="tcard-top">
+          <div class="tcard-badge">Fortnite</div>
+          <img class="tcard-club" src="nto.png" alt="NTO">
+        </div>
+        <div class="tcard-content">
+          <img class="tcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France">
+          <div class="tcard-name">Noia</div>
+          <div class="tcard-socials">
+            <a href="https://x.com/noia_gg" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://t.co/RtLJw0TMux" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
       </div>
+ 
+      <div class="tcard reveal reveal-delay-4">
+        <img class="tcard-photo" src="https://i.imgur.com/X3pyswX.jpeg" alt="Baxo" style="object-position:center 15%">
+        <div class="tcard-overlay"></div>
+        <div class="tcard-top">
+          <div class="tcard-badge">Fortnite</div>
+          <img class="tcard-club" src="gameward.png" alt="GameWard">
+        </div>
+        <div class="tcard-content">
+          <img class="tcard-flag" src="https://flagcdn.com/w20/fr.png" alt="France">
+          <div class="tcard-name">Baxo</div>
+          <div class="tcard-socials">
+            <a href="https://x.com/baxofnbr" target="_blank"><i class="ti ti-brand-x"></i></a>
+            <a href="https://www.twitch.tv/baxoftn" target="_blank"><i class="ti ti-brand-twitch"></i></a>
+          </div>
+        </div>
+      </div>
+ 
     </div>
   </div>
 </section>
  
-<div class="partners">
-  <div class="partners-label">Clubs & organizations we have worked with</div>
-  <div class="ticker-track" id="ticker"></div>
-</div>
- 
-<section id="contact" style="padding:90px 60px;background:var(--surface);text-align:center">
-  <div style="max-width:560px;margin:0 auto">
+<!-- ── CTA FINAL ── -->
+<section class="cta-final" id="contact">
+  <div class="cta-final-inner reveal">
     <div class="s-eyebrow">Contact</div>
-    <h2 class="s-title">Let's work together</h2>
-    <p style="font-size:16px;color:var(--muted);line-height:1.75;margin-bottom:36px">contact@almanagement.fr</p>
-    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
-      <a href="https://x.com/ALManagementEU" target="_blank" class="btn-primary">X</a>
-      <a href="mailto:contact@almanagement.fr" class="btn-ghost">Email</a>
+    <h2>Let's build something together</h2>
+    <p>Whether you're a player looking for representation, a club seeking talent, or a sponsor exploring partnerships — we'd love to hear from you.</p>
+    <div class="cta-btns">
+      <a href="https://x.com/ALManagementEU" target="_blank" class="btn-primary">Follow on X</a>
+      <a href="mailto:contact@almanagement.fr" class="btn-ghost">contact@almanagement.fr</a>
     </div>
   </div>
 </section>
  
 <div id="footer-placeholder"></div>
- 
 <script src="main.js"></script>
 <script>
-  injectNav('');
-  injectFooter();
+injectNav('home.html');
+injectFooter();
  
-  const partners = [
-    { name: 'GameWard',      logo: 'gameward.png',     url: 'https://x.com/GameWardTeam' },
-    { name: 'Northern Star', logo: 'northernstar.png', url: 'https://x.com/NorthernStarEU' },
-    { name: 'NTO',           logo: 'nto.png',          url: 'https://x.com/NTOcorp' },
-    { name: 'Lyost',         logo: 'lyost.png',        url: 'https://x.com/Lyost_Esport' },
-    { name: 'Solarytv',      logo: 'solarytv.png',     url: 'https://x.com/solarytv' },
-    { name: 'WIP Esports',   logo: 'wip.png',          url: 'https://x.com/WIP_EsportsTeam' },
-    { name: 'RCD Mallorca',  logo: 'mallorca.png',     url: 'https://x.com/RCD_Mallorca' },
-    { name: 'HavoK',         logo: 'havok.png',        url: 'https://x.com/HvKGGs' },
-    { name: '2R',            logo: '2r.png',           url: 'https://x.com/2R_Esport' },
-    { name: 'K13',           logo: 'k13.png',          url: 'https://x.com/K13esport' },
-  ];
-  const ticker = document.getElementById('ticker');
-  [...partners, ...partners].forEach(p => {
-    ticker.innerHTML += `<a class="partner-item" href="${p.url}" target="_blank" rel="noopener"><img class="partner-logo" src="${p.logo}" alt="${p.name}"><span class="partner-name">${p.name}</span></a>`;
+// ── ORGANIZATIONS TICKER ──────────────────────────────────────
+const partners = [
+  { name: 'GameWard',       logo: 'gameward.png',       url: 'https://x.com/GameWardTeam' },
+  { name: 'Northern Star',  logo: 'northernstar.png',   url: 'https://x.com/NorthernStarEU' },
+  { name: 'NTO',            logo: 'nto.png',            url: 'https://x.com/NTOcorp' },
+  { name: 'Lyost',          logo: 'lyost.png',          url: 'https://x.com/Lyost_Esport' },
+  { name: 'Solarytv',       logo: 'solarytv.png',       url: 'https://x.com/solarytv' },
+  { name: 'WIP Esports',    logo: 'wip.png',            url: 'https://x.com/WIP_EsportsTeam' },
+  { name: 'RCD Mallorca',   logo: 'mallorca.png',       url: 'https://x.com/RCD_Mallorca' },
+  { name: 'HavoK',          logo: 'havok.png',          url: 'https://x.com/HvKGGs' },
+  { name: '2R',             logo: '2r.png',             url: 'https://x.com/2R_Esport' },
+  { name: 'K13',            logo: 'k13.png',            url: 'https://x.com/K13esport' },
+  { name: 'Together We Rise', logo: 'togetherwerise.png', url: 'https://x.com/TogetherWeRise' },
+];
+const ticker = document.getElementById('ticker');
+[...partners, ...partners].forEach(p => {
+  ticker.innerHTML += `<a class="org-item" href="${p.url}" target="_blank" rel="noopener">
+    <img class="org-logo" src="${p.logo}" alt="${p.name}">
+    <span class="org-name">${p.name}</span>
+  </a>`;
+});
+ 
+// ── SCROLL REVEAL ─────────────────────────────────────────────
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      observer.unobserve(entry.target);
+    }
   });
+}, { threshold: 0.12 });
  
-  const track = document.getElementById('carousel-track');
-  const dots = document.querySelectorAll('.carousel-dot');
-  let current = 0;
-  const total = 2;
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
  
-  function getCardsPerView() {
-    return window.innerWidth <= 480 ? 1 : window.innerWidth <= 900 ? 2 : 4;
+// ── ANIMATED COUNTERS ─────────────────────────────────────────
+function animateCounter(el) {
+  const target = parseInt(el.dataset.target);
+  const duration = target > 100 ? 1800 : 1000;
+  const start = performance.now();
+  
+  function update(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    el.textContent = Math.round(eased * target);
+    if (progress < 1) requestAnimationFrame(update);
+    else el.textContent = target;
   }
+  requestAnimationFrame(update);
+}
  
-  function goTo(index) {
-    current = index;
-    const perView = getCardsPerView();
-    const containerW = track.parentElement.offsetWidth;
-    const gap = 20;
-    const cardW = (containerW - gap * (perView - 1)) / perView;
-    const slideW = (cardW + gap) * perView;
-    track.style.transform = `translateX(-${current * slideW}px)`;
-    dots.forEach((d, i) => d.classList.toggle('active', i === current));
-  }
+// Trigger counters when hero stats are in view
+const statsObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.counter').forEach(animateCounter);
+      statsObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
  
-  document.getElementById('next').addEventListener('click', () => goTo((current + 1) % total));
-  document.getElementById('prev').addEventListener('click', () => goTo((current - 1 + total) % total));
-  dots.forEach(d => d.addEventListener('click', () => goTo(parseInt(d.dataset.slide))));
-  window.addEventListener('resize', () => goTo(current));
+const heroStats = document.querySelector('.hero-stats');
+if (heroStats) statsObserver.observe(heroStats);
 </script>
 </body>
 </html>
+ 
