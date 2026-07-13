@@ -1,341 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Our Talents — AL Management</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/topojson@3/dist/topojson.min.js"></script>
-  <style>
- 
-    .page-hero {
-      padding: 80px 60px 60px;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-    }
-    .page-hero-inner { max-width: 760px; }
- 
-    /* ── MAP ── */
-    .map-section {
-      padding: 70px 60px 50px;
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-    }
-    .map-section-inner { max-width: 1100px; margin: 0 auto; }
-    .map-header { text-align: center; margin-bottom: 40px; }
-    .map-subtitle { font-size: 15px; color: var(--muted); margin-top: 8px; }
- 
-    .map-wrap {
-      position: relative;
-      width: 100%;
-      max-width: 960px;
-      margin: 0 auto;
-      opacity: 0;
-      animation: map-reveal 1s ease forwards 0.3s;
-    }
-    @keyframes map-reveal {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
- 
-    #world-svg {
-      width: 100%;
-      height: auto;
-      filter: drop-shadow(0 4px 32px rgba(124,58,237,0.08));
-    }
- 
-    .country {
-      fill: #211b3d;
-      stroke: #332b5a;
-      stroke-width: 0.4;
-      transition: fill 0.3s ease;
-    }
-    .country-active {
-      fill: #3d2080;
-      stroke: #9d5ff5;
-      stroke-width: 1;
-      cursor: pointer;
-      transition: fill 0.3s ease, stroke-width 0.2s;
-    }
-    .country-active:hover,
-    .country-active.selected {
-      fill: #5a30a0;
-      stroke: #b48bfa;
-      stroke-width: 1.5;
-    }
- 
-    .map-glow-dot {
-      fill: #b48bfa;
-      filter: drop-shadow(0 0 5px rgba(180,139,250,0.9));
-      opacity: 0;
-      animation: dot-pop 0.5s ease forwards;
-    }
-    @keyframes dot-pop {
-      0%   { opacity: 0; r: 0; }
-      70%  { opacity: 1; r: 5px; }
-      100% { opacity: 1; r: 4px; }
-    }
- 
-    /* Ocean */
-    #ocean { fill: #100d20; }
- 
-    /* ── FILTERS ── */
-    .filter-section {
-      padding: 28px 60px;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg);
-    }
-    .filter-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      gap: 20px;
-      align-items: flex-end;
-      flex-wrap: wrap;
-    }
-    .filter-group { display: flex; flex-direction: column; gap: 7px; }
-    .filter-label {
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-    .filter-pills { display: flex; gap: 6px; flex-wrap: wrap; }
-    .pill {
-      padding: 7px 16px;
-      border-radius: 100px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--muted);
-      background: var(--card);
-      border: 1px solid var(--border);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      user-select: none;
-      white-space: nowrap;
-    }
-    .pill:hover { color: var(--text); border-color: var(--purple-mid); }
-    .pill.active { background: var(--purple); color: #fff; border-color: var(--purple); }
-    .filter-divider { width: 1px; height: 36px; background: var(--border); margin-bottom: 2px; }
- 
-    /* ── GRID ── */
-    .talents-section { padding: 50px 60px 100px; background: var(--bg); }
-    .talents-inner { max-width: 1100px; margin: 0 auto; }
-    .results-info { font-size: 12px; color: var(--muted); margin-bottom: 28px; letter-spacing: 0.5px; }
-    .results-info span { color: var(--purple-light); font-weight: 700; }
- 
-    .pgrid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 20px;
-    }
- 
-    /* ── PREMIUM CARDS ── */
-    .pcard {
-      position: relative;
-      border-radius: 20px;
-      overflow: hidden;
-      height: 320px;
-      cursor: pointer;
-      transition: transform 0.35s ease, box-shadow 0.35s ease;
-      background: linear-gradient(145deg, #18152a, #110e20);
-      border: 1px solid rgba(255,255,255,0.06);
-      box-shadow: 0 4px 24px rgba(0,0,0,0.4);
-      will-change: transform;
-    }
-    .pcard:hover {
-      transform: translateY(-6px) scale(1.015);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 30px rgba(124,58,237,0.15);
-    }
-    .pcard::before {
-      content: '';
-      position: absolute;
-      top: 0; left: -100%;
-      width: 60%;
-      height: 100%;
-      background: linear-gradient(105deg, transparent, rgba(255,255,255,0.045), transparent);
-      transition: left 0.5s ease;
-      z-index: 3;
-      pointer-events: none;
-    }
-    .pcard:hover::before { left: 150%; }
-    .pcard::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.07);
-      pointer-events: none;
-      z-index: 4;
-    }
- 
-    .pcard-photo {
-      .dexx-photo{
-    object-position: 40% 18%;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Talents — AL Management</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/topojson@3/dist/topojson.min.js"></script>
+<style>
+.page-hero { padding: 80px 60px 60px; background: var(--surface); border-bottom: 1px solid var(--border); }
+.page-hero-inner { max-width: 760px; }
+.map-section { padding: 70px 60px 50px; background: var(--bg); border-bottom: 1px solid var(--border); }
+.map-section-inner { max-width: 1100px; margin: 0 auto; }
+.map-header { text-align: center; margin-bottom: 40px; }
+.map-subtitle { font-size: 15px; color: var(--muted); margin-top: 8px; }
+.map-wrap { position: relative; width: 100%; max-width: 960px; margin: 0 auto; opacity: 0; animation: map-reveal 1s ease forwards 0.3s; }
+@keyframes map-reveal { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+#world-svg { width: 100%; height: auto; filter: drop-shadow(0 4px 32px rgba(124,58,237,0.08)); }
+.country { fill: #211b3d; stroke: #332b5a; stroke-width: 0.4; transition: fill 0.3s ease; }
+.country-active { fill: #3d2080; stroke: #9d5ff5; stroke-width: 1; cursor: pointer; transition: fill 0.3s ease, stroke-width 0.2s; }
+.country-active:hover, .country-active.selected { fill: #5a30a0; stroke: #b48bfa; stroke-width: 1.5; }
+.map-glow-dot { fill: #b48bfa; filter: drop-shadow(0 0 5px rgba(180,139,250,0.9)); opacity: 0; animation: dot-pop 0.5s ease forwards; }
+@keyframes dot-pop { 0% { opacity: 0; r: 0; } 70% { opacity: 1; r: 5px; } 100% { opacity: 1; r: 4px; } }
+#ocean { fill: #100d20; }
+.filter-section { padding: 28px 60px; border-bottom: 1px solid var(--border); background: var(--bg); }
+.filter-inner { max-width: 1100px; margin: 0 auto; display: flex; gap: 20px; align-items: flex-end; flex-wrap: wrap; }
+.filter-group { display: flex; flex-direction: column; gap: 7px; }
+.filter-label { font-size: 9px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--muted); }
+.filter-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+.pill { padding: 7px 16px; border-radius: 100px; font-size: 12px; font-weight: 600; color: var(--muted); background: var(--card); border: 1px solid var(--border); cursor: pointer; transition: all 0.2s ease; user-select: none; white-space: nowrap; }
+.pill:hover { color: var(--text); border-color: var(--purple-mid); }
+.pill.active { background: var(--purple); color: #fff; border-color: var(--purple); }
+.filter-divider { width: 1px; height: 36px; background: var(--border); margin-bottom: 2px; }
+.talents-section { padding: 50px 60px 100px; background: var(--bg); }
+.talents-inner { max-width: 1100px; margin: 0 auto; }
+.results-info { font-size: 12px; color: var(--muted); margin-bottom: 28px; letter-spacing: 0.5px; }
+.results-info span { color: var(--purple-light); font-weight: 700; }
+.pgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.pcard { position: relative; border-radius: 20px; overflow: hidden; height: 320px; cursor: pointer; transition: transform 0.35s ease, box-shadow 0.35s ease; background: linear-gradient(145deg, #18152a, #110e20); border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 4px 24px rgba(0,0,0,0.4); will-change: transform; }
+.pcard:hover { transform: translateY(-6px) scale(1.015); box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 30px rgba(124,58,237,0.15); }
+.pcard::before { content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%; background: linear-gradient(105deg, transparent, rgba(255,255,255,0.045), transparent); transition: left 0.5s ease; z-index: 3; pointer-events: none; }
+.pcard:hover::before { left: 150%; }
+.pcard::after { content: ''; position: absolute; inset: 0; border-radius: 20px; border: 1px solid rgba(255,255,255,0.07); pointer-events: none; z-index: 4; }
+.pcard-photo { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; transition: transform 0.4s ease; z-index: 0; }
+.pcard:hover .pcard-photo { transform: scale(1.04); }
+.pcard-anon { position: absolute; inset: 0; background: linear-gradient(145deg, #1e1a33, #150f28); display: flex; align-items: center; justify-content: center; z-index: 0; }
+.pcard-anon i { font-size: 56px; color: #2a1a5e; }
+.pcard-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(6,4,16,0.98) 0%, rgba(6,4,16,0.65) 45%, rgba(6,4,16,0.05) 75%, transparent 100%); z-index: 1; transition: background 0.3s ease; }
+.pcard:hover .pcard-overlay { background: linear-gradient(to top, rgba(6,4,16,0.99) 0%, rgba(6,4,16,0.75) 50%, rgba(6,4,16,0.1) 80%, transparent 100%); }
+.pcard-top { position: absolute; top: 14px; left: 14px; right: 14px; display: flex; align-items: center; justify-content: space-between; z-index: 2; }
+.pcard-game-badge { font-size: 8px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(180,139,250,0.9); background: rgba(42,26,94,0.8); padding: 4px 10px; border-radius: 100px; border: 1px solid rgba(124,58,237,0.3); backdrop-filter: blur(8px); }
+.pcard-club-logo { width: 36px; height: 36px; object-fit: contain; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5)); }
+.pcard-status-badge { font-size: 8px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; padding: 4px 10px; border-radius: 100px; backdrop-filter: blur(8px); }
+.badge-fa { color: rgba(180,139,250,0.85); background: rgba(42,26,94,0.75); border: 1px solid rgba(124,58,237,0.25); }
+.badge-tba { color: rgba(251,191,36,0.95); background: rgba(92,60,0,0.75); border: 1px solid rgba(251,191,36,0.25); }
+.pcard-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 18px 16px; z-index: 2; }
+.pcard-flag { width: 20px; height: 14px; border-radius: 3px; object-fit: cover; margin-bottom: 6px; opacity: 0.9; }
+.pcard-realname { font-size: 10px; color: rgba(255,255,255,0.35); margin-bottom: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pcard-name { font-family: 'Syne', sans-serif; font-size: clamp(14px, 1.4vw, 17px); font-weight: 800; color: #fff; letter-spacing: -0.3px; margin-bottom: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pcard-hover-row { display: flex; align-items: center; justify-content: space-between; opacity: 0; transform: translateY(6px); transition: opacity 0.25s ease, transform 0.25s ease; }
+.pcard:hover .pcard-hover-row { opacity: 1; transform: translateY(0); }
+.pcard-socials { display: flex; gap: 6px; }
+.pcard-socials a { width: 28px; height: 28px; border-radius: 8px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-size: 13px; color: rgba(255,255,255,0.6); transition: all 0.2s; backdrop-filter: blur(4px); }
+.pcard-socials a:hover { background: var(--purple); border-color: var(--purple); color: #fff; }
+.pcard-al-badge { font-size: 8px; font-weight: 600; letter-spacing: 0.5px; color: rgba(180,139,250,0.55); white-space: nowrap; }
+.pcard { animation: card-in 0.4s ease both; }
+@keyframes card-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+.no-results { grid-column: 1/-1; text-align: center; padding: 80px 0; color: var(--muted); font-size: 15px; }
+.no-results span { color: var(--purple-light); }
+@media (max-width: 1100px) { .pgrid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 900px) {
+  .page-hero, .map-section, .filter-section, .talents-section { padding-left: 24px; padding-right: 24px; }
+  .page-hero { padding-top: 60px; padding-bottom: 40px; }
+  .map-section { padding-top: 50px; padding-bottom: 40px; }
+  .talents-section { padding-top: 40px; padding-bottom: 60px; }
+  .pgrid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .filter-inner { gap: 10px; }
+  .filter-group { gap: 5px; }
+  .pill { padding: 6px 12px; font-size: 11px; }
+  .pcard { height: 280px; }
 }
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center top;
-      transition: transform 0.4s ease;
-      z-index: 0;
-    }
-    .pcard:hover .pcard-photo { transform: scale(1.04); }
- 
-    .pcard-anon {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(145deg, #1e1a33, #150f28);
-      display: flex; align-items: center; justify-content: center;
-      z-index: 0;
-    }
-    .pcard-anon i { font-size: 56px; color: #2a1a5e; }
- 
-    .pcard-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(6,4,16,0.98) 0%, rgba(6,4,16,0.65) 45%, rgba(6,4,16,0.05) 75%, transparent 100%);
-      z-index: 1;
-      transition: background 0.3s ease;
-    }
-    .pcard:hover .pcard-overlay {
-      background: linear-gradient(to top, rgba(6,4,16,0.99) 0%, rgba(6,4,16,0.75) 50%, rgba(6,4,16,0.1) 80%, transparent 100%);
-    }
- 
-    .pcard-top {
-      position: absolute;
-      top: 14px; left: 14px; right: 14px;
-      display: flex; align-items: center; justify-content: space-between;
-      z-index: 2;
-    }
-    .pcard-game-badge {
-      font-size: 8px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
-      color: rgba(180,139,250,0.9);
-      background: rgba(42,26,94,0.8);
-      padding: 4px 10px; border-radius: 100px;
-      border: 1px solid rgba(124,58,237,0.3);
-      backdrop-filter: blur(8px);
-    }
-    .pcard-club-logo { width: 36px; height: 36px; object-fit: contain; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5)); }
-    .pcard-status-badge {
-      font-size: 8px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
-      padding: 4px 10px; border-radius: 100px; backdrop-filter: blur(8px);
-    }
-    .badge-fa { color: rgba(180,139,250,0.85); background: rgba(42,26,94,0.75); border: 1px solid rgba(124,58,237,0.25); }
-    .badge-tba { color: rgba(251,191,36,0.95); background: rgba(92,60,0,0.75); border: 1px solid rgba(251,191,36,0.25); }
- 
-    .pcard-content {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 18px 16px;
-      z-index: 2;
-    }
-    .pcard-flag { width: 20px; height: 14px; border-radius: 3px; object-fit: cover; margin-bottom: 6px; opacity: 0.9; }
-    .pcard-realname {
-      font-size: 10px;
-      color: rgba(255,255,255,0.35);
-      margin-bottom: 10px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .pcard-name {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(14px, 1.4vw, 17px);
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: -0.3px;
-      margin-bottom: 12px;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
- 
-    .pcard-hover-row {
-      display: flex; align-items: center; justify-content: space-between;
-      opacity: 0; transform: translateY(6px);
-      transition: opacity 0.25s ease, transform 0.25s ease;
-    }
-    .pcard:hover .pcard-hover-row { opacity: 1; transform: translateY(0); }
- 
-    .pcard-socials { display: flex; gap: 6px; }
-    .pcard-socials a {
-      width: 28px; height: 28px; border-radius: 8px;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.1);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; color: rgba(255,255,255,0.6);
-      transition: all 0.2s; backdrop-filter: blur(4px);
-    }
-    .pcard-socials a:hover { background: var(--purple); border-color: var(--purple); color: #fff; }
-    .pcard-al-badge { font-size: 8px; font-weight: 600; letter-spacing: 0.5px; color: rgba(180,139,250,0.55); white-space: nowrap; }
- 
-    .pcard { animation: card-in 0.4s ease both; }
-    @keyframes card-in {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .no-results { grid-column: 1/-1; text-align: center; padding: 80px 0; color: var(--muted); font-size: 15px; }
-    .no-results span { color: var(--purple-light); }
- 
-    /* ── TABLET (max 1100px) ── */
-    @media (max-width: 1100px) {
-      .pgrid { grid-template-columns: repeat(3, 1fr); }
-    }
- 
-    /* ── TABLET PORTRAIT / LARGE PHONE (max 900px) ── */
-    @media (max-width: 900px) {
-      .page-hero, .map-section, .filter-section, .talents-section {
-        padding-left: 24px;
-        padding-right: 24px;
-      }
-      .page-hero { padding-top: 60px; padding-bottom: 40px; }
-      .map-section { padding-top: 50px; padding-bottom: 40px; }
-      .talents-section { padding-top: 40px; padding-bottom: 60px; }
-      .pgrid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
-      .filter-inner { gap: 10px; }
-      .filter-group { gap: 5px; }
-      .pill { padding: 6px 12px; font-size: 11px; }
-      .pcard { height: 280px; }
-    }
- 
-    /* ── MOBILE (max 600px) ── */
-    @media (max-width: 600px) {
-      .page-hero, .map-section, .filter-section, .talents-section {
-        padding-left: 16px;
-        padding-right: 16px;
-      }
-      .pgrid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-      .pcard { height: 240px; border-radius: 14px; }
-      .pcard-name { font-size: 12px !important; }
-      .pcard-realname { display: none; }
-      .pcard-flag { width: 16px; height: 11px; }
-      .pcard-game-badge { font-size: 7px; padding: 3px 7px; }
-      .pcard-club-logo { width: 28px; height: 28px; }
-      .pcard-status-badge { font-size: 7px; padding: 3px 7px; }
-      .pcard-content { padding: 12px 10px; }
-      .pcard-top { top: 10px; left: 10px; right: 10px; }
-      .filter-inner { flex-direction: column; gap: 14px; }
-      .filter-divider { display: none; }
-      .filter-pills { flex-wrap: wrap; }
-      .map-header .s-title { font-size: 22px; }
-      .map-subtitle { font-size: 13px; }
-    }
- 
-    /* ── SMALL MOBILE (max 380px) ── */
-    @media (max-width: 380px) {
-      .pgrid { grid-template-columns: 1fr 1fr; gap: 8px; }
-      .pcard { height: 210px; }
-      .pill { padding: 5px 10px; font-size: 10px; }
-    }
-  </style>
+@media (max-width: 600px) {
+  .page-hero, .map-section, .filter-section, .talents-section { padding-left: 16px; padding-right: 16px; }
+  .pgrid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .pcard { height: 240px; border-radius: 14px; }
+  .pcard-name { font-size: 12px !important; }
+  .pcard-realname { display: none; }
+  .pcard-flag { width: 16px; height: 11px; }
+  .pcard-game-badge { font-size: 7px; padding: 3px 7px; }
+  .pcard-club-logo { width: 28px; height: 28px; }
+  .pcard-status-badge { font-size: 7px; padding: 3px 7px; }
+  .pcard-content { padding: 12px 10px; }
+  .pcard-top { top: 10px; left: 10px; right: 10px; }
+  .filter-inner { flex-direction: column; gap: 14px; }
+  .filter-divider { display: none; }
+  .filter-pills { flex-wrap: wrap; }
+  .map-header .s-title { font-size: 22px; }
+  .map-subtitle { font-size: 13px; }
+}
+@media (max-width: 380px) {
+  .pgrid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .pcard { height: 210px; }
+  .pill { padding: 5px 10px; font-size: 10px; }
+}
+</style>
 </head>
 <body>
 <div id="nav-placeholder"></div>
- 
-<!-- HERO -->
+
 <section class="page-hero">
   <div class="page-hero-inner">
     <div class="s-eyebrow">Our Talents</div>
@@ -343,8 +115,7 @@
     <p class="s-sub">They chose AL Management to help them achieve excellence.</p>
   </div>
 </section>
- 
-<!-- MAP -->
+
 <section class="map-section">
   <div class="map-section-inner">
     <div class="map-header">
@@ -353,14 +124,13 @@
     </div>
     <div class="map-wrap" id="map-wrap">
       <svg id="world-svg" viewBox="0 0 960 500" style="width:100%;height:auto;filter:drop-shadow(0 4px 32px rgba(124,58,237,0.08))">
-        <rect id="ocean" width="960" height="500" fill="#0d0b1a"/>
+        <rect id="ocean" width="960" height="500" fill="#100d20"/>
       </svg>
       <div id="map-tooltip" style="position:absolute;background:rgba(18,15,30,0.95);border:1px solid rgba(124,58,237,0.3);border-radius:8px;padding:8px 14px;font-size:12px;color:#fff;pointer-events:none;opacity:0;transition:opacity 0.2s;backdrop-filter:blur(8px);white-space:nowrap;z-index:10;"></div>
     </div>
   </div>
 </section>
- 
-<!-- FILTERS -->
+
 <section class="filter-section">
   <div class="filter-inner">
     <div class="filter-group">
@@ -394,13 +164,12 @@
     </div>
   </div>
 </section>
- 
-<!-- GRID -->
+
 <section class="talents-section">
   <div class="talents-inner">
     <div class="results-info"><span id="results-count">15</span> players</div>
     <div class="pgrid" id="talents-grid">
- 
+
       <!-- EA FC -->
       <div class="pcard" data-game="eafc" data-region="emea" data-status="signed" data-country="es">
         <img class="pcard-photo" src="https://i.imgur.com/AH8HIf2.jpeg" alt="XaviK" style="object-position:center 10%">
@@ -422,9 +191,9 @@
           </div>
         </div>
       </div>
- 
+
       <div class="pcard" data-game="eafc" data-region="emea" data-status="signed" data-country="sn">
-        <img class="pcard-photo dexx-photo" src="https://i.imgur.com/C1jZN5p.jpeg" alt="Dexxjunior">
+        <img class="pcard-photo" src="https://i.imgur.com/667sQSo.jpeg" alt="Dexxjunior" style="object-position:center 20%">
         <div class="pcard-overlay"></div>
         <div class="pcard-top">
           <div class="pcard-game-badge">EA FC</div>
@@ -443,7 +212,7 @@
           </div>
         </div>
       </div>
- 
+
       <div class="pcard" data-game="eafc" data-region="emea" data-status="fa" data-country="fr">
         <img class="pcard-photo" src="https://i.imgur.com/RNAfj5P.jpeg" alt="Magicien" style="object-position:center 10%">
         <div class="pcard-overlay"></div>
@@ -464,7 +233,7 @@
           </div>
         </div>
       </div>
- 
+
       <div class="pcard" data-game="eafc" data-region="emea" data-status="fa" data-country="fr">
         <img class="pcard-photo" src="https://i.imgur.com/5SJVTrH.jpeg" alt="XeRBoy" style="object-position:top center">
         <div class="pcard-overlay"></div>
@@ -485,7 +254,7 @@
           </div>
         </div>
       </div>
- 
+
       <!-- Fortnite -->
       <div class="pcard" data-game="fortnite" data-region="emea" data-status="signed" data-country="fr">
         <img class="pcard-photo" src="https://i.imgur.com/TTDchys.jpeg" alt="Noia" style="object-position:top center">
@@ -506,7 +275,7 @@
           </div>
         </div>
       </div>
- 
+
       <div class="pcard" data-game="fortnite" data-region="emea" data-status="signed" data-country="fr">
         <div class="pcard-anon"><i class="ti ti-user"></i></div>
         <div class="pcard-overlay"></div>
@@ -526,7 +295,7 @@
           </div>
         </div>
       </div>
- 
+
       <div class="pcard" data-game="fortnite" data-region="emea" data-status="signed" data-country="fr">
         <img class="pcard-photo" src="https://i.imgur.com/X3pyswX.jpeg" alt="Baxo" style="object-position:center 15%">
         <div class="pcard-overlay"></div>
@@ -546,7 +315,7 @@
           </div>
         </div>
       </div>
- 
+
       <div class="pcard" data-game="fortnite" data-region="cis" data-status="signed" data-country="ua">
         <div class="pcard-anon"><i class="ti ti-user"></i></div>
         <div class="pcard-overlay"></div>
@@ -566,7 +335,7 @@
           </div>
         </div>
       </div>
- 
+
       <div class="pcard" data-game="fortnite" data-region="emea" data-status="signed" data-country="fr">
         <img class="pcard-photo" src="https://i.imgur.com/Z12iryO.jpeg" alt="Milou" style="object-position:top center">
         <div class="pcard-overlay"></div>
@@ -586,7 +355,7 @@
           </div>
         </div>
       </div>
- 
+
       <div class="pcard" data-game="fortnite" data-region="emea" data-status="signed" data-country="fr">
         <img class="pcard-photo" src="https://i.imgur.com/OpFPL1X.jpeg" alt="Azkx" style="object-position:center 30%">
         <div class="pcard-overlay"></div>
@@ -606,7 +375,7 @@
           </div>
         </div>
       </div>
- 
+
       <div class="pcard" data-game="fortnite" data-region="emea" data-status="signed" data-country="fr">
         <div class="pcard-anon"><i class="ti ti-user"></i></div>
         <div class="pcard-overlay"></div>
@@ -626,7 +395,7 @@
           </div>
         </div>
       </div>
- 
+
       <div class="pcard" data-game="fortnite" data-region="emea" data-status="tba" data-country="fr">
         <div class="pcard-anon"><i class="ti ti-user"></i></div>
         <div class="pcard-overlay"></div>
@@ -646,7 +415,7 @@
           </div>
         </div>
       </div>
- 
+
       <div class="pcard" data-game="fortnite" data-region="cis" data-status="fa" data-country="by">
         <div class="pcard-anon"><i class="ti ti-user"></i></div>
         <div class="pcard-overlay"></div>
@@ -666,7 +435,7 @@
           </div>
         </div>
       </div>
- 
+
       <div class="pcard" data-game="fortnite" data-region="emea" data-status="fa" data-country="es">
         <div class="pcard-anon"><i class="ti ti-user"></i></div>
         <div class="pcard-overlay"></div>
@@ -686,7 +455,7 @@
           </div>
         </div>
       </div>
- 
+
       <div class="pcard" data-game="fortnite" data-region="emea" data-status="fa" data-country="es">
         <div class="pcard-anon"><i class="ti ti-user"></i></div>
         <div class="pcard-overlay"></div>
@@ -706,254 +475,119 @@
           </div>
         </div>
       </div>
- 
+
     </div>
   </div>
 </section>
- 
+
 <div id="footer-placeholder"></div>
 <script src="main.js"></script>
 <script>
 injectNav('talents.html');
 injectFooter();
- 
-// ── WORLD MAP ─────────────────────────────────────────────────
-const ACTIVE_COUNTRIES = {
-  'fr': 'France',
-  'es': 'Spain',
-  'ua': 'Ukraine',
-  'by': 'Belarus',
-  'sn': 'Senegal'
-};
- 
-// ISO numeric codes for active countries
-const ACTIVE_ISO = {
-  '250': 'fr',   // France
-  '724': 'es',   // Spain
-  '804': 'ua',   // Ukraine
-  '112': 'by',   // Belarus
-  '686': 'sn'    // Senegal
-};
- 
-// Dot positions per country (x,y in viewBox 960x500)
-const DOT_POSITIONS = {
-  'fr':  { x: 480, y: 185 },
-  'es':  { x: 455, y: 200 },
-  'ua':  { x: 535, y: 175 },
-  'by':  { x: 525, y: 163 },
-  'sn':  { x: 420, y: 250 }
-};
- 
+
+const ACTIVE_COUNTRIES = { 'fr': 'France', 'es': 'Spain', 'ua': 'Ukraine', 'by': 'Belarus', 'sn': 'Senegal' };
+const ACTIVE_ISO = { '250': 'fr', '724': 'es', '804': 'ua', '112': 'by', '686': 'sn' };
 const svg = document.getElementById('world-svg');
 const tooltip = document.getElementById('map-tooltip');
 const mapWrap = document.getElementById('map-wrap');
- 
+
 fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
   .then(r => r.json())
   .then(world => {
-    const projection = d3.geoNaturalEarth1()
-      .scale(153)
-      .translate([480, 250]);
+    const projection = d3.geoNaturalEarth1().scale(153).translate([480, 250]);
     const path = d3.geoPath().projection(projection);
     const countries = topojson.feature(world, world.objects.countries);
- 
-    // For countries with overseas territories, we split features by geometry
-    // and only highlight the largest polygon (main territory)
+
     function getMainFeature(feature) {
-      if (!feature || !feature.geometry) return feature;
+      if (!feature?.geometry) return feature;
       if (feature.geometry.type === 'Polygon') return feature;
       if (feature.geometry.type === 'MultiPolygon') {
-        // Find largest polygon by coordinate count (approximation of area)
         let largest = null, maxLen = 0;
-        feature.geometry.coordinates.forEach(poly => {
-          const len = poly[0].length;
-          if (len > maxLen) { maxLen = len; largest = poly; }
-        });
-        if (!largest) return feature;
-        return {
-          ...feature,
-          geometry: { type: 'Polygon', coordinates: largest }
-        };
+        feature.geometry.coordinates.forEach(poly => { if (poly[0].length > maxLen) { maxLen = poly[0].length; largest = poly; } });
+        return largest ? { ...feature, geometry: { type: 'Polygon', coordinates: largest } } : feature;
       }
       return feature;
     }
- 
+
     function isMainTerritory(feature, code) {
-      // Use centroid of the LARGEST polygon only
-      const mainFeature = getMainFeature(feature);
-      const centroid = d3.geoCentroid(mainFeature);
+      const main = getMainFeature(feature);
+      const c = d3.geoCentroid(main);
       const BOUNDS = {
-        'fr': { minLon: -6,  maxLon: 10,  minLat: 41, maxLat: 52 },
-        'es': { minLon: -10, maxLon: 5,   minLat: 35, maxLat: 45 },
-        'ua': { minLon: 22,  maxLon: 40,  minLat: 44, maxLat: 53 },
-        'by': { minLon: 23,  maxLon: 33,  minLat: 51, maxLat: 57 },
+        'fr': { minLon: -6, maxLon: 10, minLat: 41, maxLat: 52 },
+        'es': { minLon: -10, maxLon: 5, minLat: 35, maxLat: 45 },
+        'ua': { minLon: 22, maxLon: 40, minLat: 44, maxLat: 53 },
+        'by': { minLon: 23, maxLon: 33, minLat: 51, maxLat: 57 },
         'sn': { minLon: -18, maxLon: -11, minLat: 12, maxLat: 17 },
       };
       const b = BOUNDS[code];
       if (!b) return true;
-      return centroid[0] >= b.minLon && centroid[0] <= b.maxLon &&
-             centroid[1] >= b.minLat && centroid[1] <= b.maxLat;
+      return c[0] >= b.minLon && c[0] <= b.maxLon && c[1] >= b.minLat && c[1] <= b.maxLat;
     }
- 
+
     const g = d3.select(svg).append('g');
- 
-    g.selectAll('path')
-      .data(countries.features)
-      .enter()
-      .append('path')
+    g.selectAll('path').data(countries.features).enter().append('path')
       .attr('d', path)
-      .attr('class', d => {
-        const code = ACTIVE_ISO[d.id];
-        if (!code) return 'country';
-        return isMainTerritory(d, code) ? 'country-active' : 'country';
-      })
-      .attr('id', d => {
-        const code = ACTIVE_ISO[d.id];
-        if (!code || !isMainTerritory(d, code)) return null;
-        return 'cmap-' + code;
-      })
-      .on('mouseover', function(event, d) {
-        const code = ACTIVE_ISO[d.id];
-        if (!code || !isMainTerritory(d, code)) return;
-        tooltip.textContent = ACTIVE_COUNTRIES[code];
-        tooltip.style.opacity = '1';
-      })
-      .on('mousemove', function(event) {
-        const rect = mapWrap.getBoundingClientRect();
-        tooltip.style.left = (event.clientX - rect.left + 12) + 'px';
-        tooltip.style.top  = (event.clientY - rect.top  - 36) + 'px';
-      })
-      .on('mouseout', function() {
-        tooltip.style.opacity = '0';
-      })
-      .on('click', function(event, d) {
-        const code = ACTIVE_ISO[d.id];
-        if (!code || !isMainTerritory(d, code)) return;
-        setCountryFilter(code);
-        document.querySelector('.talents-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
- 
-    // Glow dots on active countries
+      .attr('class', d => { const code = ACTIVE_ISO[d.id]; if (!code || !isMainTerritory(d, code)) return 'country'; return 'country-active'; })
+      .attr('id', d => { const code = ACTIVE_ISO[d.id]; if (!code || !isMainTerritory(d, code)) return null; return 'cmap-' + code; })
+      .on('mouseover', function(event, d) { const code = ACTIVE_ISO[d.id]; if (!code || !isMainTerritory(d, code)) return; tooltip.textContent = ACTIVE_COUNTRIES[code]; tooltip.style.opacity = '1'; })
+      .on('mousemove', function(event) { const rect = mapWrap.getBoundingClientRect(); tooltip.style.left = (event.clientX - rect.left + 12) + 'px'; tooltip.style.top = (event.clientY - rect.top - 36) + 'px'; })
+      .on('mouseout', function() { tooltip.style.opacity = '0'; })
+      .on('click', function(event, d) { const code = ACTIVE_ISO[d.id]; if (!code || !isMainTerritory(d, code)) return; setCountryFilter(code); document.querySelector('.talents-section').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+
     Object.entries(ACTIVE_ISO).forEach(([id, code], i) => {
       const feature = countries.features.find(f => String(f.id) === String(id));
       if (!feature || !isMainTerritory(feature, code)) return;
-      const mainFeature = getMainFeature(feature);
-      const centroid = path.centroid(mainFeature);
+      const main = getMainFeature(feature);
+      const centroid = path.centroid(main);
       if (!centroid || isNaN(centroid[0])) return;
       const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      circle.setAttribute('cx', centroid[0]);
-      circle.setAttribute('cy', centroid[1]);
-      circle.setAttribute('r', 5);
-      circle.setAttribute('class', 'map-glow-dot');
-      circle.style.animationDelay = (0.5 + i * 0.15) + 's';
-      circle.style.cursor = 'pointer';
-      circle.addEventListener('click', () => {
-        setCountryFilter(code);
-        document.querySelector('.talents-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
+      circle.setAttribute('cx', centroid[0]); circle.setAttribute('cy', centroid[1]);
+      circle.setAttribute('r', 5); circle.setAttribute('class', 'map-glow-dot');
+      circle.style.animationDelay = (0.5 + i * 0.15) + 's'; circle.style.cursor = 'pointer';
+      circle.addEventListener('click', () => { setCountryFilter(code); document.querySelector('.talents-section').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
       svg.appendChild(circle);
     });
-  })
-  .catch(() => {
-    svg.innerHTML += '<text x="480" y="250" text-anchor="middle" fill="#3d2080" font-size="16" font-family="Arial">Map loading...</text>';
-  });
- 
+  }).catch(() => { svg.innerHTML += '<text x="480" y="250" text-anchor="middle" fill="#3d2080" font-size="16" font-family="Arial">Map loading...</text>'; });
+
 function syncMapHighlight() {
   document.querySelectorAll('.country-active').forEach(el => el.classList.remove('selected'));
-  if (activeCountryFilter !== 'all') {
-    const el = document.getElementById('cmap-' + activeCountryFilter);
-    if (el) el.classList.add('selected');
-  }
+  if (activeCountryFilter !== 'all') { const el = document.getElementById('cmap-' + activeCountryFilter); if (el) el.classList.add('selected'); }
 }
- 
-// ── FILTERS ───────────────────────────────────────────────────
-let activeGame    = 'all';
-let activeRegion  = 'all';
-let activeStatus  = 'all';
-let activeCountryFilter = 'all';
- 
+
+let activeGame = 'all', activeRegion = 'all', activeStatus = 'all', activeCountryFilter = 'all';
+
 function setCountryFilter(code) {
-  // Reset region filter, filter by country directly
-  activeRegion = 'all';
-  activeCountryFilter = code;
+  activeRegion = 'all'; activeCountryFilter = code;
   document.querySelectorAll('#region-filter .pill').forEach(p => p.classList.remove('active'));
   document.querySelector('#region-filter .pill[data-region="all"]').classList.add('active');
-  applyFilters();
-  syncMapHighlight();
+  applyFilters(); syncMapHighlight();
 }
- 
+
 function applyFilters(animate = true) {
-  const cards = document.querySelectorAll('.pcard');
-  let visible = 0;
- 
+  const cards = document.querySelectorAll('.pcard'); let visible = 0;
   cards.forEach((card, i) => {
-    const gm = activeGame           === 'all' || card.dataset.game    === activeGame;
-    const rm = activeRegion         === 'all' || card.dataset.region  === activeRegion;
-    const sm = activeStatus         === 'all' || card.dataset.status  === activeStatus;
-    const cm = activeCountryFilter  === 'all' || card.dataset.country === activeCountryFilter;
-    const show = gm && rm && sm && cm;
- 
+    const show = (activeGame === 'all' || card.dataset.game === activeGame) &&
+                 (activeRegion === 'all' || card.dataset.region === activeRegion) &&
+                 (activeStatus === 'all' || card.dataset.status === activeStatus) &&
+                 (activeCountryFilter === 'all' || card.dataset.country === activeCountryFilter);
     if (show) {
-      card.style.display = '';
-      card.style.animation = 'none';
-      card.offsetHeight;
-      card.style.animation = animate ? `card-in 0.35s ease ${i * 0.03}s both` : '';
-      visible++;
-    } else {
-      card.style.display = 'none';
-    }
+      card.style.display = ''; card.style.animation = 'none'; card.offsetHeight;
+      card.style.animation = animate ? `card-in 0.35s ease ${i * 0.03}s both` : ''; visible++;
+    } else { card.style.display = 'none'; }
   });
- 
   document.getElementById('results-count').textContent = visible;
- 
   let noRes = document.getElementById('no-results');
   if (visible === 0) {
-    if (!noRes) {
-      noRes = document.createElement('div');
-      noRes.id = 'no-results';
-      noRes.className = 'no-results';
-      noRes.innerHTML = 'No players found. <span>Try different filters.</span>';
-      document.getElementById('talents-grid').appendChild(noRes);
-    }
+    if (!noRes) { noRes = document.createElement('div'); noRes.id = 'no-results'; noRes.className = 'no-results'; noRes.innerHTML = 'No players found. <span>Try different filters.</span>'; document.getElementById('talents-grid').appendChild(noRes); }
     noRes.style.display = '';
-  } else if (noRes) {
-    noRes.style.display = 'none';
-  }
+  } else if (noRes) { noRes.style.display = 'none'; }
 }
- 
-document.querySelectorAll('#game-filter .pill').forEach(p => {
-  p.addEventListener('click', () => {
-    activeGame = p.dataset.game;
-    document.querySelectorAll('#game-filter .pill').forEach(b => b.classList.remove('active'));
-    p.classList.add('active');
-    applyFilters();
-  });
-});
- 
-document.querySelectorAll('#region-filter .pill').forEach(p => {
-  p.addEventListener('click', () => {
-    activeRegion = p.dataset.region;
-    activeCountryFilter = 'all';
-    document.querySelectorAll('#region-filter .pill').forEach(b => b.classList.remove('active'));
-    p.classList.add('active');
-    applyFilters();
-    syncMapHighlight();
-  });
-});
- 
-document.querySelectorAll('#status-filter .pill').forEach(p => {
-  p.addEventListener('click', () => {
-    activeStatus = p.dataset.status;
-    document.querySelectorAll('#status-filter .pill').forEach(b => b.classList.remove('active'));
-    p.classList.add('active');
-    applyFilters();
-  });
-});
- 
+
+document.querySelectorAll('#game-filter .pill').forEach(p => { p.addEventListener('click', () => { activeGame = p.dataset.game; document.querySelectorAll('#game-filter .pill').forEach(b => b.classList.remove('active')); p.classList.add('active'); applyFilters(); }); });
+document.querySelectorAll('#region-filter .pill').forEach(p => { p.addEventListener('click', () => { activeRegion = p.dataset.region; activeCountryFilter = 'all'; document.querySelectorAll('#region-filter .pill').forEach(b => b.classList.remove('active')); p.classList.add('active'); applyFilters(); syncMapHighlight(); }); });
+document.querySelectorAll('#status-filter .pill').forEach(p => { p.addEventListener('click', () => { activeStatus = p.dataset.status; document.querySelectorAll('#status-filter .pill').forEach(b => b.classList.remove('active')); p.classList.add('active'); applyFilters(); }); });
 applyFilters(false);
 </script>
 </body>
 </html>
-
-
-
