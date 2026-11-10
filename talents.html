@@ -167,7 +167,7 @@
 
 <section class="talents-section">
   <div class="talents-inner">
-    <div class="results-info"><span id="results-count">11</span> players</div>
+    <div class="results-info"><span id="results-count">12</span> players</div>
     <div class="pgrid" id="talents-grid">
 
       <!-- EA FC -->
@@ -336,6 +336,23 @@
         </div>
       </div>
 
+      <!-- Zedrox — Free Agent (country and socials to be added) -->
+      <div class="pcard" data-game="fortnite" data-region="emea" data-status="fa">
+        <img class="pcard-photo" src="https://i.imgur.com/2irT4ki.jpeg" alt="Zedrox" style="object-position:center 15%">
+        <div class="pcard-overlay"></div>
+        <div class="pcard-top">
+          <div class="pcard-game-badge">Fortnite</div>
+          <div class="pcard-status-badge badge-fa">F/A</div>
+        </div>
+        <div class="pcard-content">
+          <div class="pcard-name">Zedrox</div>
+          <div class="pcard-hover-row">
+            <div class="pcard-socials"></div>
+            <div class="pcard-al-badge">AL Management</div>
+          </div>
+        </div>
+      </div>
+
       <div class="pcard" data-game="fortnite" data-region="cis" data-status="fa" data-country="ua">
         <div class="pcard-anon"><i class="ti ti-user"></i></div>
         <div class="pcard-overlay"></div>
@@ -459,6 +476,7 @@ fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json')
       .on('click', function(event, d) { const code = ACTIVE_ISO[d.id]; if (!code || !isMainTerritory(d, code)) return; setCountryFilter(code); document.querySelector('.talents-section').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
 
     Object.entries(ACTIVE_ISO).forEach(([id, code], i) => {
+      if (code === 'by') return; // no glowing dot on Belarus
       const feature = countries.features.find(f => String(f.id) === String(id));
       if (!feature || !isMainTerritory(feature, code)) return;
       const main = getMainFeature(feature);
